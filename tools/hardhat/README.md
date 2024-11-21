@@ -14,10 +14,10 @@ npm install
 
 Hardhat is configured with the following supported networks:
 
-* `mezo_testnet` for connecting to the public testnet.
+* `testnet` for connecting to the public testnet.
 * `mainnet` soon..
 
-All tasks and scripts support hardhat's global options which includes the `--network` flag. `mezo_testnet` is
+All tasks and scripts support hardhat's global options which includes the `--network` flag. `testnet` is
 used by default if no network is set. If running a task or script against `mainnet` ensure you include
 `--network mainnet` as a hardhat argument.
 
@@ -95,7 +95,7 @@ validatorPool:validator: Returns a validator's consensus public key & descriptio
 Here we can see the validatorPool:validator task has an operator argument - correct usage would be:
 
 ```bash
-npx hardhat --network mezo_testnet validatorPool:validator --operator 0xc2f7Ae302a68CF215bb3dA243dadAB3290308015
+npx hardhat --network testnet validatorPool:validator --operator 0xc2f7Ae302a68CF215bb3dA243dadAB3290308015
 ```
 
 ### Running Tasks
@@ -104,7 +104,7 @@ Tasks get run as if they are built in hardhat commands. Read tasks are executed 
 (no account), e.g:
 
 ```bash
-npx hardhat --network mezo_testnet validatorPool:submitApplication --signer <validator address> --conspubkey <validator consensus address> --moniker <mezod moniker>
+npx hardhat --network testnet validatorPool:submitApplication --signer <validator address> --conspubkey <validator consensus address> --moniker <mezod moniker>
 ```
 
 ### How to Submit an application to Validator Pool
@@ -112,20 +112,15 @@ npx hardhat --network mezo_testnet validatorPool:submitApplication --signer <val
 Here is a step by step guide on how to submit an application to the PoA validator pool.
 
 ```bash
-# install dependencies
-cd tools/hardhat
-npm install
+# step 1
+# fund your account
 
-# set your private key
-npx hardhat vars set MEZO_ACCOUNTS <your private key>
+# step 2
+# submit your application to the validator pool. Available flags:
+# --flow (docker|native) This is mandatory
+# --network (testnet) Thi is optional, it defaults to testnet
+./submit-application.sh --flow docker
 
-# check your private key
-npx hardhat vars get MEZO_ACCOUNTS
-
-# submit an application to the validator pool. Make sure you have funds on your
-# account to pay for the transaction fee.
-npx hardhat --network mezo_testnet validatorPool:submitApplication --signer <your validator address> --conspubkey <your consensus address> --moniker <your moniker>
-
-# check your application
-npx hardhat --network mezo_testnet validatorPool:application --signer <your validator address>
+# you can check your application
+npx hardhat --network testnet validatorPool:application --signer <your validator address>
 ```

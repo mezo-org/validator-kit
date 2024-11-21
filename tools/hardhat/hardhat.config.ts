@@ -32,9 +32,9 @@ const config: HardhatUserConfig = {
       evmVersion: 'london'
     }
   },
-  defaultNetwork: 'mezo_testnet',
+  defaultNetwork: 'testnet',
   networks: {
-    mezo_testnet: {
+    testnet: {
       url: 'https://rpc.test.mezo.org',
       chainId: 31611,
       accounts: getPrivKeys()
