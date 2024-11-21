@@ -136,3 +136,9 @@ vim path/to/config
 ./v-kit.sh shell
 mezod --home="${MEZOD_HOME}" --node "tcp://mezod:26657" status | jq .
 ```
+
+### Check validator info
+
+```shell
+./v-kit.sh validator-info
+```
