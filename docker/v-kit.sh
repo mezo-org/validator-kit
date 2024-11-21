@@ -24,7 +24,7 @@ fi
 # Helper functions
 ################################################################################
 _build_cli_image() {
-  echo "Building Validator Kit CLI image..."
+  echo "Building Validator Kit CLI image..." >&2
   docker build --platform linux/amd64 --tag local/mezod-cli --file - . <<EOF 2>/dev/null
 FROM ${DOCKER_IMAGE} AS mezod
 FROM ubuntu:latest
@@ -57,10 +57,6 @@ _run_cli_cmd_oneshoot() {
 ################################################################################
 # Development and Operations
 ################################################################################
-build() { ## Build the image
-  docker build --platform linux/amd64 --tag ${DOCKER_IMAGE} ../../
-}
-
 shell() { ## Start a shell session
   ${DOCKER_COMPOSE_CMD} run --rm --interactive cli /bin/bash
 }
@@ -85,6 +81,12 @@ EOF
 validator-info() { ## Show validator information
   _run_cli_cmd_oneshoot <<EOF
 /bin/bash /entrypoint.sh info
+EOF
+}
+
+export-private-key() { ## Export private key
+  _run_cli_cmd_oneshoot <<'EOF'
+yes $KEYRING_PASSWORD | mezod --home="${MEZOD_HOME}" keys unsafe-export-eth-key "${KEYRING_NAME}" 2>/dev/null
 EOF
 }
 
