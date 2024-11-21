@@ -42,9 +42,9 @@ const config: HardhatUserConfig = {
       evmVersion: 'cancun'
     }
   },
-  defaultNetwork: 'mezo_testnet',
+  defaultNetwork: 'testnet',
   networks: {
-    mezo_testnet: {
+    testnet: {
       url: 'http://mezo-node-0.test.mezo.org:8545',
       chainId: 31611,
       accounts: getPrivKeys()
