@@ -394,6 +394,10 @@ show_variables() {
     set -x
 }
 
+# TODO:
+# Validator info names a couple of these fields incorrectly. Please change them in the
+# same manner as in https://github.com/mezo-org/mezod/pull/344. Discussion
+# with more info https://github.com/mezo-org/validator-kit/pull/5#discussion_r1852275107
 show_validator_info() {
     # below makes my eyes twitch
     # (but it works)
