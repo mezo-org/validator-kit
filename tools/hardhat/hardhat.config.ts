@@ -29,13 +29,13 @@ const config: HardhatUserConfig = {
         enabled: true,
         runs: 200
       },
-      evmVersion: 'cancun'
+      evmVersion: 'london'
     }
   },
   defaultNetwork: 'mezo_testnet',
   networks: {
     mezo_testnet: {
-      url: 'http://mezo-node-0.test.mezo.org:8545',
+      url: 'https://rpc.test.mezo.org',
       chainId: 31611,
       accounts: getPrivKeys()
     }
