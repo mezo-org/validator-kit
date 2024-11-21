@@ -51,13 +51,15 @@ env_file="$NETWORK.env"
 if [ "$FLOW" = "docker" ]; then
     cd $DOCKER_DIR || { echo "Failed to navigate to docker directory"; exit 1; }
     output=$(./v-kit.sh validator-info)
-    # Extract MEZOD_MONIKER from the env file
+    # Extract MEZOD_MONIKER from the env file. TODO: add moniker to v-kit.sh validator-info
     moniker=$(grep "^MEZOD_MONIKER=" "$env_file" | awk -F'=' '{print $2}')
+    priv_key=$(./v-kit.sh export-private-key)
 elif [ "$FLOW" = "native" ]; then
     cd $NATIVE_DIR || { echo "Failed to navigate to native directory"; exit 1; }
     output=$(sudo ./v-kit.sh --validator-info)
-    # Extract MEZOD_MONIKER from the env file
+    # Extract MEZOD_MONIKER from the env file. TODO: add moniker to v-kit.sh validator-info
     moniker=$(grep "^MEZOD_MONIKER=" "$env_file" | awk -F'=' '{print $2}')
+    # TODO: add export-private-key to v-kit.sh in native flow
 else
     echo "Error: Invalid flow value. Please use 'docker' or 'native'."
     exit 1
@@ -77,12 +79,11 @@ moniker=${moniker%\"} #trim quotes
 echo "Validator address: $signer"
 echo "Validator consensus address: $conspubkey"
 echo "Moniker: $moniker"
+# echo "Private key: $priv_key"
 
+# Set private key to MEZO_ACCOUNTS as it is used by signer to sign transactions.
+npx hardhat vars set MEZO_ACCOUNTS $priv_key
 
 # Run the hardhat command with the extracted values. 
-
-# Important!
-# Make sure signer's private key is set. > npx hardhat vars set MEZO_ACCOUNTS <your private key>
-# Make sure your signer has funds to execute this transaction.
-
+# Important! Make sure your signer has funds to execute this transaction.
 npx hardhat --network $NETWORK validatorPool:submitApplication --signer $signer --conspubkey $conspubkey --moniker $moniker

@@ -112,11 +112,10 @@ npx hardhat --network testnet validatorPool:submitApplication --signer <validato
 Here is a step by step guide on how to submit an application to the PoA validator pool.
 
 ```bash
-# set your private key
-npx hardhat vars set MEZO_ACCOUNTS <your private key>
-
+# step 1
 # fund your account
 
+# step 2
 # submit your application to the validator pool. Available flags:
 # --flow (docker|native) This is mandatory
 # --network (testnet) Thi is optional, it defaults to testnet
