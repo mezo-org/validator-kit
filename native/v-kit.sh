@@ -418,6 +418,7 @@ show_validator_info() {
     echo "Validator ID: ${validator_id}"
     echo "Validator consensus address: ${conspubkey}"
     echo "Validator network address: ${validator_network_addr}"
+    echo "Moniker: $MEZOD_MONIKER"
 }
 
 main() {
