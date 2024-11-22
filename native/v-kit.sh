@@ -347,10 +347,11 @@ usage() {
     "\t[stop <opt>]\n\t\tstop chosen mezo service (opts: mezo | ethereum-sidecar | connect-sidecar)\n\n" \
     "\t[start <opt>]\n\t\tstart chosen mezo service (opts: mezo | ethereum-sidecar | connect-sidecar)\n\n" \
     "\t[restart <opt>]\n\t\trestart chosen mezo service (opts: mezo | ethereum-sidecar | connect-sidecar)\n\n" \
-    "\t[logs <opt>]\n\t\tshow logs for  chosen mezo service (opts: mezo|ethereum-sidecar|connect-sidecar)\n\n" \
+    "\t[logs <opt>]\n\t\tshow logs for  chosen mezo service (opts: mezo|ethereum-sidecar|connect-sidecar )\n\n" \
+    "\t[health]\n\t\tcheck health of mezo systemd services\n\n" \
+    "\t[export-private-key]\n\t\texport validator private key (needed for hardhat setup)\n\n" \
     "\t[-b/--backup]\n\t\tbackup mezo home dir to ${MEZOD_HOME}-backups\n\n" \
     "\t[-c/--cleanup]\n\t\tclean up the installation\n\t\tWARNING: this option removes whole Mezo directory (${MEZOD_HOME}) INCLUDING PRIVATE KEYS\n\n" \
-    "\t[--health]\n\t\tcheck health of mezo systemd services\n\n" \
     "\t[-s/--show-variables]\n\t\toutput variables read from env files\n\n" \
     "\t[-v/--validator-info]\n\t\tshow validator info\n\n" \
     "\t[-e/--envfile <arg>]\n\t\tset file with environment variables for setup script\n\n" \
@@ -491,6 +492,11 @@ show_logs() {
     exit 0
 }
 
+export_private_key() {
+    echo "Fetching validator private key..."
+    yes $MEZOD_KEYRING_PASSWORD | ${MEZO_EXEC} --home="${MEZOD_HOME}" keys unsafe-export-eth-key "${MEZOD_KEYRING_NAME}" 2>/dev/null
+}
+
 # default env file name - can be changed through -e/--envfile option
 ENVIRONMENT_FILE="testnet.env"
 healthcheck_flag=false
@@ -502,24 +508,29 @@ validator_info=false
 while [[ $# -gt 0 ]]; do
     case $1 in
         start)
-        start_service "$2"
-        exit 0
+            start_service "$2"
+            exit 0
         ;;
         stop)
-        stop_service "$2"
-        exit 0
+            stop_service "$2"
+            exit 0
         ;;
         restart)
-        restart_service "$2"
-        exit 0
+            restart_service "$2"
+            exit 0
         ;;
         logs)
-        show_logs "$2"
-        exit 0
+            show_logs "$2"
+            exit 0
         ;;
-        --health)
-            healthcheck_flag=true
-            shift
+        export-private-key)
+            setenvs
+            export_private_key
+            exit 0
+        ;;
+        health)
+            healthcheck
+            exit 0
             ;;
        -s|--show-variables)
             show_variables_flag=true
@@ -562,12 +573,6 @@ fi
 if [ $(id -u) -ne 0 ]; then
     echo "This script requires root privileges"
     exit 1
-fi
-
-# Execute actions based on flags
-if [[ "$healthcheck_flag" == true ]]; then
-    healthcheck
-    exit 0
 fi
 
 if [[ "$backup_flag" == true ]]; then
