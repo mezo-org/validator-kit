@@ -109,6 +109,7 @@ init-genval() { ## Generate validator key
 # Runtime
 ################################################################################
 start() { ## Start the node
+  _build_cli_image
   ${DOCKER_COMPOSE_CMD} up --detach --force-recreate
 }
 
