@@ -51,15 +51,13 @@ env_file="$NETWORK.env"
 if [ "$FLOW" = "docker" ]; then
     cd $DOCKER_DIR || { echo "Failed to navigate to docker directory"; exit 1; }
     output=$(./v-kit.sh validator-info)
-    # Extract MEZOD_MONIKER from the env file. TODO: add moniker to v-kit.sh validator-info
     moniker=$(grep "^MEZOD_MONIKER=" "$env_file" | awk -F'=' '{print $2}')
     priv_key=$(./v-kit.sh export-private-key)
 elif [ "$FLOW" = "native" ]; then
     cd $NATIVE_DIR || { echo "Failed to navigate to native directory"; exit 1; }
     output=$(sudo ./v-kit.sh --validator-info)
-    # Extract MEZOD_MONIKER from the env file. TODO: add moniker to v-kit.sh validator-info
     moniker=$(grep "^MEZOD_MONIKER=" "$env_file" | awk -F'=' '{print $2}')
-    # TODO: add export-private-key to v-kit.sh in native flow
+    priv_key=$(sudo ./v-kit.sh export-private-key | tail -n 1)
 else
     echo "Error: Invalid flow value. Please use 'docker' or 'native'."
     exit 1
