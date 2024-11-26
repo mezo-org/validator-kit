@@ -122,5 +122,5 @@ Here is a step by step guide on how to submit an application to the PoA validato
 ./submit-application.sh --flow docker
 
 # you can check your application
-npx hardhat --network testnet validatorPool:application --signer <your validator address>
+npx hardhat --network testnet validatorPool:application --operator <your validator address>
 ```
