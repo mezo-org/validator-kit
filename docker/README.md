@@ -57,10 +57,12 @@ cp testnet.env.example testnet.env
 * `NETWORK` - the network you want to join (`testnet` or `mainnet`)
 * `DOCKER_IMAGE` - the latest version of mezod image
 * `LOCAL_BIND_PATH` - the path to the local directory where the data will be stored
-  Make sure that the directory is created.
+  Make sure that the directory is created
+  and owned by the user with UID 65532 and GID 65532 ([user inside container](./compose.yaml#21)).
 
   ```shell
   mkdir -p /path/to/local/data
+  sudo chown -R 65532:65532 /path/to/local/data
   ```
 
 * `KEYRING_PASSWORD` - the password for the keyring. It is used to encrypt the key.
