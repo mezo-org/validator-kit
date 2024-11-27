@@ -412,13 +412,13 @@ show_validator_info() {
     operator_address="$(${MEZO_EXEC} --home="${MEZOD_HOME}" keys parse "${raw_operator_address}" | grep bytes | awk '{print "0x"$2}' | tr '[:upper:]' '[:lower:]')"
     conspubkey=$(echo -n $parsed_raw_conspubkey | tr '[:upper:]' '[:lower:]' | xargs -I {} echo 0x{})
 
-    validator_network_addr="$(jq -r '.address' "${MEZOD_HOME}"/config/priv_validator_key.json | tr '[:upper:]' '[:lower:]' | awk '{print "0x"$1}')"
+    validator_consensus_addr="$(jq -r '.address' "${MEZOD_HOME}"/config/priv_validator_key.json | tr '[:upper:]' '[:lower:]' | awk '{print "0x"$1}')"
 
     echo "Your validator addresses info:"
     echo "Validator address: ${operator_address}"
     echo "Validator ID: ${validator_id}"
-    echo "Validator consensus address: ${conspubkey}"
-    echo "Validator network address: ${validator_network_addr}"
+    echo "Validator consensus pubkey: ${conspubkey}"
+    echo "Validator consensus address: ${validator_consensus_addr}"
     echo "Moniker: $MEZOD_MONIKER"
 }
 
