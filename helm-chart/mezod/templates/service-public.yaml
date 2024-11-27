@@ -1,0 +1,27 @@
+---
+{{- if .Values.service.public.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "public-{{ include "this.name" . }}"
+  labels:
+    {{- include "this.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.service.public.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.service.public.type | quote }}
+  {{- if .Values.service.public.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.public.loadBalancerIP | quote }}
+  {{- end }}
+  allocateLoadBalancerNodePorts: {{ .Values.service.public.allocateLoadBalancerNodePorts }}
+  selector:
+    {{- include "this.selectorLabels" . | nindent 4 }}
+  ports:
+    {{- range $key, $value := .Values.service.public.ports }}
+    - name: {{ $key }}
+      port: {{ int $value }}
+      targetPort: {{ $key }}
+    {{- end }}
+{{- end }}

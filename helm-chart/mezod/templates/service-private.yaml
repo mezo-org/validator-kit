@@ -1,0 +1,19 @@
+---
+{{- if .Values.service.private.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "private-{{ include "this.name" . }}"
+  labels:
+    {{- include "this.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "this.selectorLabels" . | nindent 4 }}
+  ports:
+    {{- range $key, $value := .Values.service.private.ports }}
+    - name: {{ $key }}
+      port: {{ int $value.number }}
+      targetPort: {{ $key }}
+    {{- end }}
+{{- end }}
