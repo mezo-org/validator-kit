@@ -51,12 +51,10 @@ env_file="$NETWORK.env"
 if [ "$FLOW" = "docker" ]; then
     cd $DOCKER_DIR || { echo "Failed to navigate to docker directory"; exit 1; }
     output=$(./v-kit.sh validator-info)
-    moniker=$(grep "^MEZOD_MONIKER=" "$env_file" | awk -F'=' '{print $2}')
     priv_key=$(./v-kit.sh export-private-key)
 elif [ "$FLOW" = "native" ]; then
     cd $NATIVE_DIR || { echo "Failed to navigate to native directory"; exit 1; }
     output=$(sudo ./v-kit.sh --validator-info)
-    moniker=$(grep "^MEZOD_MONIKER=" "$env_file" | awk -F'=' '{print $2}')
     priv_key=$(sudo ./v-kit.sh export-private-key | tail -n 1)
 else
     echo "Error: Invalid flow value. Please use 'docker' or 'native'."
@@ -67,15 +65,15 @@ cd $HOME_DIR
 # Extract "Validator address"
 signer=$(echo "$output" | grep "Validator address" | awk -F': ' '{print $2}')
 
-# Extract "Validator consensus address"
-conspubkey=$(echo "$output" | grep "Validator consensus address" | awk -F': ' '{print $2}')
+# Extract "Validator consensus pubkey"
+conspubkey=$(echo "$output" | grep "Validator consensus pubkey" | awk -F': ' '{print $2}')
 
-moniker=${moniker#\"} #trim quotes
-moniker=${moniker%\"} #trim quotes
+# Extract "Moniker"
+moniker=$(echo "$output" | grep "Moniker" | awk -F': ' '{print $2}')
 
-# Print the extracted values
+# Print extracted values
 echo "Validator address: $signer"
-echo "Validator consensus address: $conspubkey"
+echo "Validator consensus pubkey: $conspubkey"
 echo "Moniker: $moniker"
 # echo "Private key: $priv_key"
 
