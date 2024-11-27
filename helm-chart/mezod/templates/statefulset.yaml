@@ -20,9 +20,11 @@ spec:
         {{- with .Values.labels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+      {{- if .Values.customConfigs.enabled }}
       annotations:
         # This annotation ensures the StatefulSet is updated when the ConfigMap changes
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum | quote }}
+      {{- end }}
     spec:
       serviceAccountName: {{ include "this.name" . | quote }}
       automountServiceAccountToken: false
@@ -37,9 +39,11 @@ spec:
       volumes:
         - name: dummy-data
           emptyDir: {}
+        {{- if .Values.customConfigs.enabled }}
         - name: custom-configs
           configMap:
             name: "custom-configs-{{ include "this.name" . }}"
+        {{- end }}
       containers:
         - name: mezod
           image: "{{ .Values.image }}:{{ .Values.tag }}"
@@ -100,8 +104,10 @@ spec:
           volumeMounts:
             - name: data
               mountPath: {{ .Values.env.MEZOD_HOME | quote }}
+            {{- if .Values.customConfigs.enabled }}
             - name: custom-configs
               mountPath: /config/
+            {{- end }}
         - name: ethereum-sidecar
           image: "{{ .Values.image }}:{{ .Values.tag }}"
           imagePullPolicy: IfNotPresent
