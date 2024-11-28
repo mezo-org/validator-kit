@@ -1,0 +1,134 @@
+---
+x-logging: &logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "1m"
+      max-file: "1"
+      tag: "{{.Name}}"
+
+x-platform: &platform
+  platform: linux/amd64
+
+x-networks: &networks
+  networks:
+    - mezo
+
+services:
+  prometheus:
+    <<: [*logging, *platform, *networks]
+    container_name: prometheus
+    image: prom/prometheus:v2.54.1
+    restart: always
+    expose:
+      - 9090
+    # Changing user to root to access docker.sock
+    # https://github.com/prometheus/prometheus/issues/8185
+    user: root
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yaml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=${PROMETHEUS_RETENTION_TIME}"
+    volumes:
+      - ./configs/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - ./configs/prometheus/alerts.yaml:/etc/prometheus/alerts.yaml
+      - ${STORAGE}/prometheus:/prometheus
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  alertmanager:
+    <<: [*logging, *platform, *networks]
+    container_name: alertmanager
+    image: prom/alertmanager:v0.27.0
+    restart: always
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yaml"
+      - "--storage.path=/alertmanager"
+    volumes:
+      - ./configs/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml
+      - ${STORAGE}/alertmanager:/alertmanager
+    expose:
+      - 9093
+
+  loki:
+    <<: [*logging, *platform, *networks]
+    container_name: loki
+    image: grafana/loki:3.2.0
+    restart: always
+    command:
+      - "-config.file=/etc/loki/loki.yaml"
+    volumes:
+      - ./configs/loki/loki.yaml:/etc/loki/loki.yaml
+      - ./configs/loki/alerts.yaml:/loki/rules/alerts.yaml
+      - ${STORAGE}/loki:/loki
+    expose:
+      - 3100
+
+  promtail:
+    <<: [*logging, *platform, *networks]
+    container_name: promtail
+    image: grafana/promtail:3.2.0
+    restart: always
+    command:
+      - "-config.file=/etc/promtail/promtail.yaml"
+    volumes:
+      - ./configs/promtail.yaml:/etc/promtail/promtail.yaml
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  grafana:
+    <<: [*logging, *platform, *networks]
+    container_name: grafana
+    image: grafana/grafana:11.2.2
+    restart: always
+    expose:
+      - 3000
+    environment:
+      - GF_SERVER_DOMAIN=${DOMAIN}
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - GF_FEATURE_TOGGLES_ENABLE=lokiLogsDataplane
+      - GF_INSTALL_PLUGINS=https://storage.googleapis.com/integration-artifacts/grafana-lokiexplore-app/grafana-lokiexplore-app-latest.zip;grafana-lokiexplore-app
+    volumes:
+      - ${STORAGE}/grafana:/var/lib/grafana
+      - ./configs/grafana/provisioning:/etc/grafana/provisioning
+
+  caddy:
+    <<: [*logging, *platform, *networks]
+    container_name: caddy
+    image: caddy:2.8.4-alpine
+    restart: always
+    command:
+      - caddy
+      - reverse-proxy
+      - --access-log
+      - --internal-certs # Use internal certificates (self-signed)
+      - "--from"
+      - "${HTTP_PREFIX}://${DOMAIN}"
+      - "--to"
+      - "grafana:3000"
+    # Expose ports 80 and 443 for HTTP and HTTPS to the outside world
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      promtail.scrape: "true"
+
+  # mezod-metrics-aggregator:
+  #   <<: [*logging, *platform, *networks]
+  #   container_name: mezod-metrics-aggregator
+  #   image: bitnami/openresty:latest
+  #   volumes:
+  #     - ./configs/mezod-metrics-aggregator/setup.sh:/docker-entrypoint-initdb.d/setup.sh:ro
+  #     - ./configs/mezod-metrics-aggregator/aggregate.conf:/opt/bitnami/openresty/nginx/conf/server_blocks/aggregate.conf:ro
+  #   expose:
+  #     - 6060 # Expose the aggregated metrics endpoint
+  #   labels:
+  #     promtail.scrape: "true"
+  #     prometheus.scrape: "true"
+  #     prometheus.port: "6060"
+  #     prometheus.path: "/metrics"
+
+# Use external network "mezo" created by the validator's deployment
+networks:
+  mezo:
+    # external: true
+    driver: bridge
