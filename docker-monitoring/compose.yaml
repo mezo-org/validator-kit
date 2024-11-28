@@ -28,7 +28,7 @@ services:
     command:
       - "--config.file=/etc/prometheus/prometheus.yaml"
       - "--storage.tsdb.path=/prometheus"
-      - "--storage.tsdb.retention.time=${PROMETHEUS_RETENTION_TIME}"
+      - "--storage.tsdb.retention.time=7d"
     volumes:
       - prometheus:/prometheus
       - ./configs/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
@@ -100,32 +100,17 @@ services:
       - caddy
       - reverse-proxy
       - --access-log
-      - --internal-certs # Use internal certificates (self-signed)
-      - "--from"
-      - "${HTTP_PREFIX}://${DOMAIN}"
-      - "--to"
+      - --from
+      - "https://${DOMAIN}"
+      - --to
       - "grafana:3000"
+      - --internal-certs # Use internal certificates (self-signed)
     # Expose ports 80 and 443 for HTTP and HTTPS to the outside world
     ports:
       - 80:80
       - 443:443
     labels:
       promtail.scrape: "true"
-
-  # mezod-metrics-aggregator:
-  #   <<: [*logging, *platform, *networks]
-  #   container_name: mezod-metrics-aggregator
-  #   image: bitnami/openresty:latest
-  #   volumes:
-  #     - ./configs/mezod-metrics-aggregator/setup.sh:/docker-entrypoint-initdb.d/setup.sh:ro
-  #     - ./configs/mezod-metrics-aggregator/aggregate.conf:/opt/bitnami/openresty/nginx/conf/server_blocks/aggregate.conf:ro
-  #   expose:
-  #     - 6060 # Expose the aggregated metrics endpoint
-  #   labels:
-  #     promtail.scrape: "true"
-  #     prometheus.scrape: "true"
-  #     prometheus.port: "6060"
-  #     prometheus.path: "/metrics"
 
 # Use external network "mezo" created by the validator's deployment
 networks:
