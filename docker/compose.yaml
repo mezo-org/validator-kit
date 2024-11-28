@@ -111,9 +111,11 @@ services:
       prometheus.scrape: "true"
       prometheus.port: "6065"
       prometheus.path: "/debug/metrics/prometheus"
+      prometheus.scrape.2: "true"
       prometheus.port.2: "26660"
       prometheus.path.2: "/"
 
 networks:
   mezo:
+    name: mezo
     driver: bridge

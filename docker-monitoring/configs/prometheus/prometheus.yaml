@@ -26,13 +26,32 @@ scrape_configs:
       # Container name
       - source_labels: [__meta_docker_container_name]
         target_label: container_name
-      # First port and path
+      # Port and path
       - source_labels: [__meta_docker_network_ip, __meta_docker_container_label_prometheus_port]
         target_label: __address__
         regex: (.+);(.+)
       - source_labels: [__meta_docker_container_label_prometheus_path]
         target_label: __metrics_path__
         replacement: $1
+      # Labels
+      - regex: __meta_docker_container_label_prometheus_(.+)
+        action: labelmap
+        replacement: $1
+
+  - job_name: docker2_for_mezod
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+        filters:
+          - name: label
+            values: [prometheus.scrape.2=true]
+    relabel_configs:
+      # Container ID
+      - source_labels: [__meta_docker_container_id]
+        target_label: container_id
+      # Container name
+      - source_labels: [__meta_docker_container_name]
+        target_label: container_name
       # Second port and path
       - source_labels: [__meta_docker_network_ip, __meta_docker_container_label_prometheus_port_2]
         target_label: __address__
