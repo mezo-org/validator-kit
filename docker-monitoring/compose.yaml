@@ -30,9 +30,9 @@ services:
       - "--storage.tsdb.path=/prometheus"
       - "--storage.tsdb.retention.time=${PROMETHEUS_RETENTION_TIME}"
     volumes:
+      - prometheus:/prometheus
       - ./configs/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
       - ./configs/prometheus/alerts.yaml:/etc/prometheus/alerts.yaml
-      - ${STORAGE}/prometheus:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   alertmanager:
@@ -44,8 +44,8 @@ services:
       - "--config.file=/etc/alertmanager/alertmanager.yaml"
       - "--storage.path=/alertmanager"
     volumes:
+      - alertmanager:/alertmanager
       - ./configs/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml
-      - ${STORAGE}/alertmanager:/alertmanager
     expose:
       - 9093
 
@@ -57,9 +57,9 @@ services:
     command:
       - "-config.file=/etc/loki/loki.yaml"
     volumes:
+      - loki:/loki
       - ./configs/loki/loki.yaml:/etc/loki/loki.yaml
       - ./configs/loki/alerts.yaml:/loki/rules/alerts.yaml
-      - ${STORAGE}/loki:/loki
     expose:
       - 3100
 
@@ -88,7 +88,7 @@ services:
       - GF_FEATURE_TOGGLES_ENABLE=lokiLogsDataplane
       - GF_INSTALL_PLUGINS=https://storage.googleapis.com/integration-artifacts/grafana-lokiexplore-app/grafana-lokiexplore-app-latest.zip;grafana-lokiexplore-app
     volumes:
-      - ${STORAGE}/grafana:/var/lib/grafana
+      - grafana:/var/lib/grafana
       - ./configs/grafana/provisioning:/etc/grafana/provisioning
 
   caddy:
@@ -130,5 +130,10 @@ services:
 # Use external network "mezo" created by the validator's deployment
 networks:
   mezo:
-    # external: true
-    driver: bridge
+    external: true
+
+volumes:
+  prometheus:
+  alertmanager:
+  loki:
+  grafana:
