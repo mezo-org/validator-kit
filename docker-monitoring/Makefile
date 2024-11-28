@@ -2,10 +2,6 @@ DOCKER_COMPOSE_CMD := docker compose --env-file monitoring.env
 
 include monitoring.env
 
-.PHONY: clean
-clean: # (no help) Clean up (use with caution!)
-	rm -rf ${STORAGE}/*
-
 .PHONY: start
 start: ## Start node
 	$(DOCKER_COMPOSE_CMD) up --detach --force-recreate
@@ -13,6 +9,10 @@ start: ## Start node
 .PHONY: stop
 stop: ## Stop node
 	$(DOCKER_COMPOSE_CMD) down
+
+.PHONY: stop-and-remove-volumes
+stop-and-remove: ## Stop and remove volumes
+	$(DOCKER_COMPOSE_CMD) down --volumes
 
 .PHONY: logs
 logs: ## Show logs

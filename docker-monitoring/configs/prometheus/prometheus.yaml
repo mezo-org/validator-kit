@@ -43,7 +43,7 @@ scrape_configs:
       - targets: [mezod:6065]
         labels:
           container_name: mezod
-          metrics-layer: evm
+          metrics_layer: evm
           __metrics_path__: "/debug/metrics/prometheus"
 
   - job_name: mezod-cometbft
@@ -51,7 +51,7 @@ scrape_configs:
       - targets: [mezod:26660]
         labels:
           container_name: mezod
-          metrics-layer: cometbft
+          metrics_layer: cometbft
           __metrics_path__: "/"
 
 alerting:
