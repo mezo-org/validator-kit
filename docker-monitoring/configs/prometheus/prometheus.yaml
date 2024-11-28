@@ -49,9 +49,11 @@ scrape_configs:
       # Container ID
       - source_labels: [__meta_docker_container_id]
         target_label: container_id
+        replacement: $1-2
       # Container name
       - source_labels: [__meta_docker_container_name]
         target_label: container_name
+        replacement: $1-2
       # Second port and path
       - source_labels: [__meta_docker_network_ip, __meta_docker_container_label_prometheus_port_2]
         target_label: __address__
