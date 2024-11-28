@@ -108,12 +108,7 @@ services:
       - ALL
     labels:
       promtail.scrape: "true"
-      prometheus.scrape: "true"
-      prometheus.port: "6065"
-      prometheus.path: "/debug/metrics/prometheus"
-      prometheus.scrape.2: "true"
-      prometheus.port.2: "26660"
-      prometheus.path.2: "/"
+      prometheus.scrape: "false" # mezod target is configured as a static target in Prometheus
 
 networks:
   mezo:
