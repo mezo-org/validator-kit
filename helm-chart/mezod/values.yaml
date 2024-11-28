@@ -1,0 +1,89 @@
+image: "us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"
+tag: "v0.1.0-rc1"
+
+env:
+  # -- Select the network to connect to
+  NETWORK: testnet
+  # -- Set public IP address of the validator
+  PUBLIC_IP: "CHANGE_ME"
+  # -- Set the chain ID (mezo_31611-1 is the testnet)
+  MEZOD_CHAIN_ID: "mezo_31611-1"
+  MEZOD_HOME: "/var/mezod"
+  # -- Set the moniker (name of the validator)
+  MEZOD_MONIKER: "CHANGE_ME"
+  MEZOD_ETHEREUM_SIDECAR_SERVER: "localhost:7500" # it's in the same Pod
+  MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS: "CHANGE_ME"
+  MEZOD_LOG_LEVEL: info
+  MEZOD_LOG_FORMAT: json # json|plain
+  MEZOD_CUSTOM_CONF_APP_TOML: /config/app.toml.txt
+  MEZOD_CUSTOM_CONF_CLIENT_TOML: /config/client.toml.txt
+  MEZOD_CUSTOM_CONF_CONFIG_TOML: /config/config.toml.txt
+
+secrets:
+  # -- Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC
+  keyring: "CHANGE_ME"
+
+storage:
+  className: "CHANGE_ME"
+  size: "1Gi"
+  useDataSource:
+    # -- Enable and use to restore data from a snapshot or a PVC
+    enabled: false
+    kind: PersistentVolumeClaim # or VolumeSnapshot
+    name: ""
+
+resources:
+  requests:
+    # -- Set the resource requests for the mezod container
+    cpu: "500m"
+    memory: "512Mi"
+
+securityContext:
+  # -- Set the user and group ID to run the container (don't change)
+  userId: 65532
+  groupId: 65532
+
+service:
+  public:
+    # -- Expose public ports to the Internet using LoadBalancer
+    enabled: true
+    annotations: {}
+    type: LoadBalancer
+    loadBalancerIP: ""
+    allocateLoadBalancerNodePorts: false
+    # Name of the ports must use kebab-case
+    ports:
+      p2p: 26656
+      rpc: 26657
+      api: 1317
+      grpc: 9090
+      json-rpc: 8545
+      json-rpc-ws: 8546
+  private:
+    # -- Expose private ports internally using ClusterIP
+    enabled: true
+    # Name of the ports must use kebab-case
+    ports:
+      evm-metrics:
+        number: 6065
+        path: "/debug/metrics/prometheus"
+      comet-metrics:
+        number: 26660
+        path: "/"
+
+customConfigs:
+   # -- Optional: Load custom configuration from the files
+  enabled: false
+  # As content of the files, you can use the following format:
+  # path.to.toml.key=value
+  # anotherKey=anotherValue
+  appTomlTxt: ""
+  clientTomlTxt: ""
+  configTomlTxt: ""
+
+# -- Run shell in the container instead of the mezod process
+maintenanceMode: false
+
+priorityClassName: ""
+
+labels: {}
