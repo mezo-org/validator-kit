@@ -38,12 +38,21 @@ scrape_configs:
         action: labelmap
         replacement: $1
 
-  - job_name: mezod-metrics
+  - job_name: mezod-evm
     static_configs:
       - targets: [mezod:6065]
-        metrics_path: /debug/metrics/prometheus
+        labels:
+          container_name: mezod
+          metrics-layer: evm
+          __metrics_path__: "/debug/metrics/prometheus"
+
+  - job_name: mezod-cometbft
+    static_configs:
       - targets: [mezod:26660]
-        metrics_path: /
+        labels:
+          container_name: mezod
+          metrics-layer: cometbft
+          __metrics_path__: "/"
 
 alerting:
   alertmanagers:
