@@ -7,10 +7,16 @@ metadata:
   labels:
     {{- include "this.labels" . | nindent 4 }}
 data:
+  {{- if .Values.customConfigs.appTomlTxt }}
   app.toml.txt: |
     {{- .Values.customConfigs.appTomlTxt | nindent 4 }}
+  {{- end }}
+  {{- if .Values.customConfigs.clientTomlTxt }}
   client.toml.txt: |
     {{- .Values.customConfigs.clientTomlTxt | nindent 4 }}
+  {{- end }}
+  {{- if .Values.customConfigs.configTomlTxt }}
   config.yaml.txt: |
     {{- .Values.customConfigs.configTomlTxt | nindent 4 }}
+  {{- end }}
 {{- end }}

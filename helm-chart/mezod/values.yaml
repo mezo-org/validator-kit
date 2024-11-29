@@ -1,5 +1,5 @@
 image: "us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"
-tag: "v0.1.0-rc1"
+tag: "v0.2.0-rc0"
 
 env:
   # -- Select the network to connect to
