@@ -26,6 +26,15 @@ raw: ## Wrapper for Docker Compose
 watch: ## Watch containers
 	watch -n 1 $(DOCKER_COMPOSE_CMD) ps
 
+.PHONY: customize-configs
+customize-configs: ## Customize configs (use before any modifications)
+	mkdir -p ./$(CONFIG_PATH)
+	cp -r ./configs/* ./$(CONFIG_PATH)/
+
+.PHONY: diff-custom-configs
+diff-custom-configs: ## Compare original and custom configs
+	diff --color='always' -ru ./configs/ ./$(CONFIG_PATH)/
+
 .PHONY: help
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "\t\033[36m%-30s\033[0m %s\n", $$1, $$2}'
