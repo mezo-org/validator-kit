@@ -53,6 +53,11 @@ schema_config:
         period: 24h
 
 ruler:
+  storage:
+    type: local
+    local:
+      directory: /loki/rules
+  rule_path: /tmp/loki/rules-temp
   alertmanager_url: http://alertmanager:9093
 
 analytics:

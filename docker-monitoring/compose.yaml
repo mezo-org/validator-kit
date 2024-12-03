@@ -33,14 +33,14 @@ services:
       - "--storage.tsdb.retention.time=7d"
     volumes:
       - prometheus:/prometheus
-      - ./configs/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
-      - ./configs/prometheus/alerts.yaml:/etc/prometheus/alerts.yaml
+      - ./configs/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - ./configs/prometheus/alerts.yaml:/etc/prometheus/alerts.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # load json-exporter targets depending on the network
-      - ./configs/prometheus/json-exporter-targets.${NETWORK}.yaml:/json-exporter-targets.yaml
+      - ./configs/prometheus/json-exporter-targets.${NETWORK}.yaml:/json-exporter-targets.yaml:ro
 
   #
-  # Scrape metrics from bootstrap nodes
+  # Scrape metrics from bootstrap nodes and expose them to Prometheus
   #
   json-exporter:
     <<: [*logging, *platform, *networks, *restart]
@@ -62,7 +62,7 @@ services:
       - "--storage.path=/alertmanager"
     volumes:
       - alertmanager:/alertmanager
-      - ./configs/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml
+      - ./configs/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml:ro
     expose:
       - 9093
 
@@ -74,8 +74,8 @@ services:
       - "-config.file=/etc/loki/loki.yaml"
     volumes:
       - loki:/loki
-      - ./configs/loki/loki.yaml:/etc/loki/loki.yaml
-      - ./configs/loki/alerts.yaml:/loki/rules/alerts.yaml
+      - ./configs/loki/loki.yaml:/etc/loki/loki.yaml:ro
+      - ./configs/loki/alerts.yaml:/loki/rules/fake/alerts.yaml:ro
     expose:
       - 3100
 
@@ -86,7 +86,7 @@ services:
     command:
       - "-config.file=/etc/promtail/promtail.yaml"
     volumes:
-      - ./configs/promtail.yaml:/etc/promtail/promtail.yaml
+      - ./configs/promtail.yaml:/etc/promtail/promtail.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   grafana:
@@ -103,7 +103,8 @@ services:
       - GF_INSTALL_PLUGINS=https://storage.googleapis.com/integration-artifacts/grafana-lokiexplore-app/grafana-lokiexplore-app-latest.zip;grafana-lokiexplore-app
     volumes:
       - grafana:/var/lib/grafana
-      - ./configs/grafana/provisioning:/etc/grafana/provisioning
+      - ./configs/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./configs/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
 
   caddy:
     <<: [*logging, *platform, *networks, *restart]

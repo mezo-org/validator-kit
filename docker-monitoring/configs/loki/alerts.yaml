@@ -10,33 +10,4 @@ groups:
         annotations:
             summary: "Critical error in container."
             description: |
-              {{ $value }} critical errors in container {{ $labels.container_name }} detected since 1 minute.
-  - name: Mezod
-    rules:
-      - alert: ValidatorAheadReference
-        expr: |
-          cometbft_consensus_latest_block_height - on() group_left max({__name__="reference_latest_block_height"}) > 20
-        for: 15m
-        labels:
-            severity: critical
-        annotations:
-            summary: "{{ $labels.job }} is ahead of reference for 15m."
-            description: "Probably something bad is with our references."
-      - alert: ValidatorBehindReference
-        expr: |
-          cometbft_consensus_latest_block_height - on() group_left max({__name__="reference_latest_block_height"}) < -20
-        for: 15m
-        labels:
-            severity: critical
-        annotations:
-            summary: "{{ $labels.job }} is behind reference for 15m."
-            description: "We are not in sync."
-      - alert: ValidatorSignTooSlow
-        expr: |
-          cometbft_consensus_latest_block_height - cometbft_consensus_validator_last_signed_height > 10
-        for: 15m
-        labels:
-            severity: critical
-        annotations:
-            summary: "{{ $labels.job }} is signing too slow since 15m."
-            description: "Probably too much load / too slow disk or network."
+              $value critical errors in container $labels.container_name detected since 1 minute.
