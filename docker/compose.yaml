@@ -61,10 +61,11 @@ services:
     # Dockerfile: https://github.com/skip-mev/connect/blob/main/contrib/images/connect.sidecar.prod.Dockerfile
     <<: [*platform, *logging]
     container_name: connect-sidecar
-    image: ghcr.io/skip-mev/connect-sidecar:v2.1.1
+    image: ghcr.io/skip-mev/connect-sidecar:v2.1.2
     entrypoint: []
     command:
       - connect
+      - --disable-telemetry
       - --log-disable-file-rotation
       - --port=8080
       - --market-map-endpoint=mezod:9090

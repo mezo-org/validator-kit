@@ -87,4 +87,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | maintenanceMode | bool | `false` | Run shell in the container instead of the mezod process |
 | priorityClassName | string | `""` |  |
 | labels | object | `{}` |  |
+| connectSidecar.image | string | `"ghcr.io/skip-mev/connect-sidecar"` |  |
+| connectSidecar.tag | string | `"v2.1.2"` |  |
+| connectSidecar.ports.http | int | `8080` |  |
 
