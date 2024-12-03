@@ -14,12 +14,14 @@ x-networks: &networks
   networks:
     - mezo
 
+x-restart: &restart
+  restart: always
+
 services:
   prometheus:
-    <<: [*logging, *platform, *networks]
+    <<: [*logging, *platform, *networks, *restart]
     container_name: prometheus
     image: prom/prometheus:v2.54.1
-    restart: always
     expose:
       - 9090
     # Changing user to root to access docker.sock
@@ -34,12 +36,27 @@ services:
       - ./configs/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
       - ./configs/prometheus/alerts.yaml:/etc/prometheus/alerts.yaml
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      # load json-exporter targets depending on the network
+      - ./configs/prometheus/json-exporter-targets.${NETWORK}.yaml:/json-exporter-targets.yaml
+
+  #
+  # Scrape metrics from bootstrap nodes
+  #
+  json-exporter:
+    <<: [*logging, *platform, *networks, *restart]
+    container_name: json-exporter
+    image: prometheuscommunity/json-exporter:v0.6.0
+    expose:
+      - 7979
+    command:
+      - "--config.file=/config.yaml"
+    volumes:
+      - ./configs/json-exporter/config.yaml:/config.yaml:ro
 
   alertmanager:
-    <<: [*logging, *platform, *networks]
+    <<: [*logging, *platform, *networks, *restart]
     container_name: alertmanager
     image: prom/alertmanager:v0.27.0
-    restart: always
     command:
       - "--config.file=/etc/alertmanager/alertmanager.yaml"
       - "--storage.path=/alertmanager"
@@ -50,10 +67,9 @@ services:
       - 9093
 
   loki:
-    <<: [*logging, *platform, *networks]
+    <<: [*logging, *platform, *networks, *restart]
     container_name: loki
     image: grafana/loki:3.2.0
-    restart: always
     command:
       - "-config.file=/etc/loki/loki.yaml"
     volumes:
@@ -64,10 +80,9 @@ services:
       - 3100
 
   promtail:
-    <<: [*logging, *platform, *networks]
+    <<: [*logging, *platform, *networks, *restart]
     container_name: promtail
     image: grafana/promtail:3.2.0
-    restart: always
     command:
       - "-config.file=/etc/promtail/promtail.yaml"
     volumes:
@@ -75,10 +90,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   grafana:
-    <<: [*logging, *platform, *networks]
+    <<: [*logging, *platform, *networks, *restart]
     container_name: grafana
     image: grafana/grafana:11.2.2
-    restart: always
     expose:
       - 3000
     environment:
@@ -92,10 +106,9 @@ services:
       - ./configs/grafana/provisioning:/etc/grafana/provisioning
 
   caddy:
-    <<: [*logging, *platform, *networks]
+    <<: [*logging, *platform, *networks, *restart]
     container_name: caddy
     image: caddy:2.8.4-alpine
-    restart: always
     command:
       - caddy
       - reverse-proxy
