@@ -1,0 +1,11 @@
+---
+modules:
+  default:
+    metrics:
+      - name: reference_latest_block_height
+        path: '{ .result.sync_info.latest_block_height }'
+        help: "Latest block height"
+        labels:
+          network: '{ .result.node_info.network }'
+          moniker: '{ .result.node_info.moniker }'
+          validator_address: '{ .result.validator_info.address }'
