@@ -28,8 +28,8 @@ watch: ## Watch containers
 
 .PHONY: customize-configs
 customize-configs: ## Customize configs (use before any modifications)
-	mkdir -p ./$(CONFIG_PATH)
-	cp -r ./configs/* ./$(CONFIG_PATH)/
+	mkdir -p $(CONFIG_PATH)
+	cp -r ./configs/* $(CONFIG_PATH)/
 
 .PHONY: diff-custom-configs
 diff-custom-configs: ## Compare original and custom configs

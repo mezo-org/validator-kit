@@ -110,15 +110,11 @@ services:
     <<: [*logging, *platform, *networks, *restart]
     container_name: caddy
     image: caddy:2.8.4-alpine
-    command:
-      - caddy
-      - reverse-proxy
-      - --access-log
-      - --from
-      - "https://${DOMAIN}"
-      - --to
-      - "grafana:3000"
-      - --internal-certs # Use internal certificates (self-signed)
+    volumes:
+      - ${CONFIG_PATH:-./configs}/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+    environment:
+      DOMAIN: ${DOMAIN}
     # Expose ports 80 and 443 for HTTP and HTTPS to the outside world
     ports:
       - 80:80
@@ -136,3 +132,4 @@ volumes:
   alertmanager:
   loki:
   grafana:
+  caddy_data:
