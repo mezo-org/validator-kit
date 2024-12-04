@@ -48,13 +48,12 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | env.MEZOD_HOME | string | `"/var/mezod"` |  |
 | env.MEZOD_MONIKER | string | `"CHANGE_ME"` | Set the moniker (name of the validator) |
 | env.MEZOD_ETHEREUM_SIDECAR_SERVER | string | `"localhost:7500"` |  |
-| env.MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS | string | `"CHANGE_ME"` |  |
 | env.MEZOD_LOG_LEVEL | string | `"info"` |  |
 | env.MEZOD_LOG_FORMAT | string | `"json"` |  |
 | env.MEZOD_CUSTOM_CONF_APP_TOML | string | `"/config/app.toml.txt"` |  |
 | env.MEZOD_CUSTOM_CONF_CLIENT_TOML | string | `"/config/client.toml.txt"` |  |
 | env.MEZOD_CUSTOM_CONF_CONFIG_TOML | string | `"/config/config.toml.txt"` |  |
-| secrets.keyring | string | `"CHANGE_ME"` | Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC |
+| secret | string | `"NAME_OF_THE_SECRET"` | Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT |
 | storage.className | string | `"CHANGE_ME"` |  |
 | storage.size | string | `"1Gi"` |  |
 | storage.useDataSource.enabled | bool | `false` | Enable and use to restore data from a snapshot or a PVC |
