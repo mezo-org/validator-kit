@@ -116,7 +116,7 @@ spec:
             - ethereum-sidecar
             - --home=/tmp/dummy-data
             - --log_format=json
-            - --ethereum-sidecar.server.ethereum-node-address=$ETHEREUM_ENDPOINT
+            - --ethereum-sidecar.server.ethereum-node-address=$(ETHEREUM_ENDPOINT)
           env:
             - name: ETHEREUM_ENDPOINT
               valueFrom:
