@@ -62,8 +62,10 @@ service:
     enabled: true
     # Name of the ports must use kebab-case
     ports:
+      # -- EVM metrics are exposed on "/debug/metrics/prometheus"
       evm-metrics: 6065
-      comet-metrics: 26660
+      # -- Comet metrics are exposed on "/"
+      comet-metrics: 26660 # "/"
 
 customConfigs:
    # -- Optional: Load custom configuration from the files
