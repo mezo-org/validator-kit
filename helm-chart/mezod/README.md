@@ -58,6 +58,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | storage.className | string | `"CHANGE_ME"` |  |
 | storage.size | string | `"1Gi"` |  |
 | storage.useDataSource.enabled | bool | `false` | Enable and use to restore data from a snapshot or a PVC |
+| storage.useDataSource.apiGroup | string | `""` |  |
 | storage.useDataSource.kind | string | `"PersistentVolumeClaim"` |  |
 | storage.useDataSource.name | string | `""` |  |
 | resources.requests.cpu | string | `"500m"` | Set the resource requests for the mezod container |

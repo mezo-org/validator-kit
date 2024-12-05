@@ -27,6 +27,7 @@ storage:
   useDataSource:
     # -- Enable and use to restore data from a snapshot or a PVC
     enabled: false
+    apiGroup: ""
     kind: PersistentVolumeClaim # or VolumeSnapshot
     name: ""
 
