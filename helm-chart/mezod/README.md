@@ -76,10 +76,8 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | service.public.ports.json-rpc | int | `8545` |  |
 | service.public.ports.json-rpc-ws | int | `8546` |  |
 | service.private.enabled | bool | `true` | Expose private ports internally using ClusterIP |
-| service.private.ports.evm-metrics.number | int | `6065` |  |
-| service.private.ports.evm-metrics.path | string | `"/debug/metrics/prometheus"` |  |
-| service.private.ports.comet-metrics.number | int | `26660` |  |
-| service.private.ports.comet-metrics.path | string | `"/"` |  |
+| service.private.ports.evm-metrics | int | `6065` |  |
+| service.private.ports.comet-metrics | int | `26660` |  |
 | customConfigs.enabled | bool | `false` | Optional: Load custom configuration from the files |
 | customConfigs.appTomlTxt | string | `""` |  |
 | customConfigs.clientTomlTxt | string | `""` |  |

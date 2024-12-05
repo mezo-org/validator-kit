@@ -86,12 +86,12 @@ spec:
           ports:
             {{- range $key, $value := .Values.service.public.ports }}
             - name: {{ $key }}
-              containerPort: {{ $value }}
+              containerPort: {{ int $value }}
               protocol: TCP
             {{- end }}
             {{- range $key, $value := .Values.service.private.ports }}
             - name: {{ $key }}
-              containerPort: {{ int $value.number }}
+              containerPort: {{ int $value }}
               protocol: TCP
             {{- end }}
           resources:
