@@ -12,16 +12,14 @@ env:
   # -- Set the moniker (name of the validator)
   MEZOD_MONIKER: "CHANGE_ME"
   MEZOD_ETHEREUM_SIDECAR_SERVER: "localhost:7500" # it's in the same Pod
-  MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS: "CHANGE_ME"
   MEZOD_LOG_LEVEL: info
   MEZOD_LOG_FORMAT: json # json|plain
   MEZOD_CUSTOM_CONF_APP_TOML: /config/app.toml.txt
   MEZOD_CUSTOM_CONF_CLIENT_TOML: /config/client.toml.txt
   MEZOD_CUSTOM_CONF_CONFIG_TOML: /config/config.toml.txt
 
-secrets:
-  # -- Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC
-  keyring: "CHANGE_ME"
+# -- Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT
+secret: "NAME_OF_THE_SECRET"
 
 storage:
   className: "CHANGE_ME"
@@ -64,12 +62,10 @@ service:
     enabled: true
     # Name of the ports must use kebab-case
     ports:
-      evm-metrics:
-        number: 6065
-        path: "/debug/metrics/prometheus"
-      comet-metrics:
-        number: 26660
-        path: "/"
+      # -- EVM metrics are exposed on "/debug/metrics/prometheus"
+      evm-metrics: 6065
+      # -- Comet metrics are exposed on "/"
+      comet-metrics: 26660 # "/"
 
 customConfigs:
    # -- Optional: Load custom configuration from the files

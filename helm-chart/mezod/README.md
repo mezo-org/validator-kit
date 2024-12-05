@@ -25,7 +25,8 @@ mnemonic="$(docker run --rm -it --platform linux/amd64 --entrypoint="" <DOCKER_I
 kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
   --from-literal=KEYRING_NAME="$name" \
   --from-literal=KEYRING_PASSWORD="$password" \
-  --from-literal=KEYRING_MNEMONIC="$mnemonic"
+  --from-literal=KEYRING_MNEMONIC="$mnemonic" \
+  --from-literal=ETHEREUM_ENDPOINT="alchemy/infura/your-own-endpoint"
 ```
 
 ---
@@ -34,7 +35,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 
 # mezod
 
-![Version: 0.0.2](https://img.shields.io/badge/Version-0.0.2-informational?style=flat-square) ![AppVersion: v0.2.0-rc0](https://img.shields.io/badge/AppVersion-v0.2.0--rc0-informational?style=flat-square)
+![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![AppVersion: v0.2.0-rc0](https://img.shields.io/badge/AppVersion-v0.2.0--rc0-informational?style=flat-square)
 
 ## Values
 
@@ -48,13 +49,12 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | env.MEZOD_HOME | string | `"/var/mezod"` |  |
 | env.MEZOD_MONIKER | string | `"CHANGE_ME"` | Set the moniker (name of the validator) |
 | env.MEZOD_ETHEREUM_SIDECAR_SERVER | string | `"localhost:7500"` |  |
-| env.MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS | string | `"CHANGE_ME"` |  |
 | env.MEZOD_LOG_LEVEL | string | `"info"` |  |
 | env.MEZOD_LOG_FORMAT | string | `"json"` |  |
 | env.MEZOD_CUSTOM_CONF_APP_TOML | string | `"/config/app.toml.txt"` |  |
 | env.MEZOD_CUSTOM_CONF_CLIENT_TOML | string | `"/config/client.toml.txt"` |  |
 | env.MEZOD_CUSTOM_CONF_CONFIG_TOML | string | `"/config/config.toml.txt"` |  |
-| secrets.keyring | string | `"CHANGE_ME"` | Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC |
+| secret | string | `"NAME_OF_THE_SECRET"` | Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT |
 | storage.className | string | `"CHANGE_ME"` |  |
 | storage.size | string | `"1Gi"` |  |
 | storage.useDataSource.enabled | bool | `false` | Enable and use to restore data from a snapshot or a PVC |
@@ -76,10 +76,8 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | service.public.ports.json-rpc | int | `8545` |  |
 | service.public.ports.json-rpc-ws | int | `8546` |  |
 | service.private.enabled | bool | `true` | Expose private ports internally using ClusterIP |
-| service.private.ports.evm-metrics.number | int | `6065` |  |
-| service.private.ports.evm-metrics.path | string | `"/debug/metrics/prometheus"` |  |
-| service.private.ports.comet-metrics.number | int | `26660` |  |
-| service.private.ports.comet-metrics.path | string | `"/"` |  |
+| service.private.ports.evm-metrics | int | `6065` | EVM metrics are exposed on "/debug/metrics/prometheus" |
+| service.private.ports.comet-metrics | int | `26660` | Comet metrics are exposed on "/" |
 | customConfigs.enabled | bool | `false` | Optional: Load custom configuration from the files |
 | customConfigs.appTomlTxt | string | `""` |  |
 | customConfigs.clientTomlTxt | string | `""` |  |
