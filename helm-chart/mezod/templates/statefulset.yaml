@@ -150,6 +150,7 @@ spec:
             storage: {{ .Values.storage.size | quote }}
         {{- if .Values.storage.useDataSource.enabled }}
         dataSource:
+          apiGroup: {{ .Values.storage.useDataSource.apiGroup | quote }}
           kind: {{ .Values.storage.useDataSource.kind | quote }}
           name: {{ .Values.storage.useDataSource.name | quote }}
         {{- end }}

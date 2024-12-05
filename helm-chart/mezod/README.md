@@ -35,14 +35,14 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 
 # mezod
 
-![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![AppVersion: v0.2.0-rc0](https://img.shields.io/badge/AppVersion-v0.2.0--rc0-informational?style=flat-square)
+![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![AppVersion: v0.2.0-rc1](https://img.shields.io/badge/AppVersion-v0.2.0--rc1-informational?style=flat-square)
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image | string | `"us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"` |  |
-| tag | string | `"v0.2.0-rc0"` |  |
+| tag | string | `"v0.2.0-rc1"` |  |
 | env.NETWORK | string | `"testnet"` | Select the network to connect to |
 | env.PUBLIC_IP | string | `"CHANGE_ME"` | Set public IP address of the validator |
 | env.MEZOD_CHAIN_ID | string | `"mezo_31611-1"` | Set the chain ID (mezo_31611-1 is the testnet) |
@@ -58,6 +58,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | storage.className | string | `"CHANGE_ME"` |  |
 | storage.size | string | `"1Gi"` |  |
 | storage.useDataSource.enabled | bool | `false` | Enable and use to restore data from a snapshot or a PVC |
+| storage.useDataSource.apiGroup | string | `""` |  |
 | storage.useDataSource.kind | string | `"PersistentVolumeClaim"` |  |
 | storage.useDataSource.name | string | `""` |  |
 | resources.requests.cpu | string | `"500m"` | Set the resource requests for the mezod container |
