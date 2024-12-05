@@ -25,7 +25,8 @@ mnemonic="$(docker run --rm -it --platform linux/amd64 --entrypoint="" <DOCKER_I
 kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
   --from-literal=KEYRING_NAME="$name" \
   --from-literal=KEYRING_PASSWORD="$password" \
-  --from-literal=KEYRING_MNEMONIC="$mnemonic"
+  --from-literal=KEYRING_MNEMONIC="$mnemonic" \
+  --from-literal=ETHEREUM_ENDPOINT="alchemy/infura/your-own-endpoint"
 ```
 
 ---
