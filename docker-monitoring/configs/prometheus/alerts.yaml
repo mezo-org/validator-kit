@@ -1,0 +1,42 @@
+groups:
+  - name: Containers
+    rules:
+      - alert: NoRunningContainers
+        expr: up == 0
+        for: 15m
+        labels:
+          severity: critical
+        annotations:
+          summary: "No running containers detected on the host."
+          description: |
+            No running containers are detected on the host.
+            All containers are reported as down for the last 10 minutes.
+  - name: Mezod
+    rules:
+      - alert: ValidatorAheadReference
+        expr: |
+          cometbft_consensus_latest_block_height - on() group_left max({__name__="reference_latest_block_height"}) > 20
+        for: 15m
+        labels:
+            severity: critical
+        annotations:
+            summary: "$labels.job is ahead of reference for 15m."
+            description: "Probably something bad is with our references."
+      - alert: ValidatorBehindReference
+        expr: |
+          cometbft_consensus_latest_block_height - on() group_left max({__name__="reference_latest_block_height"}) < -20
+        for: 15m
+        labels:
+            severity: critical
+        annotations:
+            summary: "$labels.job is behind reference for 15m."
+            description: "We are not in sync."
+      - alert: ValidatorSignTooSlow
+        expr: |
+          cometbft_consensus_latest_block_height - cometbft_consensus_validator_last_signed_height > 10
+        for: 15m
+        labels:
+            severity: critical
+        annotations:
+            summary: "$labels.job is signing too slow since 15m."
+            description: "Probably too much load / too slow disk or network."
