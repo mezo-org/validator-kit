@@ -54,7 +54,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | env.MEZOD_CUSTOM_CONF_APP_TOML | string | `"/config/app.toml.txt"` |  |
 | env.MEZOD_CUSTOM_CONF_CLIENT_TOML | string | `"/config/client.toml.txt"` |  |
 | env.MEZOD_CUSTOM_CONF_CONFIG_TOML | string | `"/config/config.toml.txt"` |  |
-| env.MEZOD_PORT_P2P | string | `"26656 CHANGE_ME_IF_CUSTOM_SETUP"` |  |
+| env.MEZOD_PORT_P2P | int | `26656` |  |
 | secret | string | `"NAME_OF_THE_SECRET"` | Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT |
 | storage.className | string | `"CHANGE_ME"` |  |
 | storage.size | string | `"1Gi"` |  |
@@ -71,7 +71,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | service.public.type | string | `"LoadBalancer"` |  |
 | service.public.loadBalancerIP | string | `""` |  |
 | service.public.allocateLoadBalancerNodePorts | bool | `false` |  |
-| service.public.ports.p2p | int | `26656 CHANGE_ME_IF_CUSTOM_SETUP` |  |
+| service.public.ports.p2p | int | `26656` |  |
 | service.public.ports.rpc | int | `26657` |  |
 | service.public.ports.api | int | `1317` |  |
 | service.public.ports.grpc | int | `9090` |  |
