@@ -171,11 +171,11 @@ configure_mezo() {
     ${MEZO_EXEC} toml set \
         ${config_file} \
         -v moniker="${MEZOD_MONIKER}" \
-        -v p2p.laddr="tcp://0.0.0.0:26656" \
+        -v p2p.laddr="tcp://0.0.0.0:${MEZOD_P2P_PORT}" \
         -v rpc.laddr="tcp://0.0.0.0:26657" \
         -v instrumentation.prometheus=true \
         -v instrumentation.prometheus_listen_addr="0.0.0.0:26660" \
-        -v p2p.external_address="${MEZOD_PUBLIC_IP}:26656" \
+        -v p2p.external_address="${MEZOD_PUBLIC_IP}:${MEZOD_P2P_PORT}" \
         -v consensus.timeout_propose="30s" \
         -v consensus.timeout_propose_delta="5s" \
         -v consensus.timeout_prevote="10s" \
