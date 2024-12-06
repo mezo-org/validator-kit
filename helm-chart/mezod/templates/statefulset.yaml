@@ -74,27 +74,27 @@ spec:
             - name: KEYRING_NAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.keyring | quote }}
+                  name: {{ .Values.secret | quote }}
                   key: KEYRING_NAME
             - name: KEYRING_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.keyring | quote }}
+                  name: {{ .Values.secret | quote }}
                   key: KEYRING_PASSWORD
             - name: KEYRING_MNEMONIC
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.keyring | quote }}
+                  name: {{ .Values.secret | quote }}
                   key: KEYRING_MNEMONIC
           ports:
             {{- range $key, $value := .Values.service.public.ports }}
             - name: {{ $key }}
-              containerPort: {{ $value }}
+              containerPort: {{ int $value }}
               protocol: TCP
             {{- end }}
             {{- range $key, $value := .Values.service.private.ports }}
             - name: {{ $key }}
-              containerPort: {{ int $value.number }}
+              containerPort: {{ int $value }}
               protocol: TCP
             {{- end }}
           resources:
@@ -122,7 +122,13 @@ spec:
             - ethereum-sidecar
             - --home=/tmp/dummy-data
             - --log_format=json
-            - --ethereum-sidecar.server.ethereum-node-address={{ .Values.env.MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS }}
+            - --ethereum-sidecar.server.ethereum-node-address=$(ETHEREUM_ENDPOINT)
+          env:
+            - name: ETHEREUM_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret | quote }}
+                  key: ETHEREUM_ENDPOINT
           ports:
             - name: client
               containerPort: 7500
@@ -175,6 +181,7 @@ spec:
             storage: {{ .Values.storage.size | quote }}
         {{- if .Values.storage.useDataSource.enabled }}
         dataSource:
+          apiGroup: {{ .Values.storage.useDataSource.apiGroup | quote }}
           kind: {{ .Values.storage.useDataSource.kind | quote }}
           name: {{ .Values.storage.useDataSource.name | quote }}
         {{- end }}

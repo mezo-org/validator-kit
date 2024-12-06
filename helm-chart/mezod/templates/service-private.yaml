@@ -13,7 +13,7 @@ spec:
   ports:
     {{- range $key, $value := .Values.service.private.ports }}
     - name: {{ $key }}
-      port: {{ int $value.number }}
+      port: {{ int $value }}
       targetPort: {{ $key }}
     {{- end }}
 {{- end }}
