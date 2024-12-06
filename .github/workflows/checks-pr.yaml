@@ -22,4 +22,6 @@ jobs:
             echo "Release not found."
             exit 0
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
