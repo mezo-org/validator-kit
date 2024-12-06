@@ -45,6 +45,9 @@ spec:
             name: "custom-configs-{{ include "this.name" . }}"
         {{- end }}
       containers:
+        #
+        # The main container with the mezod application
+        #
         - name: mezod
           image: "{{ .Values.image }}:{{ .Values.tag }}"
           imagePullPolicy: IfNotPresent
@@ -108,6 +111,9 @@ spec:
             - name: custom-configs
               mountPath: /config/
             {{- end }}
+        #
+        # The sidecar container for ethereum
+        #
         - name: ethereum-sidecar
           image: "{{ .Values.image }}:{{ .Values.tag }}"
           imagePullPolicy: IfNotPresent
@@ -139,6 +145,31 @@ spec:
           volumeMounts:
             - name: dummy-data
               mountPath: /tmp/dummy-data
+        #
+        # The sidecar container for Skip connect application
+        #
+        - name: connect-sidecar
+          image: "{{ .Values.connectSidecar.image }}:{{ .Values.connectSidecar.tag }}"
+          imagePullPolicy: IfNotPresent
+          command:
+            - connect
+            - --disable-telemetry
+            - --log-disable-file-rotation
+            - --port={{ .Values.connectSidecar.ports.http }}
+            - --market-map-endpoint=localhost:{{ .Values.service.public.ports.grpc }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.connectSidecar.ports.http }}
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            allowPrivilegeEscalation: false
   volumeClaimTemplates:
     - metadata:
         name: data
