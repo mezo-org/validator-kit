@@ -85,3 +85,10 @@ maintenanceMode: false
 priorityClassName: ""
 
 labels: {}
+
+connectSidecar:
+  # Dockerfile: https://github.com/skip-mev/connect/blob/main/contrib/images/connect.sidecar.prod.Dockerfile
+  image: "ghcr.io/skip-mev/connect-sidecar"
+  tag: "v2.1.2"
+  ports:
+    http: 8080
