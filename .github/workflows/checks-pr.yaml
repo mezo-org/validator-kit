@@ -5,6 +5,8 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - "helm-chart/**"
 
 jobs:
   helm-chart-release-version:
