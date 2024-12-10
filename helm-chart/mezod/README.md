@@ -35,7 +35,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 
 # mezod
 
-![Version: 0.0.5](https://img.shields.io/badge/Version-0.0.5-informational?style=flat-square) ![AppVersion: v0.2.0-rc1](https://img.shields.io/badge/AppVersion-v0.2.0--rc1-informational?style=flat-square)
+![Version: 0.0.6](https://img.shields.io/badge/Version-0.0.6-informational?style=flat-square) ![AppVersion: v0.2.0-rc1](https://img.shields.io/badge/AppVersion-v0.2.0--rc1-informational?style=flat-square)
 
 ## Values
 
@@ -54,6 +54,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | env.MEZOD_CUSTOM_CONF_APP_TOML | string | `"/config/app.toml.txt"` |  |
 | env.MEZOD_CUSTOM_CONF_CLIENT_TOML | string | `"/config/client.toml.txt"` |  |
 | env.MEZOD_CUSTOM_CONF_CONFIG_TOML | string | `"/config/config.toml.txt"` |  |
+| env.MEZOD_PORT_P2P | int | `26656` |  |
 | secret | string | `"NAME_OF_THE_SECRET"` | Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT |
 | storage.className | string | `"CHANGE_ME"` |  |
 | storage.size | string | `"1Gi"` |  |

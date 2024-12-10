@@ -48,6 +48,7 @@ fill the environment file (in case of testnet it's `testnet.env`).
 (required for the sidecar to run)
 - `MEZOD_PUBLIC_IP` - public IP address of the validator
 - `MEZOD_DOWNLOAD_LINK` - link to a public repository hosting a `tar.gz` file with mezo binary
+- `MEZOD_PORT_P2P` - the port for the P2P connection. Default is `26656`
 
 ### 2. Prepare installation script to run
 
