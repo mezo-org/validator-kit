@@ -4,7 +4,7 @@ name: Checks
 on: push
 
 jobs:
-  helm-chart-version:
+  helm-chart-app-version:
     runs-on: ubuntu-latest
     steps:
       - name: 🏧 Checkout

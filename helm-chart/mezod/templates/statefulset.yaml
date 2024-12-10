@@ -45,6 +45,9 @@ spec:
             name: "custom-configs-{{ include "this.name" . }}"
         {{- end }}
       containers:
+        #
+        # The main container with the mezod application
+        #
         - name: mezod
           image: "{{ .Values.image }}:{{ .Values.tag }}"
           imagePullPolicy: IfNotPresent
@@ -71,27 +74,27 @@ spec:
             - name: KEYRING_NAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.keyring | quote }}
+                  name: {{ .Values.secret | quote }}
                   key: KEYRING_NAME
             - name: KEYRING_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.keyring | quote }}
+                  name: {{ .Values.secret | quote }}
                   key: KEYRING_PASSWORD
             - name: KEYRING_MNEMONIC
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.keyring | quote }}
+                  name: {{ .Values.secret | quote }}
                   key: KEYRING_MNEMONIC
           ports:
             {{- range $key, $value := .Values.service.public.ports }}
             - name: {{ $key }}
-              containerPort: {{ $value }}
+              containerPort: {{ int $value }}
               protocol: TCP
             {{- end }}
             {{- range $key, $value := .Values.service.private.ports }}
             - name: {{ $key }}
-              containerPort: {{ int $value.number }}
+              containerPort: {{ int $value }}
               protocol: TCP
             {{- end }}
           resources:
@@ -108,6 +111,9 @@ spec:
             - name: custom-configs
               mountPath: /config/
             {{- end }}
+        #
+        # The sidecar container for ethereum
+        #
         - name: ethereum-sidecar
           image: "{{ .Values.image }}:{{ .Values.tag }}"
           imagePullPolicy: IfNotPresent
@@ -116,7 +122,13 @@ spec:
             - ethereum-sidecar
             - --home=/tmp/dummy-data
             - --log_format=json
-            - --ethereum-sidecar.server.ethereum-node-address={{ .Values.env.MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS }}
+            - --ethereum-sidecar.server.ethereum-node-address=$(ETHEREUM_ENDPOINT)
+          env:
+            - name: ETHEREUM_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret | quote }}
+                  key: ETHEREUM_ENDPOINT
           ports:
             - name: client
               containerPort: 7500
@@ -133,6 +145,31 @@ spec:
           volumeMounts:
             - name: dummy-data
               mountPath: /tmp/dummy-data
+        #
+        # The sidecar container for Skip connect application
+        #
+        - name: connect-sidecar
+          image: "{{ .Values.connectSidecar.image }}:{{ .Values.connectSidecar.tag }}"
+          imagePullPolicy: IfNotPresent
+          command:
+            - connect
+            - --disable-telemetry
+            - --log-disable-file-rotation
+            - --port={{ .Values.connectSidecar.ports.http }}
+            - --market-map-endpoint=localhost:{{ .Values.service.public.ports.grpc }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.connectSidecar.ports.http }}
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            allowPrivilegeEscalation: false
   volumeClaimTemplates:
     - metadata:
         name: data
@@ -144,6 +181,7 @@ spec:
             storage: {{ .Values.storage.size | quote }}
         {{- if .Values.storage.useDataSource.enabled }}
         dataSource:
+          apiGroup: {{ .Values.storage.useDataSource.apiGroup | quote }}
           kind: {{ .Values.storage.useDataSource.kind | quote }}
           name: {{ .Values.storage.useDataSource.name | quote }}
         {{- end }}

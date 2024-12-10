@@ -6,6 +6,9 @@ metadata:
   name: "private-{{ include "this.name" . }}"
   labels:
     {{- include "this.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   type: ClusterIP
   selector:
@@ -13,7 +16,7 @@ spec:
   ports:
     {{- range $key, $value := .Values.service.private.ports }}
     - name: {{ $key }}
-      port: {{ int $value.number }}
+      port: {{ int $value }}
       targetPort: {{ $key }}
     {{- end }}
 {{- end }}

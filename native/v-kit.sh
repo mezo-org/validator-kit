@@ -26,18 +26,24 @@ open_ports() {
 
 download_binary() {
     url="$1"
+    verbose="$2"
 
-    echo "Downloading mezod package to temporary dir"
+    [[ "$verbose" == "verbose" ]] && echo "Downloading mezod package to temporary dir"
 
     if [ -z "$url" ]; then
         echo "Error: URL is empty. Exiting."
         exit 1
     fi
 
-    echo "Download URL: $url"
+    [[ "$verbose" == "verbose" ]] && echo "Download URL: $url"
 
-    curl --verbose --silent --location \
-        --output ./tmp/mezod-${MEZOD_ARCH}.tar.gz $url
+    if [[ "$verbose" == "verbose" ]]; then
+        curl --verbose --silent --location \
+            --output ./tmp/mezod-${MEZOD_ARCH}.tar.gz $url
+    else
+        curl --silent --location \
+            --output ./tmp/mezod-${MEZOD_ARCH}.tar.gz $url
+    fi
 
     if [ $? -ne 0 ]; then
         echo "Error: curl command failed during download."
@@ -51,14 +57,21 @@ download_binary() {
  
 }
 
+unpack_binary() {
+    if [[ "$1" == "" ]]; then
+        echo "No argument provided, exiting"
+    fi
+    destination=$1
+    [[ "$2" == "verbose" ]] && echo "Unpacking the binary build ${MEZOD_VERSION}"
+    tar -xvf ./tmp/mezod-${MEZOD_ARCH}.tar.gz -C "${destination}" >/dev/null
+}
+
 install_mezo() {
     mkdir -p ${MEZOD_DESTINATION}
     mkdir -p ./tmp
 
-    download_binary ${MEZOD_DOWNLOAD_LINK}
-
-    echo "Unpacking the binary build ${MEZOD_VERSION}"
-    tar -xvf ./tmp/mezod-${MEZOD_ARCH}.tar.gz -C ${MEZOD_DESTINATION}
+    download_binary ${MEZOD_DOWNLOAD_LINK} "verbose"
+    unpack_binary ${MEZOD_DESTINATION}
 
     chown root:root ${MEZO_EXEC}
     chmod +x ${MEZO_EXEC}
@@ -84,45 +97,14 @@ install_skip() {
     echo "Skip binary installed with path: ${CONNECT_EXEC_PATH}"
 }
 
-
-gen_mnemonic() {
-  mnemonic_file="$1"
-  # Check if the environment variable is set
-  if [ -n "$MEZOD_KEYRING_MNEMONIC" ]; then
-    echo "Using KEYRING_MNEMONIC from the environment"
-    echo "$MEZOD_KEYRING_MNEMONIC" > "$mnemonic_file"
-  else
-    # Ask the user to generate a new mnemonic
-    printf "Do you want to generate a new mnemonic? [y/N]: "; read -r response < /dev/tty
-    case "$response" in
-      [yY])
-        echo "Generating a new mnemonic..."
-        m=$(${MEZO_EXEC} keys mnemonic)
-        echo "$m" > "$mnemonic_file"
-        printf "\n%s\n%s\n\n" "Generated mnemonic (make backup!):" "$m"
-        echo "Press any key to continue..."; read -r _ < /dev/tty
-        ;;
-      *)
-        # Ask the user to enter the mnemonic
-        printf "Enter the mnemonic: "; read -r mnemonic
-        echo "$mnemonic" > "$mnemonic_file"
-        ;;
-    esac
-  fi
-}
-
 prepare_keyring() {
    test -f "${MEZOD_HOME}/keyring-file/keyhash" && {
     echo "Keyring already prepared!"
     return
   }
 
-  mnemonic_file="./tmp/mnemonic.txt"
-  gen_mnemonic "${mnemonic_file}"
-  read -r keyring_mnemonic < "${mnemonic_file}"
-
   echo "Prepare keyring..."
-  (echo "${keyring_mnemonic}"; echo "${MEZOD_KEYRING_PASSWORD}"; echo "${MEZOD_KEYRING_PASSWORD}") \
+  (echo "${MEZOD_KEYRING_MNEMONIC}"; echo "${MEZOD_KEYRING_PASSWORD}"; echo "${MEZOD_KEYRING_PASSWORD}") \
     | ${MEZO_EXEC} keys add \
       "${MEZOD_KEYRING_NAME}" \
       --home="${MEZOD_HOME}" \
@@ -136,13 +118,14 @@ init_mezo_config() {
     prepare_keyring
     
     echo "Initialize configuration..."
-    ${MEZO_EXEC} \
+    echo "$MEZOD_KEYRING_MNEMONIC" | ${MEZO_EXEC} \
         init \
         "${MEZOD_MONIKER}" \
         --chain-id="${MEZOD_CHAIN_ID}" \
         --home="${MEZOD_HOME}" \
         --keyring-backend="file" \
-        --overwrite
+        --overwrite \
+        --recover
     echo "Configuration initialized!"
 }
 
@@ -171,11 +154,11 @@ configure_mezo() {
     ${MEZO_EXEC} toml set \
         ${config_file} \
         -v moniker="${MEZOD_MONIKER}" \
-        -v p2p.laddr="tcp://0.0.0.0:26656" \
+        -v p2p.laddr="tcp://0.0.0.0:${MEZOD_PORT_P2P}" \
         -v rpc.laddr="tcp://0.0.0.0:26657" \
         -v instrumentation.prometheus=true \
         -v instrumentation.prometheus_listen_addr="0.0.0.0:26660" \
-        -v p2p.external_address="${MEZOD_PUBLIC_IP}:26656" \
+        -v p2p.external_address="${MEZOD_PUBLIC_IP}:${MEZOD_PORT_P2P}" \
         -v consensus.timeout_propose="30s" \
         -v consensus.timeout_propose_delta="5s" \
         -v consensus.timeout_prevote="10s" \
@@ -197,7 +180,8 @@ configure_mezo() {
         -v json-rpc.address="0.0.0.0:8545" \
         -v json-rpc.api="eth,txpool,personal,net,debug,web3" \
         -v json-rpc.ws-address="0.0.0.0:8546" \
-        -v json-rpc.metrics-address="0.0.0.0:6065"
+        -v json-rpc.metrics-address="0.0.0.0:6065" \
+        -v "pruning=nothing"
 
 }
 
@@ -340,7 +324,7 @@ usage() {
     echo -e "4. Install mezo binary"
     echo -e "5. Install connect-sidecar binary"
     echo -e "6. Configure Mezo - keyring, configuration files"
-    echo -e "7. Setup systemd services for Mezo\n"
+    echo -e "7. Setup systemd services for Mezo"
     echo -e "8. Send an submitApplication transaction through mezod binary (TODO)\n"
 
     echo -e "Usage: $0\n\n" \
@@ -350,6 +334,7 @@ usage() {
     "\t[logs <opt>]\n\t\tshow logs for  chosen mezo service (opts: mezo|ethereum-sidecar|connect-sidecar )\n\n" \
     "\t[health]\n\t\tcheck health of mezo systemd services\n\n" \
     "\t[export-private-key]\n\t\texport validator private key (needed for hardhat setup)\n\n" \
+    "\t[mnemonic]\n\t\tgenerate keyring mnemonic (this is required to run validator kit!)\n\n" \
     "\t[-b/--backup]\n\t\tbackup mezo home dir to ${MEZOD_HOME}-backups\n\n" \
     "\t[-c/--cleanup]\n\t\tclean up the installation\n\t\tWARNING: this option removes whole Mezo directory (${MEZOD_HOME}) INCLUDING PRIVATE KEYS\n\n" \
     "\t[-s/--show-variables]\n\t\toutput variables read from env files\n\n" \
@@ -439,7 +424,10 @@ main() {
 }
 
 setenvs() {
+    echo "------------------------------------------------"
     echo "Reading configuration from environment files"
+    echo "------------------------------------------------"
+    echo ""
     . ${ENVIRONMENT_FILE}
 
     MEZOD_DESTINATION=$MEZOD_HOME/bin/mezod-${MEZOD_VERSION}
@@ -498,6 +486,26 @@ export_private_key() {
     yes $MEZOD_KEYRING_PASSWORD | ${MEZO_EXEC} --home="${MEZOD_HOME}" keys unsafe-export-eth-key "${MEZOD_KEYRING_NAME}" 2>/dev/null
 }
 
+generate_mnemonic() {
+    tmp_mezod_path="./tmp"
+
+    mkdir -p "${tmp_mezod_path}"
+     
+    download_binary "$MEZOD_DOWNLOAD_LINK"
+    unpack_binary "${tmp_mezod_path}"
+
+    echo "Generating mnemonic..."
+    echo "Save it into your environment file under the variable MEZOD_KEYRING_MNEMONIC"
+    echo ""
+    echo "---BEGIN MNEMONIC---"
+    ${tmp_mezod_path}/mezod keys mnemonic
+    echo "---END MNEMONIC---"
+    echo ""
+
+    echo "Removing temporary mezod binary..."
+    rm -rf "${tmp_mezod_path}"
+}
+
 # default env file name - can be changed through -e/--envfile option
 ENVIRONMENT_FILE="testnet.env"
 healthcheck_flag=false
@@ -522,6 +530,11 @@ while [[ $# -gt 0 ]]; do
         ;;
         logs)
             show_logs "$2"
+            exit 0
+        ;;
+        mnemonic)
+            setenvs
+            generate_mnemonic
             exit 0
         ;;
         export-private-key)

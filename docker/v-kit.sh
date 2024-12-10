@@ -58,6 +58,7 @@ _run_cli_cmd_oneshoot() {
 # Development and Operations
 ################################################################################
 shell() { ## Start a shell session
+  _build_cli_image
   ${DOCKER_COMPOSE_CMD} run --rm --interactive cli /bin/bash
 }
 
@@ -87,6 +88,12 @@ EOF
 export-private-key() { ## Export private key
   _run_cli_cmd_oneshoot <<'EOF'
 yes $KEYRING_PASSWORD | mezod --home="${MEZOD_HOME}" keys unsafe-export-eth-key "${KEYRING_NAME}" 2>/dev/null
+EOF
+}
+
+generate-mnemonic() { ## Generate a new mnemonic
+  _run_cli_cmd_oneshoot <<EOF
+mezod --home="${MEZOD_HOME}" keys mnemonic
 EOF
 }
 
