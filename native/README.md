@@ -43,6 +43,7 @@ fill the environment file (in case of testnet it's `testnet.env`).
 (Example: `my-lovely-keyring`)
 - `MEZOD_KEYRING_PASSWORD` - password for the keyring
 (to generate best possible password, you can use `openssl rand -hex 32` command)
+- `MEZOD_KEYRING_MNEMONIC` - mnemonic for keyring (the best option is to generate it using `v-kit.sh`)
 - `MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS` - address for the Ethereum node
 (required for the sidecar to run)
 - `MEZOD_PUBLIC_IP` - public IP address of the validator
@@ -57,7 +58,31 @@ Before running `v-kit.sh`, make sure it can be executed by your shell:
 chmod +x v-kit.sh
 ```
 
-### 3. Run the script (setup validator)
+### 3. Generate keyring mnemonic
+```
+./v-kit.sh mnemonic
+```
+
+Output mnemonic of this command should be written to the environment (for example `testnet.env`) file as `MEZOD_KEYRING_MNEMONIC` variable.
+
+Sample output:
+```
+------------------------------------------------
+Reading configuration from environment files
+------------------------------------------------
+
+Generating mnemonic...
+Save it into your environment file under the variable MEZOD_KEYRING_MNEMONIC
+
+---BEGIN MNEMONIC---
+mention maid fashion vibrant nuclear humble welcome screen saddle beauty mango half actress bicycle thank crime shrug pizza car palace silk save credit man
+---END MNEMONIC---
+
+Removing temporary mezod binary...
+```
+In this case, you should copy `mention maid fashion vibrant nuclear humble welcome screen saddle beauty mango half actress bicycle thank crime shrug pizza car palace silk save credit man` to the environment file as instructed previously.
+
+### 4. Run the script (setup validator)
 
 #### Before running: acknowledge your options
 
@@ -77,6 +102,9 @@ Usage: ./v-kit.sh
 
         [logs <opt>]
                 show logs for  chosen mezo service (opts: mezo|ethereum-sidecar|connect-sidecar)
+
+        [mnemonic]
+                generate keyring mnemonic (this is required to run validator kit!)
 
         [-b/--backup]
                 backup mezo home dir to /var/mezod-backups
