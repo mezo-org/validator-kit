@@ -42,7 +42,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image | string | `"us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"` |  |
-| tag | string | `"v0.2.0-rc1"` |  |
+| tag | string | `"v0.2.0-rc2"` |  |
 | env.NETWORK | string | `"testnet"` | Select the network to connect to |
 | env.PUBLIC_IP | string | `"CHANGE_ME"` | Set public IP address of the validator |
 | env.MEZOD_CHAIN_ID | string | `"mezo_31611-1"` | Set the chain ID (mezo_31611-1 is the testnet) |
