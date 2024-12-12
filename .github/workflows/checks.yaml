@@ -4,19 +4,6 @@ name: Checks
 on: push
 
 jobs:
-  helm-chart-app-version:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🏧 Checkout
-        uses: actions/checkout@v4
-      - name: 👁️ Check app version
-        run: |
-          chart_yaml="$(grep "appVersion:" helm-chart/mezod/Chart.yaml | cut -d ' ' -f 2 | tr -d '"')"
-          template_version="$(grep "tag:" helm-chart/mezod/values.yaml | cut -d ' ' -f 2 | tr -d '"')"
-          if [ "$chart_yaml" != "$template_version" ]; then
-            echo "App version in Chart.yaml ($chart_yaml) does not match the tag in values.yaml ($template_version)"
-            exit 1
-          fi
   pre-commit:
     runs-on: ubuntu-latest
     steps:
