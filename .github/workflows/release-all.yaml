@@ -1,0 +1,53 @@
+---
+name: Release All
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]-+rc[0-9]+' # release candidate
+      - 'v[0-9]+.[0-9]+.[0-9]+' # release
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  release:
+    # Required to create a release
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏧 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🛠️ Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: 🛠️ Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: 📦 Package Helm Chart
+        run: |
+          mkdir -p .charts
+          helm package helm-chart/* --destination .charts
+
+      - name: 🚀 Release
+        uses: softprops/action-gh-release@v2
+        # uses tag as release name
+        with:
+          files: |
+            charts/*
+
+      - name: 🗂️ Update index.yaml in gh-pages
+        run: |
+          git fetch origin gh-pages
+          git checkout gh-pages
+          helm repo index ./.charts --url https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }} --merge index.yaml
+          mv ./.charts/index.yaml index.yaml
+          git add index.yaml
+          git commit -m "Update Helm repo index for ${{ github.ref_name }}"
+          git push origin gh-pages
