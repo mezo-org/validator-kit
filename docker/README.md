@@ -153,3 +153,59 @@ mezod --home="${MEZOD_HOME}" --node "tcp://mezod:26657" status | jq .
 ```shell
 ./v-kit.sh validator-info
 ```
+
+## Runbooks
+
+### How to add custom configuration?
+
+The Docker image contains predefined configuration. If you want to add custom configuration,
+you can mount a volume with the custom configuration file, and provide the path to the file.
+The file will be used to overwrite the default configuration.
+
+There are 3 configuration files that can be overwritten with custom configuration:
+- `config.toml`
+- `app.toml`
+- `client.toml`
+
+Provide a proper environment variables depending on the configuration file you want to overwrite:
+
+```
+LOCAL_CUSTOM_CONF_APP_TOML="file/path"
+MEZOD_CUSTOM_CONF_APP_TOML=/config/app.toml.txt
+
+LOCAL_CUSTOM_CONF_CLIENT_TOML="file/path"
+MEZOD_CUSTOM_CONF_CLIENT_TOML=/config/client.toml.txt
+
+LOCAL_CUSTOM_CONF_CONFIG_TOML="file/path"
+MEZOD_CUSTOM_CONF_CONFIG_TOML=/config/config.toml.txt
+```
+
+`LOCAL_` prefix is used to indicate the path on the host machine,
+and `MEZOD_` prefix is used to indicate the path inside the container.
+Files uses `.txt` extension to highlight that the file is a text file, not TOML.
+
+Example for `config.toml` that overwrites `seeds` list:
+```
+p2p.seeds=2d4e0216da0d1ec18655d9588df21319025efab0@mezo-node-0.test.mezo.org:26656,eedead51f768b908e6ae068e5a8cda6236774010@mezo-node-1.test.mezo.org:26656
+```
+
+`seeds` list is under the `p2p` section in the `config.toml` file.
+
+Make sure that the proper binding is uncommented in the `compose.yaml` file:
+```
+...
+    volumes:
+      - ${LOCAL_CUSTOM_CONF_CONFIG_TOML}:${MEZOD_CUSTOM_CONF_CONFIG_TOML}
+...
+```
+
+During the container startup, the custom configuration will be used to overwrite
+the default configuration.
+Example logs:
+```
+...
+External customizations for config.toml...
+update p2p.seeds = 2d4e0216da0d1ec18655d9588df21319025efab0@mezo-node-0.test.mezo.org:26656,eedead51f768b908e6ae068e5a8cda6236774010@mezo-node-1.test.mezo.org:26656 in /var/mezod/config/config.toml
+plan successfully applied
+...
+```
