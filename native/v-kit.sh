@@ -82,12 +82,12 @@ install_mezo() {
 install_skip() {
     # Empty version defaults to latest
     if [[ -z "${CONNECT_VERSION}" ]]; then
-      CONNECT_VERSION="latest"
+      CONNECT_VERSION="2.1.2"
     fi
 
     # Empty download script link defaults to official connect sidecar install script
     if [[ -z "${CONNECT_DOWNLOAD_SCRIPT}" ]]; then
-      CONNECT_DOWNLOAD_SCRIPT="https://raw.githubusercontent.com/skip-mev/connect/main/scripts/install.sh"
+      CONNECT_DOWNLOAD_SCRIPT="./install_skip.sh"
     fi
 
     if [[ -f "${CONNECT_DOWNLOAD_SCRIPT}"  ]]; then
