@@ -1,5 +1,5 @@
 image: "us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"
-tag: "v0.2.0-rc3"
+tag: "v0.3.0-rc0"
 
 env:
   # -- Select the network to connect to
@@ -12,6 +12,7 @@ env:
   # -- Set the moniker (name of the validator)
   MEZOD_MONIKER: "CHANGE_ME"
   MEZOD_ETHEREUM_SIDECAR_SERVER: "localhost:7500" # it's in the same Pod
+  MEZOD_ORACLE_ORACLE_ADDRESS: "localhost:8080" # it's in the same Pod
   MEZOD_LOG_LEVEL: info
   MEZOD_LOG_FORMAT: json # json|plain
   MEZOD_CUSTOM_CONF_APP_TOML: /config/app.toml.txt

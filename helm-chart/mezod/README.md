@@ -35,20 +35,21 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 
 # mezod
 
-![Version: 0.0.8](https://img.shields.io/badge/Version-0.0.8-informational?style=flat-square) ![AppVersion: v0.2.0-rc3](https://img.shields.io/badge/AppVersion-v0.2.0--rc3-informational?style=flat-square)
+![Version: 0.0.9](https://img.shields.io/badge/Version-0.0.9-informational?style=flat-square) ![AppVersion: v0.3.0-rc0](https://img.shields.io/badge/AppVersion-v0.3.0--rc0-informational?style=flat-square)
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image | string | `"us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"` |  |
-| tag | string | `"v0.2.0-rc3"` |  |
+| tag | string | `"v0.3.0-rc0"` |  |
 | env.NETWORK | string | `"testnet"` | Select the network to connect to |
 | env.PUBLIC_IP | string | `"CHANGE_ME"` | Set public IP address of the validator |
 | env.MEZOD_CHAIN_ID | string | `"mezo_31611-1"` | Set the chain ID (mezo_31611-1 is the testnet) |
 | env.MEZOD_HOME | string | `"/var/mezod"` |  |
 | env.MEZOD_MONIKER | string | `"CHANGE_ME"` | Set the moniker (name of the validator) |
 | env.MEZOD_ETHEREUM_SIDECAR_SERVER | string | `"localhost:7500"` |  |
+| env.MEZOD_ORACLE_ORACLE_ADDRESS | string | `"localhost:8080"` |  |
 | env.MEZOD_LOG_LEVEL | string | `"info"` |  |
 | env.MEZOD_LOG_FORMAT | string | `"json"` |  |
 | env.MEZOD_CUSTOM_CONF_APP_TOML | string | `"/config/app.toml.txt"` |  |
