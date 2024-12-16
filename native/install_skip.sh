@@ -6,8 +6,9 @@ set -e
 REPO="skip-mev/connect"
 DEFAULT_VERSION="latest"
 
+# CONNECT_SIDECAR_VERSION has to be defined if you want to install version other than default
 # Parse arguments
-VERSION=${1:-$DEFAULT_VERSION}
+VERSION=${CONNECT_SIDECAR_VERSION:-$DEFAULT_VERSION}
 
 # Determine the system architecture
 ARCH=$(uname -m)

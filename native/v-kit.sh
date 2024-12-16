@@ -80,8 +80,18 @@ install_mezo() {
 }
 
 install_skip() {
+    # Empty version defaults to latest
+    if [[ -z "${CONNECT_VERSION}" ]]; then
+      CONNECT_VERSION="latest"
+    fi
 
-    curl -ksSL https://raw.githubusercontent.com/skip-mev/connect/main/scripts/install.sh | bash
+    if [[ -f "${CONNECT_DOWNLOAD_SCRIPT}"  ]]; then
+      cat ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
+      echo "The variable is prefixed by 'file:'"
+    else
+      curl -ksSL ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
+      echo "The variable is NOT prefixed by 'file:'"
+    fi
 
     CONNECT_TMP=$(which connect)
     CONNECT_VERSION=$(${CONNECT_TMP} version)
