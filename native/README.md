@@ -52,6 +52,9 @@ fill the environment file (in case of testnet it's `testnet.env`).
 - `CONNECT_VERSION` - version for the connect sidecar
 - `CONNECT_DOWNLOAD_SCRIPT` - link (or path) for the connect download script
 
+> [!NOTE]
+> You can use your custom connect installation script (example for that is `install_skip.sh`). This one is customized to set a connect version to be installed (default installation script always installs binary with `latest` tag on it).
+
 ### 2. Prepare installation script to run
 
 Before running `v-kit.sh`, make sure it can be executed by your shell:
