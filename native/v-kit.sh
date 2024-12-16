@@ -85,12 +85,15 @@ install_skip() {
       CONNECT_VERSION="latest"
     fi
 
+    # Empty download script link defaults to official connect sidecar install script
+    if [[ -z "${CONNECT_DOWNLOAD_SCRIPT}" ]]; then
+      CONNECT_DOWNLOAD_SCRIPT="https://raw.githubusercontent.com/skip-mev/connect/main/scripts/install.sh"
+    fi
+
     if [[ -f "${CONNECT_DOWNLOAD_SCRIPT}"  ]]; then
       cat ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
-      echo "The variable is prefixed by 'file:'"
     else
       curl -ksSL ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
-      echo "The variable is NOT prefixed by 'file:'"
     fi
 
     CONNECT_TMP=$(which connect)
