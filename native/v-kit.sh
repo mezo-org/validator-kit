@@ -87,7 +87,7 @@ install_skip() {
 
     # Empty download script link defaults to official connect sidecar install script
     if [[ -z "${CONNECT_DOWNLOAD_SCRIPT}" ]]; then
-      CONNECT_DOWNLOAD_SCRIPT="./install_skip.sh"
+      CONNECT_DOWNLOAD_SCRIPT="./install-connect.sh"
     fi
 
     if [[ -f "${CONNECT_DOWNLOAD_SCRIPT}"  ]]; then
