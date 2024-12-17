@@ -39,6 +39,14 @@ spec:
       volumes:
         - name: dummy-data
           emptyDir: {}
+        {{- if .Values.secrets.node_key }}
+        - name: node-key
+          secret:
+            secretName: {{ .Values.secrets.node_key }}
+            items:
+              - key: node_key.json
+                path: node_key.json
+        {{- end }}
         {{- if .Values.customConfigs.enabled }}
         - name: custom-configs
           configMap:
@@ -74,17 +82,17 @@ spec:
             - name: KEYRING_NAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret | quote }}
+                  name: {{ .Values.secrets.general_config | quote }}
                   key: KEYRING_NAME
             - name: KEYRING_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret | quote }}
+                  name: {{ .Values.secrets.general_config | quote }}
                   key: KEYRING_PASSWORD
             - name: KEYRING_MNEMONIC
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret | quote }}
+                  name: {{ .Values.secrets.general_config | quote }}
                   key: KEYRING_MNEMONIC
           ports:
             {{- range $key, $value := .Values.service.public.ports }}
@@ -111,6 +119,9 @@ spec:
             - name: custom-configs
               mountPath: /config/
             {{- end }}
+            - name: node-key
+              mountPath: "/var/mezod/config/node_key.json"
+              subPath: "node_key.json"
         #
         # The sidecar container for ethereum
         #
@@ -127,7 +138,7 @@ spec:
             - name: ETHEREUM_ENDPOINT
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret | quote }}
+                  name: {{ .Values.secrets.general_config | quote }}
                   key: ETHEREUM_ENDPOINT
           ports:
             - name: client
