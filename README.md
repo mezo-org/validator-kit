@@ -1,5 +1,8 @@
 # Validator kit
 
+>[!NOTE]
+> Always use the latest release of the Validator Kit. The main branch is not guaranteed to be stable.
+
 ## Overview
 
 This repository contains the validator kit for Mezo chain. The validator kit is a collection of tools and documentation to help you run a validator node on Mezo chain. There are a couple of main components of the validator kit:

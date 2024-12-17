@@ -35,7 +35,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 
 # mezod
 
-![Version: 0.0.10](https://img.shields.io/badge/Version-0.0.10-informational?style=flat-square) ![AppVersion: v0.3.0-rc0](https://img.shields.io/badge/AppVersion-v0.3.0--rc0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![AppVersion: v0.3.0-rc0](https://img.shields.io/badge/AppVersion-v0.3.0--rc0-informational?style=flat-square)
 
 ## Values
 

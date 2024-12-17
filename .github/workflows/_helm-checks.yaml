@@ -18,7 +18,7 @@ jobs:
       - name: 👁️ Check if the version of the Helm chart has been increased
         run: |
           version="$(grep "version:" helm-chart/mezod/Chart.yaml | cut -d ' ' -f 2 | tr -d '"')"
-          if [ "$version" != "${{ inputs.tag }}" ]; then
+          if [ "v$version" != "${{ inputs.tag }}" ]; then
             echo "Version in Chart.yaml ($version) does not match the tag (${{ inputs.tag }})"
             exit 1
           fi
