@@ -12,9 +12,14 @@ This repository contains the validator kit for Mezo chain. The validator kit is 
 
 4. Tools Hardhat - this toolset provides a collection of Hardhat tasks designed to simplify interactions with the blockchain’s Proof-of-Authority (PoA) based network. E.g. you can submit your application to become one of the PoA validators.
 
+5. Monitoring stack for Docker Compose - contains files to run a monitoring stack for your validator node using Docker. This is an optional way to monitor your validator node.
+
 As a validator you can chose between option 1, 2 and 3 to run your validator node.
 Point 4 is common for all.
 In other words as a validator you can follow 1 or 2 or 3 -> 4 flow.
+
+The monitoring stack is dedicated to the Docker Compose setup. You can use it
+for Native Binary after some adjustments (not covered in this repo).
 
 ## Acknowledgements
 
