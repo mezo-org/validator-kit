@@ -119,9 +119,11 @@ spec:
             - name: custom-configs
               mountPath: /config/
             {{- end }}
+            {{- if .Values.secrets.node_key }}
             - name: node-key
               mountPath: "/var/mezod/config/node_key.json"
               subPath: "node_key.json"
+            {{- end }}
         #
         # The sidecar container for ethereum
         #
