@@ -1,10 +1,4 @@
 ---
-x-volumes: &volumes
-  volumes:
-    - type: bind
-      source: ${LOCAL_BIND_PATH}
-      target: ${MEZOD_HOME}
-
 x-envfile: &envfile
   env_file:
     - ${NETWORK}.env
@@ -29,7 +23,7 @@ services:
   # Operations
   #
   cli:
-    <<: [*platform, *envfile, *volumes, *logging, *user, *networks]
+    <<: [*platform, *envfile, *logging, *user]
     container_name: cli
     image: local/mezod-cli # Use v-kit.sh to build the image
     deploy:
@@ -37,6 +31,10 @@ services:
       # It is intended to be run manually.
       replicas: 0
     working_dir: ${MEZOD_HOME}
+    networks:
+      - mezo
+    volumes:
+      - ${LOCAL_BIND_PATH}:${MEZOD_HOME}
 
   #
   # PHASE: runtime
@@ -76,7 +74,7 @@ services:
       - ALL
 
   mezod:
-    <<: [*platform, *envfile, *volumes, *logging, *user,  *networks]
+    <<: [*platform, *envfile, *logging, *user]
     container_name: mezod
     image: ${DOCKER_IMAGE}
     command:
@@ -107,9 +105,14 @@ services:
         condition: service_started
     cap_drop:
       - ALL
-    labels:
-      promtail.scrape: "true"
-      prometheus.scrape: "false" # mezod target is configured as a static target in Prometheus
+    networks:
+      - mezo
+    volumes:
+      - ${LOCAL_BIND_PATH}:${MEZOD_HOME}
+      # Custom configuration (optional)
+      # - ${LOCAL_CUSTOM_CONF_APP_TOML}:${MEZOD_CUSTOM_CONF_APP_TOML}
+      # - ${LOCAL_CUSTOM_CONF_CLIENT_TOML}:${MEZOD_CUSTOM_CONF_CLIENT_TOML}
+      # - ${LOCAL_CUSTOM_CONF_CONFIG_TOML}:${MEZOD_CUSTOM_CONF_CONFIG_TOML}
 
 networks:
   mezo:

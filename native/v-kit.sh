@@ -80,8 +80,21 @@ install_mezo() {
 }
 
 install_skip() {
+    # Empty version defaults to latest
+    if [[ -z "${CONNECT_VERSION}" ]]; then
+      CONNECT_VERSION="2.1.2"
+    fi
 
-    curl -ksSL https://raw.githubusercontent.com/skip-mev/connect/main/scripts/install.sh | bash
+    # Empty download script link defaults to official connect sidecar install script
+    if [[ -z "${CONNECT_DOWNLOAD_SCRIPT}" ]]; then
+      CONNECT_DOWNLOAD_SCRIPT="./install-connect.sh"
+    fi
+
+    if [[ -f "${CONNECT_DOWNLOAD_SCRIPT}"  ]]; then
+      cat ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
+    else
+      curl -ksSL ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
+    fi
 
     CONNECT_TMP=$(which connect)
     CONNECT_VERSION=$(${CONNECT_TMP} version)
@@ -181,7 +194,7 @@ configure_mezo() {
         -v json-rpc.api="eth,txpool,personal,net,debug,web3" \
         -v json-rpc.ws-address="0.0.0.0:8546" \
         -v json-rpc.metrics-address="0.0.0.0:6065" \
-        -v "pruning=nothing"
+        -v pruning="nothing"
 
 }
 

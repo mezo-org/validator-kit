@@ -1,5 +1,6 @@
 image: "us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"
-tag: "v0.2.0-rc1"
+tag: "v0.3.0-rc0"
+imagePullPolicy: Always
 
 env:
   # -- Select the network to connect to
@@ -12,6 +13,7 @@ env:
   # -- Set the moniker (name of the validator)
   MEZOD_MONIKER: "CHANGE_ME"
   MEZOD_ETHEREUM_SIDECAR_SERVER: "localhost:7500" # it's in the same Pod
+  MEZOD_ORACLE_ORACLE_ADDRESS: "localhost:8080" # it's in the same Pod
   MEZOD_LOG_LEVEL: info
   MEZOD_LOG_FORMAT: json # json|plain
   MEZOD_CUSTOM_CONF_APP_TOML: /config/app.toml.txt
@@ -90,5 +92,6 @@ connectSidecar:
   # Dockerfile: https://github.com/skip-mev/connect/blob/main/contrib/images/connect.sidecar.prod.Dockerfile
   image: "ghcr.io/skip-mev/connect-sidecar"
   tag: "v2.1.2"
+  imagePullPolicy: Always
   ports:
     http: 8080
