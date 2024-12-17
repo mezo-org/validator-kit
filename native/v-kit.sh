@@ -194,7 +194,7 @@ configure_mezo() {
         -v json-rpc.api="eth,txpool,personal,net,debug,web3" \
         -v json-rpc.ws-address="0.0.0.0:8546" \
         -v json-rpc.metrics-address="0.0.0.0:6065" \
-        -v "pruning=nothing"
+        -v pruning="nothing"
 
 }
 
