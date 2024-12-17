@@ -46,7 +46,7 @@ jobs:
         # uses tag as release name by default
         with:
           files: |
-            charts/*
+            .charts/*
 
       - name: 🗂️ Update index.yaml in gh-pages
         run: |
