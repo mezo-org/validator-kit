@@ -35,7 +35,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 
 # mezod
 
-![Version: 0.0.9](https://img.shields.io/badge/Version-0.0.9-informational?style=flat-square) ![AppVersion: v0.3.0-rc0](https://img.shields.io/badge/AppVersion-v0.3.0--rc0-informational?style=flat-square)
+![Version: 0.0.10](https://img.shields.io/badge/Version-0.0.10-informational?style=flat-square) ![AppVersion: v0.3.0-rc0](https://img.shields.io/badge/AppVersion-v0.3.0--rc0-informational?style=flat-square)
 
 ## Values
 
@@ -43,6 +43,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 |-----|------|---------|-------------|
 | image | string | `"us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"` |  |
 | tag | string | `"v0.3.0-rc0"` |  |
+| imagePullPolicy | string | `"Always"` |  |
 | env.NETWORK | string | `"testnet"` | Select the network to connect to |
 | env.PUBLIC_IP | string | `"CHANGE_ME"` | Set public IP address of the validator |
 | env.MEZOD_CHAIN_ID | string | `"mezo_31611-1"` | Set the chain ID (mezo_31611-1 is the testnet) |
@@ -90,5 +91,6 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | labels | object | `{}` |  |
 | connectSidecar.image | string | `"ghcr.io/skip-mev/connect-sidecar"` |  |
 | connectSidecar.tag | string | `"v2.1.2"` |  |
+| connectSidecar.imagePullPolicy | string | `"Always"` |  |
 | connectSidecar.ports.http | int | `8080` |  |
 
