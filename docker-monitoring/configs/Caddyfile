@@ -1,0 +1,11 @@
+{
+    # Use local (self-signed) certificates
+    local_certs
+}
+
+https://{env.DOMAIN} {
+    reverse_proxy grafana:3000
+    log {
+        output stdout
+    }
+}
