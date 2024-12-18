@@ -54,6 +54,7 @@ fill the environment file (in case of testnet it's `testnet.env`).
 
 > [!NOTE]
 > You can use your custom connect installation script (example for that is `install_skip.sh`). This one is customized to set a connect version to be installed (default installation script always installs binary with `latest` tag on it).
+- `MEZOD_USER` - the user the node processes will run as (the v-kit.sh script should still be run with root or sudo for installation as indicated in Prerequisites)
 
 ### 2. Prepare installation script to run
 
