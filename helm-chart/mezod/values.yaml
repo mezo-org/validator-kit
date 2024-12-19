@@ -24,7 +24,7 @@ env:
 # -- Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT
 # -- Set Secret object with node_key.json
 secrets:
-  general_config: "YOUR_SECRET_NAME"
+  credentials: "YOUR_SECRET_NAME"
   node_key: "YOUR_SECRET_NAME"
 
 storage:

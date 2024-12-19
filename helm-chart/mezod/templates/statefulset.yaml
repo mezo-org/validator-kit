@@ -82,17 +82,17 @@ spec:
             - name: KEYRING_NAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.general_config | quote }}
+                  name: {{ .Values.secrets.credentials | quote }}
                   key: KEYRING_NAME
             - name: KEYRING_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.general_config | quote }}
+                  name: {{ .Values.secrets.credentials | quote }}
                   key: KEYRING_PASSWORD
             - name: KEYRING_MNEMONIC
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.general_config | quote }}
+                  name: {{ .Values.secrets.credentials | quote }}
                   key: KEYRING_MNEMONIC
           ports:
             {{- range $key, $value := .Values.service.public.ports }}
@@ -121,7 +121,7 @@ spec:
             {{- end }}
             {{- if .Values.secrets.node_key }}
             - name: node-key
-              mountPath: "/var/mezod/config/node_key.json"
+              mountPath: "{{ .Values.env.MEZOD_HOME }}/config/node_key.json"
               subPath: "node_key.json"
             {{- end }}
         #
@@ -140,7 +140,7 @@ spec:
             - name: ETHEREUM_ENDPOINT
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secrets.general_config | quote }}
+                  name: {{ .Values.secrets.credentials | quote }}
                   key: ETHEREUM_ENDPOINT
           ports:
             - name: client
