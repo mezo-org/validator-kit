@@ -172,14 +172,14 @@ configure_mezo() {
         -v instrumentation.prometheus=true \
         -v instrumentation.prometheus_listen_addr="0.0.0.0:26660" \
         -v p2p.external_address="${MEZOD_PUBLIC_IP}:${MEZOD_PORT_P2P}" \
-        -v consensus.timeout_propose="30s" \
-        -v consensus.timeout_propose_delta="5s" \
-        -v consensus.timeout_prevote="10s" \
-        -v consensus.timeout_prevote_delta="5s" \
-        -v consensus.timeout_precommit="5s" \
-        -v consensus.timeout_precommit_delta="5s" \
-        -v consensus.timeout_commit="150s" \
-        -v rpc.timeout_broadcast_tx_commit="150s"
+        -v consensus.timeout_propose="3s" \
+        -v consensus.timeout_propose_delta="500ms" \
+        -v consensus.timeout_prevote="1s" \
+        -v consensus.timeout_prevote_delta="500ms" \
+        -v consensus.timeout_precommit="1s" \
+        -v consensus.timeout_precommit_delta="500ms" \
+        -v consensus.timeout_commit="3s" \
+        -v rpc.timeout_broadcast_tx_commit="10s"
 
     ${MEZO_EXEC} toml set \
         ${app_config_file} \
