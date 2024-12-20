@@ -1,0 +1,6 @@
+- targets:
+  - http://mezo-node-0.test.mezo.org:26657/status
+  - http://mezo-node-1.test.mezo.org:26657/status
+  - http://mezo-node-2.test.mezo.org:26657/status
+  - http://mezo-node-3.test.mezo.org:26657/status
+  - http://mezo-node-4.test.mezo.org:26657/status

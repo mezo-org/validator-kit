@@ -1,0 +1,80 @@
+global:
+  scrape_interval: 1m # default: 1m
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: [localhost:9090]
+
+  - job_name: alertmanager
+    static_configs:
+      - targets: [alertmanager:9093]
+
+  # Ref:
+  # https://prometheus.io/docs/prometheus/latest/configuration/configuration/#docker_sd_config
+  - job_name: docker
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+        filters:
+          - name: label
+            values: [prometheus.scrape=true]
+    relabel_configs:
+      # Container ID
+      - source_labels: [__meta_docker_container_id]
+        target_label: container_id
+      # Container name
+      - source_labels: [__meta_docker_container_name]
+        target_label: container_name
+      # Port and path
+      - source_labels: [__meta_docker_network_ip, __meta_docker_container_label_prometheus_port]
+        target_label: __address__
+        regex: (.+);(.+)
+      - source_labels: [__meta_docker_container_label_prometheus_path]
+        target_label: __metrics_path__
+        replacement: $1
+      # Labels
+      - regex: __meta_docker_container_label_prometheus_(.+)
+        action: labelmap
+        replacement: $1
+
+  - job_name: mezod-evm
+    static_configs:
+      - targets: [mezod:6065]
+        labels:
+          metrics_layer: evm
+          __metrics_path__: "/debug/metrics/prometheus"
+
+  - job_name: mezod-cometbft
+    static_configs:
+      - targets: [mezod:26660]
+        labels:
+          metrics_layer: cometbft
+          __metrics_path__: "/"
+
+  #
+  # Scrape metrics from bootstrap nodes (via json-exporter)
+  #
+  - job_name: json-exporter
+    metrics_path: /probe
+    params:
+      module: [default]
+    file_sd_configs:
+    - files:
+      - /json-exporter-targets.yaml
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        # Location of the json-exporter
+        replacement: json-exporter:7979
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: [alertmanager:9093]
+
+rule_files:
+  - alerts.yaml
