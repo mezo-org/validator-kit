@@ -39,10 +39,10 @@ spec:
       volumes:
         - name: dummy-data
           emptyDir: {}
-        {{- if .Values.secrets.node_key }}
+        {{- if .Values.secrets.nodeKey }}
         - name: node-key
           secret:
-            secretName: {{ .Values.secrets.node_key }}
+            secretName: {{ .Values.secrets.nodeKey }}
             items:
               - key: node_key.json
                 path: node_key.json
@@ -119,7 +119,7 @@ spec:
             - name: custom-configs
               mountPath: /config/
             {{- end }}
-            {{- if .Values.secrets.node_key }}
+            {{- if .Values.secrets.nodeKey }}
             - name: node-key
               mountPath: "{{ .Values.env.MEZOD_HOME }}/config/node_key.json"
               subPath: "node_key.json"
