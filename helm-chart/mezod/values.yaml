@@ -22,10 +22,10 @@ env:
   MEZOD_PORT_P2P: 26656 # Default. It should be changed in case of a custom setup
 
 secrets:
-# -- Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT
+  # -- Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT
   credentials: "YOUR_SECRET_NAME"
-# -- Set Secret object with node_key.json
-  node_key: "YOUR_SECRET_NAME"
+  # -- Set Secret object with node_key.json
+  nodeKey: "YOUR_SECRET_NAME"
 
 storage:
   className: "CHANGE_ME"
