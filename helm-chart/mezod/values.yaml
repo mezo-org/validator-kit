@@ -21,8 +21,11 @@ env:
   MEZOD_CUSTOM_CONF_CONFIG_TOML: /config/config.toml.txt
   MEZOD_PORT_P2P: 26656 # Default. It should be changed in case of a custom setup
 
-# -- Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT
-secret: "NAME_OF_THE_SECRET"
+secrets:
+  # -- Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT
+  credentials: "YOUR_SECRET_NAME"
+  # -- Set Secret object with node_key.json
+  nodeKey: "YOUR_SECRET_NAME"
 
 storage:
   className: "CHANGE_ME"
