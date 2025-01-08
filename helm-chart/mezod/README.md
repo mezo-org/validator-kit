@@ -58,7 +58,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | env.MEZOD_CUSTOM_CONF_CONFIG_TOML | string | `"/config/config.toml.txt"` |  |
 | env.MEZOD_PORT_P2P | int | `26656` |  |
 | secrets.credentials | string | `"YOUR_SECRET_NAME"` | Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT |
-| secrets.nodeKey | string | `"YOUR_SECRET_NAME"` | Set Secret object with node_key.json |
+| secrets.nodeKey | string | `""` | Set Secret object with node_key.json, default is blank - if not blank, it's used by the template as a secret name |
 | storage.className | string | `"CHANGE_ME"` |  |
 | storage.size | string | `"1Gi"` |  |
 | storage.useDataSource.enabled | bool | `false` | Enable and use to restore data from a snapshot or a PVC |
