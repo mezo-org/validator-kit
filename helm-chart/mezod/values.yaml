@@ -24,8 +24,8 @@ env:
 secrets:
   # -- Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT
   credentials: "YOUR_SECRET_NAME"
-  # -- Set Secret object with node_key.json
-  nodeKey: "YOUR_SECRET_NAME"
+  # -- Set Secret object with node_key.json, default is blank - if not blank, it's used by the template as a secret name
+  nodeKey: ""
 
 storage:
   className: "CHANGE_ME"
