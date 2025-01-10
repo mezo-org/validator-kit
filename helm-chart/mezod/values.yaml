@@ -1,5 +1,5 @@
 image: "us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"
-tag: "v0.3.0-rc2"
+tag: "v0.4.0-rc0"
 imagePullPolicy: Always
 
 env:
