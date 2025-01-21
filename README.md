@@ -5,21 +5,21 @@
 
 ## Overview
 
-This repository contains the Validator Kit for Mezo chain. The Validator Kit is 
-a collection of tools and documentation to help you run a validator node on Mezo chain. 
+This repository contains the Validator Kit for Mezo chain. The Validator Kit is
+a collection of tools and documentation to help you run a validator node on Mezo chain.
 
 ### Main components
 
 There are a couple of main components of the Validator Kit:
 
-1. [`docker`](./docker): contains files to run a validator node using Docker Compose. 
+1. [`docker`](./docker): contains files to run a validator node using Docker Compose.
    This is the easiest way to run a validator node as it requires less setup and maintenance.
-2. [`native`](./native): provides files to fetch the `mezod` binary from a remote source 
-   and run it manually. This is an alternative way to run a validator node if 
+2. [`native`](./native): provides files to fetch the `mezod` binary from a remote source
+   and run it manually. This is an alternative way to run a validator node if
    you prefer to run it natively.
-3. [`helm-chart`](./helm-chart): contains files to deploy a validator node on a Kubernetes cluster. 
+3. [`helm-chart`](./helm-chart): contains files to deploy a validator node on a Kubernetes cluster.
    This is an advanced way to run a validator node if you have a Kubernetes cluster.
-4. [`manual`](./manual): provides a step-by-step guide to run a validator node manually. 
+4. [`manual`](./manual): provides a step-by-step guide to run a validator node manually.
    This is the way to run a validator node if you prefer to do everything manually
    or none of the above options suit your needs.
 
@@ -30,12 +30,12 @@ As a validator you can choose between the above options to run your validator no
 Moreover, there are several auxiliary components of the Validator Kit that
 can help you with various operational tasks:
 
-1. [`tools`](./tools): provides a collection of Hardhat tasks designed to simplify 
-   interactions with the blockchain’s Proof-of-Authority (PoA) based network. 
+1. [`tools`](./tools): provides a collection of Hardhat tasks designed to simplify
+   interactions with the blockchain’s Proof-of-Authority (PoA) based network.
    For example, you can submit your application to become one of the PoA validators.
-2. [`docker-monitoring`](./docker-monitoring): contains files to run a monitoring 
-   stack for your validator node using Docker. This is an optional way to monitor 
-   your validator node. The monitoring stack is dedicated to the `docker` setup. 
+2. [`docker-monitoring`](./docker-monitoring): contains files to run a monitoring
+   stack for your validator node using Docker. This is an optional way to monitor
+   your validator node. The monitoring stack is dedicated to the `docker` setup.
    You can use it for the `native` variant after some adjustments (not covered in this repo).
 
 ## Node synchronization
@@ -48,9 +48,9 @@ There are two ways to synchronize your node with the Mezo blockchain.
 > See [CometBFT Block Sync](https://docs.cometbft.com/v0.38/core/block-sync)
 documentation for further reference.
 
-This is the most basic way to synchronize your node. You start your node from 
-the genesis block and download all blocks from the chain. This process can take 
-a long time depending on your network connection and the number of blocks in 
+This is the most basic way to synchronize your node. You start your node from
+the genesis block and download all blocks from the chain. This process can take
+a long time depending on your network connection and the number of blocks in
 the network. Moreover, you need to start with the initial version
 of `mezod` and upgrade along the way to handle on-chain upgrades properly.
 
@@ -72,11 +72,11 @@ apply the snapshot to get the latest state of the chain. The downside here
 is the fact that your node won't have the chain history prior to the snapshot.
 Moreover, you need to trust the source of the snapshot.
 
-Mezo team does not provide any snapshots yet. It will do so for Mezo Matsnet
-testnet in the near future. Until then, you can ask trusted community members
-for a snapshot.
+Mezo team provides snapshots for Mezo Matsnet testnet. Please refer to
+[this runbook](link to 'Runbooks#State sync from snapshot' from this document)
+for details. Alternatively, you can ask trusted community members for a snapshot.
 
 ## Acknowledgements
 
-Shout out to [thevops](https://github.com/thevops) and [tscrond](https://github.com/tscrond) from [Boar.network](https://boar.network/) for 
+Shout out to [thevops](https://github.com/thevops) and [tscrond](https://github.com/tscrond) from [Boar.network](https://boar.network/) for
 implementing `docker`, `docker-monitoring`, `native`, and `helm-chart` components!

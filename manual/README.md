@@ -10,6 +10,8 @@ or none of the other Validator Kit components suit your needs.
 > [`docker`](../docker/README.md) setup if you want an easier way to run
 > a validator node.
 
+# Manual setup
+
 ## Prerequisites
 
 1. Get the `mezod` binary from our public repository. Alternatively,
@@ -147,7 +149,9 @@ The following setup assumes a Unix-like environment.
 
 12. Apply to PoA. Please contact the Mezo team for further instructions.
 
-## Starting a node from a CometBFT snapshot
+## Runbooks
+
+### State sync from snapshot
 
 To start a node from a snapshot is no different to any other CometBFT based blockchain.
 
@@ -169,22 +173,11 @@ update the `trust_height` and `trust_hash` fields as explained previously. Every
 else would be valid as-is:
 
 ```toml
-[statesync]
-enable = true
+[statesync] enable = true rpc_servers = "mezo-node-0.test.mezo.org:26657,mezo-node-1.test.mezo.org:26657,mezo-node-2.test.mezo.org:26657,mezo-node-3.test.mezo.org:26657,mezo-node-4.test.mezo.org:26657"
 
-rpc_servers = "mezo-node-0.test.mezo.org:26657,mezo-node-1.test.mezo.org:26657,mezo-node-2.test.mezo.org:26657,mezo-node-3.test.mezo.org:26657,mezo-node-4.test.mezo.org:26657,35.209.7.223:26657,35.209.252.61:26657"
-
+# Make sure to update trust_height and trust_hash:
 trust_height = 1880001
 trust_hash = "2185BC492BA0BD1FB1B0BFB16CE229736E850E5B64BB09B7363F9DB3EC5C2078"
-trust_period = "112h0m0s"
-
-discovery_time = "15s"
-
-temp_dir = ""
-
-chunk_request_timeout = "1m"
-
-chunk_fetchers = "4"
 ```
 
 > [!NOTE]
