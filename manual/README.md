@@ -151,22 +151,22 @@ The following setup assumes a Unix-like environment.
 
 To start a node from a snapshot is no different to any other CometBFT based blockchain.
 
-To start with select a block from a trusted node, you can do so using the following API:
-`http://<NODE_OPERATOR_ADDRESS>:26657/block`, this will give you the very last block
+To start with, select a block from a trusted node. You can do so using the following API:
+`http://<NODE_ADDRESS>:26657/block`, this will give you the very last block
 executed by the node.
 
-Then you will need to update the following fields in the cometbft config, you can find this
-config under the following path `MEZOD_HOME/config/config.toml`:
-- `enabled` should be set to true to enable state sync (to be disabled later, when
-  the node have been running for normal stop and restart of the node without local state).
-- `rpc_servers` is a list of trusted node rpc server that the light client can use
-  to recovers blocks.
-- `trust_height` should be the height of the selected trusted block
-- `trust_hash`  should be the hash of the selected trusted block
+Once done, you will need to update the following fields in the CometBFT config. You can find this
+config in the `MEZOD_HOME/config/config.toml` file, under the `statesync` TOML section:
+- `enable`: should be set to `true` to enable state sync (can be flipped back once the node synchronizes)
+- `rpc_servers`: is a list of trusted node RPC servers that the node can use to recover blocks from
+- `trust_height`: should be the height of the selected trusted block
+- `trust_hash`:  should be the hash of the selected trusted block
 
-This is an example configuration you can use with the mezo matsnet, be sure to
-update the `trust_height` and `trust_hash` fields as explain previously everthing
-else would be valid as is:
+Moreover, please make sure your node doesn't have any local state while using state sync.
+
+Here is an example configuration you can use for the Mezo Matsnet testnet. Be sure to
+update the `trust_height` and `trust_hash` fields as explained previously. Everything
+else would be valid as-is:
 
 ```toml
 [statesync]
@@ -187,9 +187,10 @@ chunk_request_timeout = "1m"
 chunk_fetchers = "4"
 ```
 
-> NOTE: When selecting a block, be sure to have a block which is close to a snapshot.
-> Because the mezo matsnet takes snapshots every 5000 blocks, it is recommended to use
-> just the next block height (this help reduce timeout issues with the light client),
-> So if the last snapshot was on block 1885000, the best trusted block would be 1885001,
-> for which you can access the block hash with the following URL
-> `http://<NODE_OPERATOR_ADDRESS>:26657/block?height=188501`
+> [!NOTE]
+> When selecting a block, be sure to have a block that is close to a snapshot.
+> Matsnet nodes controlled by the Mezo team take snapshots every 5000 blocks. It is recommended to use
+> the very next block height to reduce timeout issues that may occur on the bootstrapped node.
+> For example, if the last snapshot was on block 1885000, the best trusted block would be 1885001,
+> for which you can access the block hash with the following URL:
+> `http://<NODE_ADDRESS>:26657/block?height=188501`
