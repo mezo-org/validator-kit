@@ -1,25 +1,27 @@
 # Manual setup
 
-This directory contains a guide describing how to run a validator node manually. 
+This directory contains a guide describing how to run a validator node manually.
 This is the way to run a validator node if you prefer to do everything on your own
 or none of the other Validator Kit components suit your needs.
 
 >[!WARNING]
-> This guide assumes you are an experienced operator and have a good understanding 
-> of blockchains based on Cosmos SDK and CometBFT. Consider using the 
-> [`docker`](../docker/README.md) setup if you want an easier way to run 
+> This guide assumes you are an experienced operator and have a good understanding
+> of blockchains based on Cosmos SDK and CometBFT. Consider using the
+> [`docker`](../docker/README.md) setup if you want an easier way to run
 > a validator node.
+
+# Manual setup
 
 ## Prerequisites
 
 1. Get the `mezod` binary from our public repository. Alternatively,
    clone https://github.com/mezo-org/mezod and build `mezod` from source.
    Remember to pick the correct version of the `mezod` binary, depending on
-   the synchronization method you want to use. See the [Node synchronization](../README.md#node-synchronization) 
+   the synchronization method you want to use. See the [Node synchronization](../README.md#node-synchronization)
    section in the root `README.md` for reference.
 2. Install the [Skip Connect sidecar](https://docs.skip.build/connect/validators/quickstart#installation).
 3. Get an Ethereum RPC node against the appropriate network (Sepolia for Mezo testnet).
-   Full self-hosted node is recommended. Public providers like Alchemy/Infura 
+   Full self-hosted node is recommended. Public providers like Alchemy/Infura
    are acceptable for now.
 
 ## Setup
@@ -39,7 +41,7 @@ The following setup assumes a Unix-like environment.
    mkdir -p $MEZOD_HOME
    ```
 
-3. Generate a BIP-39 mnemonic for the keyring. You can an arbitrary method to 
+3. Generate a BIP-39 mnemonic for the keyring. You can an arbitrary method to
    generate the mnemonic or leverage the CLI exposed by `mezod`:
    ```shell
    mezod keys mnemonic
@@ -51,7 +53,7 @@ The following setup assumes a Unix-like environment.
    ```shell
    openssl rand -hex 32
    ```
-   Store the password in a safe place. 
+   Store the password in a safe place.
    <br/><br/>
 
 5. Generate an account key:
@@ -64,7 +66,7 @@ The following setup assumes a Unix-like environment.
 6. Initialize the node:
    ```shell
    export MEZOD_CHAIN_ID=mezo_31611-1 # Mezo testnet
-   
+
    mezod init $MEZOD_MONIKER \
     --home=$MEZOD_HOME \
     --keyring-backend="file" \
@@ -74,7 +76,7 @@ The following setup assumes a Unix-like environment.
    ```
    Pass the previously generated mnemonic when prompted.
    <br/><br/>
-   This command initializes the node's home directory with the default 
+   This command initializes the node's home directory with the default
    configuration.
    <br/><br/>
    Moreover, it automatically:
@@ -87,14 +89,14 @@ The following setup assumes a Unix-like environment.
    - `$MEZOD_HOME/config/client.toml`
    - `$MEZOD_HOME/config/config.toml`
    <br/><br/>
-   
+
    Tips:
    - Make sure your P2P configuration is correct. Most importantly, you have
      to use a static public IP and the P2P port must be open. Remember about
      setting the right `p2p.laddr` and `p2p.external_address` in `config.toml`.
    - If you want to use a custom address for the Ethereum sidecar, remember
      about changing `ethereum-sidecar.client.server-address` in `app.toml`.
-   - If you want to use a custom address for the Connect sidecar, remember about 
+   - If you want to use a custom address for the Connect sidecar, remember about
      changing `oracle.oracle-address` in `app.toml`.
    <br/><br/>
 
@@ -146,3 +148,45 @@ The following setup assumes a Unix-like environment.
     <br/><br/>
 
 12. Apply to PoA. Please contact the Mezo team for further instructions.
+
+## Runbooks
+
+### State sync from snapshot
+
+To start a node from a snapshot is no different to any other CometBFT based blockchain.
+
+To start with, select a block from a trusted node. You can do so using the following API:
+`http://<NODE_ADDRESS>:26657/block`, this will give you the very last block
+executed by the node.
+
+Once done, you will need to update the following fields in the CometBFT config. You can find this
+config in the `MEZOD_HOME/config/config.toml` file, under the `statesync` TOML section:
+- `enable`: should be set to `true` to enable state sync (can be flipped back once the node synchronizes)
+- `rpc_servers`: is a list of trusted node RPC servers that the node can use to recover blocks from
+- `trust_height`: should be the height of the selected trusted block
+- `trust_hash`:  should be the hash of the selected trusted block
+
+Moreover, please make sure your node doesn't have any local state while using state sync.
+
+Here is an example configuration you can use for the Mezo Matsnet testnet. Be sure to
+update the `trust_height` and `trust_hash` fields as explained previously. Everything
+else would be valid as-is:
+
+```toml
+[statesync]
+enable = true
+
+rpc_servers = "mezo-node-0.test.mezo.org:26657,mezo-node-1.test.mezo.org:26657,mezo-node-2.test.mezo.org:26657,mezo-node-3.test.mezo.org:26657,mezo-node-4.test.mezo.org:26657"
+
+# Make sure to update trust_height and trust_hash:
+trust_height = 1880001
+trust_hash = "2185BC492BA0BD1FB1B0BFB16CE229736E850E5B64BB09B7363F9DB3EC5C2078"
+```
+
+> [!NOTE]
+> When selecting a block, be sure to have a block that is close to a snapshot.
+> Matsnet nodes controlled by the Mezo team take snapshots every 5000 blocks. It is recommended to use
+> the very next block height to reduce timeout issues that may occur on the bootstrapped node.
+> For example, if the last snapshot was on block 1885000, the best trusted block would be 1885001,
+> for which you can access the block hash with the following URL:
+> `http://<NODE_ADDRESS>:26657/block?height=188501`
