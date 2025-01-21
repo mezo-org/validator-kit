@@ -173,7 +173,10 @@ update the `trust_height` and `trust_hash` fields as explained previously. Every
 else would be valid as-is:
 
 ```toml
-[statesync] enable = true rpc_servers = "mezo-node-0.test.mezo.org:26657,mezo-node-1.test.mezo.org:26657,mezo-node-2.test.mezo.org:26657,mezo-node-3.test.mezo.org:26657,mezo-node-4.test.mezo.org:26657"
+[statesync]
+enable = true
+
+rpc_servers = "mezo-node-0.test.mezo.org:26657,mezo-node-1.test.mezo.org:26657,mezo-node-2.test.mezo.org:26657,mezo-node-3.test.mezo.org:26657,mezo-node-4.test.mezo.org:26657"
 
 # Make sure to update trust_height and trust_hash:
 trust_height = 1880001

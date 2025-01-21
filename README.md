@@ -73,7 +73,7 @@ is the fact that your node won't have the chain history prior to the snapshot.
 Moreover, you need to trust the source of the snapshot.
 
 Mezo team provides snapshots for Mezo Matsnet testnet. Please refer to
-[this runbook](link to 'Runbooks#State sync from snapshot' from this document)
+[this runbook](./manual/README.md#State-sync-from-snapshot)
 for details. Alternatively, you can ask trusted community members for a snapshot.
 
 ## Acknowledgements
