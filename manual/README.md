@@ -139,8 +139,10 @@ The following setup assumes a Unix-like environment.
     mezod ethereum-sidecar \
      --ethereum-sidecar.server.ethereum-node-address=wss://eth-sepolia.g.alchemy.com/v2/<redacted>
     ```
-    The above command assumes you are using the Alchemy provider. Adjust the command
-    according to your setup if needed. For further configuration options, see
+    The above command assumes you are using the Alchemy provider. Only the WebSocket
+    protocol is supported for the Ethereum node address, i.e. the URL must start
+    with `wss://` (recommended) or `ws://`. Adjust the command according to your
+    setup if needed. For further configuration options, see
     `mezod ethereum-sidecar --help`.
     <br/><br/>
     **If you build `mezod` from source, remember about running `make bindings`

@@ -82,7 +82,8 @@ cp testnet.env.example testnet.env
   ```
 
 * `MEZOD_MONIKER` - the name of the validator
-* `MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS` - the address of the Ethereum node
+* `MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS` - the address of the Ethereum node.
+The URL must be WebSocket, i.e. start with `wss://` (recommended) or `ws://`.
 * `PUBLIC_IP` - the public IP address of the validator
 * `MEZOD_PORT_P2P` - the port for the P2P connection. Default is `26656`
 
