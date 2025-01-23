@@ -76,6 +76,28 @@ Mezo team provides snapshots for Mezo Matsnet testnet. Please refer to
 [this runbook](./manual/README.md#State-sync-from-snapshot)
 for details. Alternatively, you can ask trusted community members for a snapshot.
 
+### Application Submission
+
+The final step to becoming a PoA validator is submitting your application to the Mezo
+team. Before you proceed, ensure you have sufficient funds in your validator's node
+address. You have several ways to submit your application:
+
+1 Mezod binary CLI command:
+
+```bash
+./build/mezod --home=<mezod_home_path> poa submit-application <key_name>
+```
+
+2 Alternatively, you can run the `submit-application.sh` script. More information is
+available [here](tools/hardhat/README.md#how-to-submit-an-application-to-validator-pool).
+
+Both options are valid, and you can choose either. Once you submit your application,
+the Mezo team will verify your node status and approve your application if everything
+is in order. Please provide your public IP, your node address, and any custom port
+settings. If you wish to close the RPC port (note that the P2P port must remain open),
+please whitelist the following IP address: `34.57.120.151` so that we can verify your
+status.
+
 ## Acknowledgements
 
 Shout out to [thevops](https://github.com/thevops) and [tscrond](https://github.com/tscrond) from [Boar.network](https://boar.network/) for
