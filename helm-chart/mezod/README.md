@@ -22,6 +22,8 @@ password="$(openssl rand -hex 32)"
 # Get the latest version of $DOCKER_IMAGE from registry
 mnemonic="$(docker run --rm -it --platform linux/amd64 --entrypoint="" <DOCKER_IMAGE> mezod keys mnemonic)"
 
+# Set secret values. The ETHEREUM_ENDPOINT URL must be WebSocket, i.e. start
+# with `wss://` (recommended) or `ws://`.
 kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
   --from-literal=KEYRING_NAME="$name" \
   --from-literal=KEYRING_PASSWORD="$password" \
