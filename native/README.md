@@ -45,7 +45,7 @@ fill the environment file (in case of testnet it's `testnet.env`).
 (to generate best possible password, you can use `openssl rand -hex 32` command)
 - `MEZOD_KEYRING_MNEMONIC` - mnemonic for keyring (the best option is to generate it using `v-kit.sh`)
 - `MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS` - address for the Ethereum node
-(required for the sidecar to run)
+(required for the sidecar to run). The URL must be WebSocket, i.e. start with `wss://` (recommended) or `ws://`.
 - `MEZOD_PUBLIC_IP` - public IP address of the validator
 - `MEZOD_DOWNLOAD_LINK` - link to a public repository hosting a `tar.gz` file with mezo binary
 - `MEZOD_PORT_P2P` - the port for the P2P connection. Default is `26656`
