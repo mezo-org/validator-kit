@@ -520,7 +520,7 @@ generate_mnemonic() {
 }
 
 # default env file name - can be changed through -e/--envfile option
-ENVIRONMENT_FILE="testnet.env"
+ENVIRONMENT_FILE="mainnet.env"
 healthcheck_flag=false
 show_variables_flag=false
 cleanup_flag=false
