@@ -27,13 +27,10 @@ As a validator you can choose between the above options to run your validator no
 
 ### Auxiliary components
 
-Moreover, there are several auxiliary components of the Validator Kit that
-can help you with various operational tasks:
+Moreover, there are auxiliary components of the Validator Kit that can help you with various 
+operational tasks:
 
-1. [`tools`](./tools): provides a collection of Hardhat tasks designed to simplify
-   interactions with the blockchain’s Proof-of-Authority (PoA) based network.
-   For example, you can submit your application to become one of the PoA validators.
-2. [`docker-monitoring`](./docker-monitoring): contains files to run a monitoring
+1. [`docker-monitoring`](./docker-monitoring): contains files to run a monitoring
    stack for your validator node using Docker. This is an optional way to monitor
    your validator node. The monitoring stack is dedicated to the `docker` setup.
    You can use it for the `native` variant after some adjustments (not covered in this repo).
@@ -118,25 +115,20 @@ to learn how to sync your node from a snapshot in practice.
 ## PoA application submission
 
 The final step to becoming a PoA validator is submitting your application to the Mezo
-team. Before you proceed, ensure you have sufficient funds in your validator's node
-address. You have several ways to submit your application:
+team. Before you proceed, ensure you have sufficient funds on your validator's node
+address. You can submit your application using a CLI command exposed by `mezod`:
 
-1. Using a CLI command exposed by `mezod` (recommended):
-   ```bash
-   mezod --home=<mezod_home_path> poa submit-application <key_name>
-   ```
-   where `key_name` denotes the private key from your node's keyring that
-   corresponds to the aforementioned validator's node address.
-   
-2. Alternatively, you can run the `submit-application.sh` script from the
-   [tools/hardhat](tools/hardhat/README.md#how-to-submit-an-application-to-validator-pool) toolbox.
+```bash
+mezod --home=<mezod_home_path> poa submit-application <key_name>
+```
+where `key_name` denotes the private key from your node's keyring that corresponds to 
+the aforementioned validator's node address.
 
-Both options are valid, and you can choose either. Once you submit your application,
-the Mezo team will verify your node status and approve your application if everything
-is in order. Please provide your public IP, your node address, and any custom port
-settings. If you wish to close the CometBFT RPC port (note that the CometBFT 
-P2P port must remain open), please whitelist the following IP 
-address: `34.57.120.151` so that we can verify your status.
+Once you submit your application, the Mezo team will verify your node status and approve 
+your application if everything is in order. Please provide your public IP, your node address, 
+and any custom port settings. If you wish to close the CometBFT RPC port (note that the 
+CometBFT P2P port must remain open), please whitelist the following IP address: `34.57.120.151` 
+so that we can verify your status.
 
 ## Acknowledgements
 
