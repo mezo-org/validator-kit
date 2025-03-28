@@ -20,7 +20,7 @@ or none of the other Validator Kit components suit your needs.
    the synchronization method you want to use. See the [Node synchronization](../README.md#node-synchronization)
    section in the root `README.md` for reference.
 2. Install the [Skip Connect sidecar](https://docs.skip.build/connect/validators/quickstart#installation).
-3. Get an Ethereum RPC node against the appropriate network (Sepolia for Mezo testnet).
+3. Get an Ethereum RPC node against the appropriate network (Sepolia for Mezo testnet, Mainnet for Mezo mainnet).
    Full self-hosted node is recommended. Public providers like Alchemy/Infura
    are acceptable for now.
 
@@ -65,7 +65,8 @@ The following setup assumes a Unix-like environment.
 
 6. Initialize the node:
    ```shell
-   export MEZOD_CHAIN_ID=mezo_31611-1 # Mezo testnet
+   # Use mezo_31611-1 as chain ID for testnet or mezo_31612-1 for mainnet.
+   export MEZOD_CHAIN_ID= ...
 
    mezod init $MEZOD_MONIKER \
     --home=$MEZOD_HOME \
@@ -136,6 +137,8 @@ The following setup assumes a Unix-like environment.
 
 11. Run the Ethereum sidecar. For example:
     ```shell
+    # This example shows usage of an Ethereum Sepolia RPC for Mezo testnet.
+    # Remember to use an Ethereum Mainnet RPC for Mezo mainnet.
     mezod ethereum-sidecar \
      --ethereum-sidecar.server.ethereum-node-address=wss://eth-sepolia.g.alchemy.com/v2/<redacted>
     ```
@@ -149,8 +152,9 @@ The following setup assumes a Unix-like environment.
     before building the binary to ensure the `ethereum-sidecar` command works correctly.**
     <br/><br/>
 
-12. Apply to PoA. Please contact the Mezo team for further instructions.
-
+12. Apply to PoA. Please see the [PoA application submission](../README.md#poa-application-submission)
+    section in the root README for instructions or contact the Mezo team.
+    
 ## Runbooks
 
 ### State sync from snapshot
