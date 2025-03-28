@@ -8,23 +8,17 @@ set -o pipefail # Exit on pipe error
 ################################################################################
 # Variables
 ################################################################################
-if [ -f "mainnet.env" ] && [ -f "testnet.env" ]; then
-  echo "Error: Both mainnet.env and testnet.env files found! Please remove one of them."
-  exit 1
-elif [ -f "mainnet.env" ]; then
-  NETWORK="mainnet"
-elif [ -f "testnet.env" ]; then
-  NETWORK="testnet"
-else
-  echo "Error: Neither mainnet.env nor testnet.env file found! Please create one of them."
-  exit 1
-fi
-
+NETWORK="${NETWORK:-mainnet}"
 DOCKER_COMPOSE_CMD="docker compose --env-file ${NETWORK}.env"
 
-# Load environment file
-# shellcheck source=/dev/null
-source "${NETWORK}.env"
+# Load NETWORK.env
+if [ -f "${NETWORK}.env" ]; then
+  # shellcheck source=/dev/null
+  source "${NETWORK}.env"
+else
+  echo "Error: ${NETWORK}.env file not found!"
+  exit 1
+fi
 
 ################################################################################
 # Helper functions

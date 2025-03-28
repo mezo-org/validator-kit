@@ -6,9 +6,12 @@ The following instruction will guide you through the process of configuring
 and running a validator node. Before continuing, decide which network you want
 to join. There are two options: `testnet` and `mainnet`. 
 
-**The following instruction will use `testnet` as an example. For `mainnet`, follow 
-the same steps but use `mainnet.env` (from the `mainnet.env.example` template)
-as your configuration file.**
+> [!IMPORTANT]
+> The following instruction uses `mainnet` environment as an example. 
+> For `testnet`, follow the same steps but use `testnet.env` 
+> (from the `testnet.env.example` template) as your configuration file and
+> explicitly set the `NETWORK=testnet` environment variable while running 
+> the `v-kit.sh` script.
 
 > [!NOTE]
 > Run `./v-kit.sh` (without arguments) to see the list of available commands.
@@ -17,7 +20,7 @@ as your configuration file.**
 
 ```mermaid
 sequenceDiagram
-  participant testnet.env
+  participant mainnet.env
   participant v-kit.sh
   box Docker Compose
     participant compose.yaml
@@ -26,8 +29,8 @@ sequenceDiagram
     participant mezod-and-sidecars as Service 'mezod' with sidecars
   end
 
-  Note over testnet.env: (USER) Adjust the configuration
-  v-kit.sh -->> testnet.env: load
+  Note over mainnet.env: (USER) Adjust the configuration
+  v-kit.sh -->> mainnet.env: load
 
   critical One-time setup
     v-kit.sh ->> compose.yaml: v-kit.sh init-keyring
@@ -49,13 +52,13 @@ sequenceDiagram
 
 ### 1. Prepare configuration file
 
-#### Copy the `testnet.env.example` to `testnet.env`
+#### Copy the `mainnet.env.example` to `mainnet.env`
    
 ```shell
-cp testnet.env.example testnet.env
+cp mainnet.env.example mainnet.env
 ```
 
-#### Edit the `testnet.env` file
+#### Edit the `mainnet.env` file
 
 * `NETWORK` - the network you want to join (`testnet` or `mainnet`)
 * `DOCKER_IMAGE` - the latest version of mezod image
