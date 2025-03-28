@@ -4,8 +4,11 @@
 
 The following instruction will guide you through the process of configuring
 and running a validator node. Before continuing, decide which network you want
-to join. There are two options: `testnet` and `mainnet`. The following
-instruction will use `testnet` as an example.
+to join. There are two options: `testnet` and `mainnet`. 
+
+**The following instruction will use `testnet` as an example. For `mainnet`, follow 
+the same steps but use `mainnet.env` (from the `mainnet.env.example` template)
+as your configuration file.**
 
 > [!NOTE]
 > Run `./v-kit.sh` (without arguments) to see the list of available commands.
@@ -46,13 +49,13 @@ sequenceDiagram
 
 ### 1. Prepare configuration file
 
-1. Copy the `testnet.env.example` to `testnet.env`:
-
+#### Copy the `testnet.env.example` to `testnet.env`
+   
 ```shell
 cp testnet.env.example testnet.env
 ```
 
-2. Edit the `testnet.env` file:
+#### Edit the `testnet.env` file
 
 * `NETWORK` - the network you want to join (`testnet` or `mainnet`)
 * `DOCKER_IMAGE` - the latest version of mezod image
@@ -107,11 +110,11 @@ The URL must be WebSocket, i.e. start with `wss://` (recommended) or `ws://`.
 ./v-kit.sh init-genval
 ```
 
-### 3. Submit joining request
+### 3. Submit PoA application
 
-TBD
+See [PoA application submission](../README.md#poa-application-submission) in the root README for details.
 
-### 5. Run the validator
+### 4. Run the validator
 
 ```shell
 ./v-kit.sh start
@@ -133,7 +136,8 @@ TBD
 
 ### Edit the configuration manually
 
-Keep in mind that some parts of the configuration are managed by the [entrypoint.sh](./entrypoint.sh) script
+Keep in mind that some parts of the configuration are managed by the 
+[entrypoint.sh](https://github.com/mezo-org/mezod/blob/main/entrypoint.sh) script
 within the container. These parts will be overwritten when the container is started.
 
 ```shell
