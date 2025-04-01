@@ -73,7 +73,8 @@ Version ordering for Mezo Matsnet testnet:
 - `v0.4.0-rc1`: from block 1745000 to block 2213000
 - `v0.5.0-rc1`: from block 2213000 to block 2563000
 - `v0.6.0-rc2`: from block 2563000 to block 3078794
-- `v0.7.0-rc*`: from block 3078794 to the current chain tip (pick the latest `-rc*`)
+- `v0.7.0-rc0`: from block 3078794 to block 3569000
+- `v1.0.0-rc*`: from block 3569000 to the current chain tip (pick the latest `-rc*`)
 
 ### State sync from snapshot
 
