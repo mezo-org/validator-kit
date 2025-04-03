@@ -19,7 +19,7 @@ data:
     {{- .Values.customConfigs.clientTomlTxt | nindent 4 }}
   {{- end }}
   {{- if .Values.customConfigs.configTomlTxt }}
-  config.yaml.txt: |
+  config.toml.txt: |
     {{- .Values.customConfigs.configTomlTxt | nindent 4 }}
   {{- end }}
 {{- end }}
