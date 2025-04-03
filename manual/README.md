@@ -66,7 +66,7 @@ The following setup assumes a Unix-like environment.
 6. Initialize the node:
    ```shell
    # Use mezo_31611-1 as chain ID for testnet or mezo_31612-1 for mainnet.
-   export MEZOD_CHAIN_ID= ...
+   export MEZOD_CHAIN_ID=mezo_31612-1
 
    mezod init $MEZOD_MONIKER \
     --home=$MEZOD_HOME \
@@ -137,10 +137,11 @@ The following setup assumes a Unix-like environment.
 
 11. Run the Ethereum sidecar. For example:
     ```shell
-    # This example shows usage of an Ethereum Sepolia RPC for Mezo testnet.
-    # Remember to use an Ethereum Mainnet RPC for Mezo mainnet.
+    # This example shows usage of a Mainnet Ethereum RPC for Mezo mainnet.
+    # Use Ethereum Sepolia for Mezo testnet.
     mezod ethereum-sidecar \
-     --ethereum-sidecar.server.ethereum-node-address=wss://eth-sepolia.g.alchemy.com/v2/<redacted>
+     --ethereum-sidecar.server.network=mainnet \
+     --ethereum-sidecar.server.ethereum-node-address=wss://eth-mainnet.g.alchemy.com/v2/<redacted>
     ```
     The above command assumes you are using the Alchemy provider. Only the WebSocket
     protocol is supported for the Ethereum node address, i.e. the URL must start
