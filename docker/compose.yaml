@@ -49,6 +49,7 @@ services:
       - ethereum-sidecar
       - --log_format=json
       - --ethereum-sidecar.server.ethereum-node-address=${MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS}
+      - --ethereum-sidecar.server.network=${MEZOD_ETHEREUM_SIDECAR_SERVER_NETWORK}
     restart: always
     expose:
       - 7500

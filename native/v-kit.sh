@@ -183,6 +183,7 @@ configure_mezo() {
 
     ${MEZO_EXEC} toml set \
         ${app_config_file} \
+        -v ethereum-sidecar.server.network="${MEZOD_ETHEREUM_SIDECAR_SERVER_NETWORK}" \
         -v ethereum-sidecar.client.server-address="0.0.0.0:7500" \
         -v api.enable=true \
         -v api.address="tcp://0.0.0.0:1317" \
@@ -245,7 +246,7 @@ After=network.target
 [Service]
 Restart=no
 ExecStartPre=/bin/echo "Starting ethereum-sidecar systemd initialization..."
-ExecStart=${MEZO_EXEC} ethereum-sidecar --log_format=${MEZOD_LOG_FORMAT} --ethereum-sidecar.server.ethereum-node-address=${MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS}
+ExecStart=${MEZO_EXEC} ethereum-sidecar --log_format=${MEZOD_LOG_FORMAT} --ethereum-sidecar.server.network=${MEZOD_ETHEREUM_SIDECAR_SERVER_NETWORK} --ethereum-sidecar.server.ethereum-node-address=${MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS}
 StandardOutput=journal
 StandardError=journal
 User=root
