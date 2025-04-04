@@ -27,13 +27,10 @@ As a validator you can choose between the above options to run your validator no
 
 ### Auxiliary components
 
-Moreover, there are several auxiliary components of the Validator Kit that
-can help you with various operational tasks:
+Moreover, there are auxiliary components of the Validator Kit that can help you with various 
+operational tasks:
 
-1. [`tools`](./tools): provides a collection of Hardhat tasks designed to simplify
-   interactions with the blockchain’s Proof-of-Authority (PoA) based network.
-   For example, you can submit your application to become one of the PoA validators.
-2. [`docker-monitoring`](./docker-monitoring): contains files to run a monitoring
+1. [`docker-monitoring`](./docker-monitoring): contains files to run a monitoring
    stack for your validator node using Docker. This is an optional way to monitor
    your validator node. The monitoring stack is dedicated to the `docker` setup.
    You can use it for the `native` variant after some adjustments (not covered in this repo).
@@ -42,14 +39,29 @@ can help you with various operational tasks:
 
 Regardless of the chosen way to run a validator node, you may want to use 
 pre-built artifacts provided by the Mezo team. These include Docker images and
-binary files for the `mezod` node software.
+binary files for the `mezod` node software. Alternatively, you can build the
+necessary artifacts yourself.
 
-You can find the mentioned artifacts in the following locations (substitute 
-`VERSION` with the desired version, e.g. `v0.5.0-rc0`):
+### Stable releases (Mainnet)
+
+Stable releases are ready to be rolled out on Mainnet nodes. You can find relevant
+artifacts in the following locations (substitute `VERSION` with the desired 
+stable version, e.g. `v1.0.0`):
+
+- Docker image (DockerHub): `mezo/mezod:VERSION`
+- Binary (amd64): `https://github.com/mezo-org/mezod/releases/download/VERSION/linux-amd64.tar.gz`
+
+### Candidate releases (Testnet)
+
+>[!WARNING]
+> Candidate releases are **NOT READY** for Mainnet use.
+
+Candidate releases are intended to be rolled out on Testnet nodes. You can find
+relevant artifacts in the following locations (substitute `VERSION` with the 
+desired candidate version, e.g. `v1.0.0-rc0`):
+
 - Docker image: `us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod:VERSION`
 - Binary (amd64): `https://artifactregistry.googleapis.com/download/v1/projects/mezo-test-420708/locations/us-central1/repositories/mezo-staging-binary-public/files/mezod:VERSION:linux-amd64.tar.gz:download?alt=media`
-
-Alternatively, you can build the necessary artifacts yourself.
 
 ## Node synchronization
 
@@ -67,14 +79,19 @@ a long time depending on your network connection and the number of blocks in
 the network. Moreover, you need to start with the initial version
 of `mezod` and upgrade along the way to handle on-chain upgrades properly.
 
-Version ordering for Mezo Matsnet testnet:
+#### Version ordering for Mezo Matsnet testnet
+
 - `v0.2.0-rc3`: initial version from genesis to block 1093500
 - `v0.3.0-rc3`: from block 1093500 to block 1745000
 - `v0.4.0-rc1`: from block 1745000 to block 2213000
 - `v0.5.0-rc1`: from block 2213000 to block 2563000
 - `v0.6.0-rc2`: from block 2563000 to block 3078794
 - `v0.7.0-rc0`: from block 3078794 to block 3569000
-- `v1.0.0-rc*`: from block 3569000 to the current chain tip (pick the latest `-rc*`)
+- `v1.*.*`: from block 3569000 to the current chain tip (pick the latest minor/patch version or `-rc*` if stable version is not available yet)
+
+#### Version ordering for Mezo Mainnet
+
+- `v1.*.*`: from genesis to the current chain tip (pick the latest minor/patch version)
 
 ### State sync from snapshot
 
@@ -89,32 +106,30 @@ apply the snapshot to get the latest state of the chain. The downside here
 is the fact that your node won't have the chain history prior to the snapshot.
 Moreover, you need to trust the source of the snapshot.
 
-Mezo team provides snapshots for Mezo Matsnet testnet. Please refer to
-[this runbook](./manual/README.md#State-sync-from-snapshot)
-for details. Alternatively, you can ask trusted community members for a snapshot.
+Mezo team provides snapshots only for Mezo Matsnet testnet. Mezo team **DOES NOT** 
+provide snapshots for Mezo Mainnet. In any case, you can ask trusted community members
+for a snapshot.
+
+Please refer to [this runbook](./manual/README.md#State-sync-from-snapshot)
+to learn how to sync your node from a snapshot in practice.
 
 ## PoA application submission
 
 The final step to becoming a PoA validator is submitting your application to the Mezo
-team. Before you proceed, ensure you have sufficient funds in your validator's node
-address. You have several ways to submit your application:
+team. Before you proceed, ensure you have sufficient funds on your validator's node
+address. You can submit your application using a CLI command exposed by `mezod`:
 
-1. Using a CLI command exposed by `mezod` (recommended):
-   ```bash
-   mezod --home=<mezod_home_path> poa submit-application <key_name>
-   ```
-   where `key_name` denotes the private key from your node's keyring that
-   corresponds to the aforementioned validator's node address.
-   
-2. Alternatively, you can run the `submit-application.sh` script from the
-   [tools/hardhat](tools/hardhat/README.md#how-to-submit-an-application-to-validator-pool) toolbox.
+```bash
+mezod --home=<mezod_home_path> poa submit-application <key_name>
+```
+where `key_name` denotes the private key from your node's keyring that corresponds to 
+the aforementioned validator's node address.
 
-Both options are valid, and you can choose either. Once you submit your application,
-the Mezo team will verify your node status and approve your application if everything
-is in order. Please provide your public IP, your node address, and any custom port
-settings. If you wish to close the CometBFT RPC port (note that the CometBFT 
-P2P port must remain open), please whitelist the following IP 
-address: `34.57.120.151` so that we can verify your status.
+Once you submit your application, the Mezo team will verify your node status and approve 
+your application if everything is in order. Please provide your public IP, your node address, 
+and any custom port settings. If you wish to close the CometBFT RPC port (note that the 
+CometBFT P2P port must remain open), please whitelist the following IP address: `34.57.120.151` 
+so that we can verify your status.
 
 ## Acknowledgements
 
