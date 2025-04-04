@@ -136,12 +136,18 @@ spec:
             - --home=/tmp/dummy-data
             - --log_format=json
             - --ethereum-sidecar.server.ethereum-node-address=$(ETHEREUM_ENDPOINT)
+            - --ethereum-sidecar.server.network=$(ETHEREUM_NETWORK)
           env:
             - name: ETHEREUM_ENDPOINT
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secrets.credentials | quote }}
                   key: ETHEREUM_ENDPOINT
+            - name: ETHEREUM_NETWORK
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.credentials | quote }}
+                  key: ETHEREUM_NETWORK
           ports:
             - name: client
               containerPort: 7500
