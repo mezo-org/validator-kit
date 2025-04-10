@@ -6,7 +6,10 @@
 ## Overview
 
 This repository contains the Validator Kit for Mezo chain. The Validator Kit is
-a collection of tools and documentation to help you run a validator node on Mezo chain.
+a collection of tools and documentation to help you run a Mezo chain node.
+
+Although the Validator Kit is primarily designed for validator nodes, it can be
+used to run [non-validator nodes](#non-validator-nodes) as well.
 
 ### Main components
 
@@ -131,6 +134,35 @@ your application if everything is in order. Please provide your public IP, your 
 and any custom port settings. If you wish to close the CometBFT RPC port (note that the 
 CometBFT P2P port must remain open), please whitelist the following IP address: `34.57.120.151` 
 so that we can verify your status.
+
+## Non-validator nodes
+
+### Network seed nodes
+
+If you want to run a seed node to help network peer discovery, follow the configuration
+process as for a validator node but:
+- Do not submit an application to PoA.
+- Set the `p2p.seed_mode` parameter in your node's `config.toml` file to `true`.
+
+Ensure your CometBFT P2P port is open and accessible from the outside.
+This is `26656` by default, but can be changed using the `p2p.laddr` or 
+`p2p.external_address` parameters in the `config.toml` file.
+
+### RPC node
+
+To run an RPC node (serving both EVM JSON-RPC and CometBFT RPC), follow the configuration
+process as for a validator node but:
+- Do not submit an application to PoA.
+- If you want to run an archiving node (i.e. with full history of the chain),
+  set the `pruning` parameter in your node's `app.toml` file to `nothing`.
+
+Ensure the following ports are open and accessible from the outside:
+- EVM JSON-RPC HTTP port: `8545` by default. Can be changed using the 
+  `json-rpc.address` parameter in the `app.toml` file.
+- EVM JSON-RPC WebSocket port: `8546` by default. Can be changed using the 
+  `json-rpc.ws-address` parameter in the `app.toml` file.
+- CometBFT RPC port: `26657` by default. Can be changed using the `rpc.laddr`
+  parameter in the `config.toml` file.
 
 ## Acknowledgements
 
