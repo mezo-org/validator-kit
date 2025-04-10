@@ -164,6 +164,17 @@ Ensure the following ports are open and accessible from the outside:
 - CometBFT RPC port: `26657` by default. Can be changed using the `rpc.laddr`
   parameter in the `config.toml` file.
 
+## Hardware requirements
+
+Here are the minimum recommended hardware requirements for running different 
+types of Mezo chain nodes:
+
+| Node Type | vCPU | RAM   | Disk    |
+|-----------|------|-------|---------|
+| Validator | 4    | 16 GB | 256 GB  |
+| RPC       | 8    | 32 GB | 512 GB  |
+| Seed      | 2    | 8 GB  | 128 GB  |
+
 ## Acknowledgements
 
 Shout out to [thevops](https://github.com/thevops) and [tscrond](https://github.com/tscrond) from [Boar.network](https://boar.network/) for
