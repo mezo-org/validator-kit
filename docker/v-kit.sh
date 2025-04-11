@@ -8,7 +8,7 @@ set -o pipefail # Exit on pipe error
 ################################################################################
 # Variables
 ################################################################################
-NETWORK="${NETWORK:-testnet}"
+NETWORK="${NETWORK:-mainnet}"
 DOCKER_COMPOSE_CMD="docker compose --env-file ${NETWORK}.env"
 
 # Load NETWORK.env

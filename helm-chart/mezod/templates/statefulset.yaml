@@ -136,6 +136,11 @@ spec:
             - --home=/tmp/dummy-data
             - --log_format=json
             - --ethereum-sidecar.server.ethereum-node-address=$(ETHEREUM_ENDPOINT)
+            {{- if eq .Values.env.NETWORK "mainnet" }}
+            - --ethereum-sidecar.server.network=mainnet
+            {{- else if eq .Values.env.NETWORK "testnet" }}
+            - --ethereum-sidecar.server.network=sepolia
+            {{- end }}
           env:
             - name: ETHEREUM_ENDPOINT
               valueFrom:

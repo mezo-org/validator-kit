@@ -1,7 +1,6 @@
 # Helm chart for Mezod
 
-The chart contains configuration for testnet on Sepolia so far.
-Eventually, it will be updated to support mainnet by default.
+The chart is configured for mainnet by default.
 
 ## Pre-requisites
 
@@ -37,18 +36,18 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 
 # mezod
 
-![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![AppVersion: v1.0.0-rc1](https://img.shields.io/badge/AppVersion-v1.0.0--rc1-informational?style=flat-square)
+![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![AppVersion: v1.0.0](https://img.shields.io/badge/AppVersion-v1.0.0-informational?style=flat-square)
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image | string | `"us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"` |  |
-| tag | string | `"v1.0.0-rc1"` |  |
+| image | string | `"mezo/mezod"` |  |
+| tag | string | `"v1.0.0"` |  |
 | imagePullPolicy | string | `"Always"` |  |
-| env.NETWORK | string | `"testnet"` | Select the network to connect to |
+| env.NETWORK | string | `"mainnet"` | Select the network to connect to (mainnet or testnet) |
 | env.PUBLIC_IP | string | `"CHANGE_ME"` | Set public IP address of the validator |
-| env.MEZOD_CHAIN_ID | string | `"mezo_31611-1"` | Set the chain ID (mezo_31611-1 is the testnet) |
+| env.MEZOD_CHAIN_ID | string | `"mezo_31612-1"` | Set the chain ID (mezo_31612-1 is mainnet, mezo_31611-1 is testnet) |
 | env.MEZOD_HOME | string | `"/var/mezod"` |  |
 | env.MEZOD_MONIKER | string | `"CHANGE_ME"` | Set the moniker (name of the validator) |
 | env.MEZOD_ETHEREUM_SIDECAR_SERVER | string | `"localhost:7500"` |  |

@@ -6,11 +6,6 @@ This document describes:
 - how Mezo Validator Kit for native binaries works,
 - deployment process for the validator.
 
-> [!NOTE]
-> For now, transactions for entering the testnet/mainnet (aka submitting validator application)
-> are out of scope for this script. Feature will be supported as soon as Mezo team implements
-> it into the Mezo binary.
-
 ## Prerequisites
 
 Native binaries installation is tested on the following operating systems:
@@ -22,20 +17,25 @@ Native binaries installation is tested on the following operating systems:
 > If you are planning to install on older system versions or other distributions,
 > it's not guaranteed it will work.
 
-Before setup, make sure you have `v-kit.sh` and `testnet.env` on your machine.
-
-Make sure to you can run the setup script as `root` or using `sudo`.
+Before setup, make sure:
+- You have `v-kit.sh` and the right `*.env` file on your machine.
+- You can run the setup script as `root` or using `sudo`.
 
 ## Setup
 
+> [!IMPORTANT]
+> The following instruction uses `mainnet` environment as an example. 
+> For `testnet`, follow the same steps but use `testnet.env` 
+> (from the `testnet.env.example` template) as your configuration file and
+> point it using the `--envfile` flag while running the `v-kit.sh` script.
+
 ### 1. Prepare environment file
 
-Copy the `testnet.env.example` and create your own file `testnet.env`.
+Copy the `mainnet.env.example` and create your own file `mainnet.env`.
 
-For the validator to be successfully deployed, it's necessary to
-fill the environment file (in case of testnet it's `testnet.env`).
+For the validator to be successfully deployed, it's necessary to fill the environment file.
 
-1. Edit the following variables in `testnet.env`:
+1. Edit the following variables in `mainnet.env`:
 
 - `MEZOD_MONIKER` - a human-readable name for the validator
 (Example: `my-lovely-validator`)
@@ -68,7 +68,7 @@ chmod +x v-kit.sh
 ./v-kit.sh mnemonic
 ```
 
-Output mnemonic of this command should be written to the environment (for example `testnet.env`) file as `MEZOD_KEYRING_MNEMONIC` variable.
+Output mnemonic of this command should be written to the environment file as `MEZOD_KEYRING_MNEMONIC` variable.
 
 Sample output:
 ```
@@ -149,7 +149,7 @@ or as root:
 ```
 
 > [!IMPORTANT]
-> If you are using an environment file other than `testnet.env` make sure to set `--envfile` flag.
+> If you are using an environment file other than `mainnet.env` make sure to set `--envfile` flag.
 >
 > ```bash
 > ./v-kit.sh --envfile <your_custom_envfile>

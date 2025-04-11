@@ -1,14 +1,14 @@
-image: "us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod"
-tag: "v1.0.0-rc1"
+image: "mezo/mezod"
+tag: "v1.0.0"
 imagePullPolicy: Always
 
 env:
-  # -- Select the network to connect to
-  NETWORK: testnet
+  # -- Select the network to connect to (mainnet or testnet)
+  NETWORK: mainnet
   # -- Set public IP address of the validator
   PUBLIC_IP: "CHANGE_ME"
-  # -- Set the chain ID (mezo_31611-1 is the testnet)
-  MEZOD_CHAIN_ID: "mezo_31611-1"
+  # -- Set the chain ID (mezo_31612-1 is mainnet, mezo_31611-1 is testnet)
+  MEZOD_CHAIN_ID: "mezo_31612-1"
   MEZOD_HOME: "/var/mezod"
   # -- Set the moniker (name of the validator)
   MEZOD_MONIKER: "CHANGE_ME"

@@ -4,8 +4,14 @@
 
 The following instruction will guide you through the process of configuring
 and running a validator node. Before continuing, decide which network you want
-to join. There are two options: `testnet` and `mainnet`. The following
-instruction will use `testnet` as an example.
+to join. There are two options: `testnet` and `mainnet`. 
+
+> [!IMPORTANT]
+> The following instruction uses `mainnet` environment as an example. 
+> For `testnet`, follow the same steps but use `testnet.env` 
+> (from the `testnet.env.example` template) as your configuration file and
+> explicitly set the `NETWORK=testnet` environment variable while running 
+> the `v-kit.sh` script.
 
 > [!NOTE]
 > Run `./v-kit.sh` (without arguments) to see the list of available commands.
@@ -14,7 +20,7 @@ instruction will use `testnet` as an example.
 
 ```mermaid
 sequenceDiagram
-  participant testnet.env
+  participant mainnet.env
   participant v-kit.sh
   box Docker Compose
     participant compose.yaml
@@ -23,8 +29,8 @@ sequenceDiagram
     participant mezod-and-sidecars as Service 'mezod' with sidecars
   end
 
-  Note over testnet.env: (USER) Adjust the configuration
-  v-kit.sh -->> testnet.env: load
+  Note over mainnet.env: (USER) Adjust the configuration
+  v-kit.sh -->> mainnet.env: load
 
   critical One-time setup
     v-kit.sh ->> compose.yaml: v-kit.sh init-keyring
@@ -46,13 +52,13 @@ sequenceDiagram
 
 ### 1. Prepare configuration file
 
-1. Copy the `testnet.env.example` to `testnet.env`:
-
+#### Copy the `mainnet.env.example` to `mainnet.env`
+   
 ```shell
-cp testnet.env.example testnet.env
+cp mainnet.env.example mainnet.env
 ```
 
-2. Edit the `testnet.env` file:
+#### Edit the `mainnet.env` file
 
 * `NETWORK` - the network you want to join (`testnet` or `mainnet`)
 * `DOCKER_IMAGE` - the latest version of mezod image
@@ -107,11 +113,11 @@ The URL must be WebSocket, i.e. start with `wss://` (recommended) or `ws://`.
 ./v-kit.sh init-genval
 ```
 
-### 3. Submit joining request
+### 3. Submit PoA application
 
-TBD
+See [PoA application submission](../README.md#poa-application-submission) in the root README for details.
 
-### 5. Run the validator
+### 4. Run the validator
 
 ```shell
 ./v-kit.sh start
@@ -133,7 +139,8 @@ TBD
 
 ### Edit the configuration manually
 
-Keep in mind that some parts of the configuration are managed by the [entrypoint.sh](./entrypoint.sh) script
+Keep in mind that some parts of the configuration are managed by the 
+[entrypoint.sh](https://github.com/mezo-org/mezod/blob/main/entrypoint.sh) script
 within the container. These parts will be overwritten when the container is started.
 
 ```shell
