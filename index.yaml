@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   mezod:
   - apiVersion: v2
+    appVersion: v1.0.0
+    created: "2025-04-11T08:12:20.873249402Z"
+    digest: 21e336507ae60bc06dc5024e8170614f4eb17592f89f2fab22318b6fc738f94b
+    name: mezod
+    urls:
+    - https://github.com/mezo-org/validator-kit/releases/download/v2.0.0/mezod-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
     appVersion: v1.0.0-rc1
     created: "2025-04-07T14:10:01.119301078Z"
     digest: 3a853557159cb24843f99a7bf14f16b79982011abb4565894b7c3c28311acd26
@@ -73,4 +81,4 @@ entries:
     urls:
     - https://github.com/mezo-org/validator-kit/releases/download/v1.0.0/mezod-1.0.0.tgz
     version: 1.0.0
-generated: "2025-04-07T14:10:01.118746691Z"
+generated: "2025-04-11T08:12:20.872697449Z"
