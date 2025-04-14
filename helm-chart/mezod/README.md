@@ -45,6 +45,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | image | string | `"mezo/mezod"` |  |
 | tag | string | `"v1.0.0"` |  |
 | imagePullPolicy | string | `"Always"` |  |
+| nodeType | string | `"validator"` | Select whether you want to run a validator/seed node/RPC node ("validator"/"seed"/"rpc"/"rpc-archive") |
 | env.NETWORK | string | `"mainnet"` | Select the network to connect to (mainnet or testnet) |
 | env.PUBLIC_IP | string | `"CHANGE_ME"` | Set public IP address of the validator |
 | env.MEZOD_CHAIN_ID | string | `"mezo_31612-1"` | Set the chain ID (mezo_31612-1 is mainnet, mezo_31611-1 is testnet) |
