@@ -2,6 +2,9 @@ image: "mezo/mezod"
 tag: "v1.0.0"
 imagePullPolicy: Always
 
+# -- Select whether you want to run a validator/seed node/RPC node ("validator"/"seed"/"rpc"/"rpc-archive")
+mode: "validator"
+
 env:
   # -- Select the network to connect to (mainnet or testnet)
   NETWORK: mainnet
@@ -57,6 +60,10 @@ service:
     loadBalancerIP: ""
     allocateLoadBalancerNodePorts: false
     # Name of the ports must use kebab-case
+    # External ports required to be exposed (absolute minimum):
+    # - RPC Node: p2p, json-rpc, json-rpc-ws, rpc
+    # - Seed Node: p2p
+    # - Validator Node: p2p
     ports:
       p2p: 26656
       rpc: 26657

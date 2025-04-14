@@ -13,6 +13,9 @@ data:
   {{- if .Values.customConfigs.appTomlTxt }}
   app.toml.txt: |
     {{- .Values.customConfigs.appTomlTxt | nindent 4 }}
+  {{- if eq .Values.mode "rpc-archive" }}
+    pruning=nothing
+  {{- end }}
   {{- end }}
   {{- if .Values.customConfigs.clientTomlTxt }}
   client.toml.txt: |
@@ -21,5 +24,29 @@ data:
   {{- if .Values.customConfigs.configTomlTxt }}
   config.toml.txt: |
     {{- .Values.customConfigs.configTomlTxt | nindent 4 }}
+  {{- if eq .Values.mode "seed" }}
+    p2p.seed_mode=true
   {{- end }}
+  {{- end }}
+{{- else }}
+{{ if or (eq .Values.mode "seed") (eq .Values.mode "rpc-archive") }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "custom-configs-{{ include "this.name" . }}"
+  labels:
+    {{- include "this.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+data:
+{{- if eq .Values.mode "rpc-archive" }}
+  app.toml.txt: |
+    pruning=nothing
+{{- end }}
+{{- if eq .Values.mode "seed" }}
+  config.toml.txt: 
+    p2p.seed_mode=true
+{{- end }}
+{{- end }}
 {{- end }}
