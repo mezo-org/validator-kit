@@ -13,6 +13,7 @@ metadata:
     {{- with .Values.service.public.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+    mezo.org/node_type: {{ .Values.nodeType | quote }}
 spec:
   type: {{ .Values.service.public.type | quote }}
   {{- if .Values.service.public.loadBalancerIP }}

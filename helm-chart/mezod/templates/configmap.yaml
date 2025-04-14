@@ -9,11 +9,13 @@ metadata:
     {{- with .Values.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+  annotations:
+    mezo.org/node_type: {{ .Values.nodeType | quote }}
 data:
   {{- if .Values.customConfigs.appTomlTxt }}
   app.toml.txt: |
     {{- .Values.customConfigs.appTomlTxt | nindent 4 }}
-  {{- if eq .Values.mode "rpc-archive" }}
+  {{- if eq .Values.nodeType "rpc-archive" }}
     pruning=nothing
   {{- end }}
   {{- end }}
@@ -24,12 +26,12 @@ data:
   {{- if .Values.customConfigs.configTomlTxt }}
   config.toml.txt: |
     {{- .Values.customConfigs.configTomlTxt | nindent 4 }}
-  {{- if eq .Values.mode "seed" }}
+  {{- if eq .Values.nodeType "seed" }}
     p2p.seed_mode=true
   {{- end }}
   {{- end }}
 {{- else }}
-{{ if or (eq .Values.mode "seed") (eq .Values.mode "rpc-archive") }}
+{{ if or (eq .Values.nodeType "seed") (eq .Values.nodeType "rpc-archive") }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -39,12 +41,14 @@ metadata:
     {{- with .Values.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+  annotations:
+    mezo.org/node_type: {{ .Values.nodeType | quote }}
 data:
-{{- if eq .Values.mode "rpc-archive" }}
+{{- if eq .Values.nodeType "rpc-archive" }}
   app.toml.txt: |
     pruning=nothing
 {{- end }}
-{{- if eq .Values.mode "seed" }}
+{{- if eq .Values.nodeType "seed" }}
   config.toml.txt: 
     p2p.seed_mode=true
 {{- end }}
