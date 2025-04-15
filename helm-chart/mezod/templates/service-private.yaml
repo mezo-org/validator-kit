@@ -5,12 +5,11 @@ kind: Service
 metadata:
   name: "private-{{ include "this.name" . }}"
   labels:
+    node_type: {{ .Values.nodeType }}
     {{- include "this.labels" . | nindent 4 }}
     {{- with .Values.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  annotations:
-    mezo.org/node_type: {{ .Values.nodeType | quote }}
 spec:
   type: ClusterIP
   selector:

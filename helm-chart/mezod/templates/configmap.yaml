@@ -1,56 +1,37 @@
+{{- if or .Values.customConfigs.enabled 
+  (or 
+    (eq .Values.nodeType "seed")
+    (eq .Values.nodeType "rpc")
+  ) 
+}}
 ---
-{{- if .Values.customConfigs.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: "custom-configs-{{ include "this.name" . }}"
   labels:
+    node_type: {{ .Values.nodeType }}
     {{- include "this.labels" . | nindent 4 }}
     {{- with .Values.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  annotations:
-    mezo.org/node_type: {{ .Values.nodeType | quote }}
 data:
-  {{- if .Values.customConfigs.appTomlTxt }}
   app.toml.txt: |
+  {{- if .Values.customConfigs.appTomlTxt }}
     {{- .Values.customConfigs.appTomlTxt | nindent 4 }}
+  {{- end }}
   {{- if eq .Values.nodeType "rpc-archive" }}
     pruning=nothing
-  {{- end }}
   {{- end }}
   {{- if .Values.customConfigs.clientTomlTxt }}
   client.toml.txt: |
     {{- .Values.customConfigs.clientTomlTxt | nindent 4 }}
   {{- end }}
-  {{- if .Values.customConfigs.configTomlTxt }}
   config.toml.txt: |
+  {{- if .Values.customConfigs.configTomlTxt }}
     {{- .Values.customConfigs.configTomlTxt | nindent 4 }}
+  {{- end }}
   {{- if eq .Values.nodeType "seed" }}
     p2p.seed_mode=true
   {{- end }}
-  {{- end }}
-{{- else }}
-{{ if or (eq .Values.nodeType "seed") (eq .Values.nodeType "rpc-archive") }}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: "custom-configs-{{ include "this.name" . }}"
-  labels:
-    {{- include "this.labels" . | nindent 4 }}
-    {{- with .Values.labels }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
-  annotations:
-    mezo.org/node_type: {{ .Values.nodeType | quote }}
-data:
-{{- if eq .Values.nodeType "rpc-archive" }}
-  app.toml.txt: |
-    pruning=nothing
-{{- end }}
-{{- if eq .Values.nodeType "seed" }}
-  config.toml.txt: 
-    p2p.seed_mode=true
-{{- end }}
-{{- end }}
 {{- end }}
