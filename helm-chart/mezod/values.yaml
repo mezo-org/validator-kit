@@ -83,13 +83,13 @@ service:
 
 customConfigs:
    # -- Optional: Load custom configuration from the files
-  enabled: true
+  enabled: false
   # As content of the files, you can use the following format:
   # path.to.toml.key=value
   # anotherKey=anotherValue
-  appTomlTxt: "asdf=asdf"
-  clientTomlTxt: "asdf=asdf"
-  configTomlTxt: "asdffff=fff"
+  appTomlTxt: ""
+  clientTomlTxt: ""
+  configTomlTxt: ""
 
 # -- Run shell in the container instead of the mezod process
 maintenanceMode: false
