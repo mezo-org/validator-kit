@@ -57,6 +57,10 @@ service:
     loadBalancerIP: ""
     allocateLoadBalancerNodePorts: false
     # Name of the ports must use kebab-case
+    # External ports required to be exposed (absolute minimum):
+    # - RPC Node: p2p, json-rpc, json-rpc-ws, rpc
+    # - Seed Node: p2p
+    # - Validator Node: p2p
     ports:
       p2p: 26656
       rpc: 26657
@@ -74,8 +78,22 @@ service:
       # -- Comet metrics are exposed on "/"
       comet-metrics: 26660 # "/"
 
+### IMPORTANT:
+### To enable Archive/Seed Nodes, you have to tweak customConfigs
+### Seed node configuration:
+# customConfigs:
+#   enabled: true
+#   appTomlTxt: ""
+#   clientTomlTxt: ""
+#   configTomlTxt: "p2p.seed_mode=true"
+### Archive node configuration:
+# customConfigs:
+#   enabled: true
+#   appTomlTxt: "pruning=nothing"
+#   clientTomlTxt: ""
+#   configTomlTxt: ""
 customConfigs:
-   # -- Optional: Load custom configuration from the files
+  # -- Optional: Load custom configuration from the files
   enabled: false
   # As content of the files, you can use the following format:
   # path.to.toml.key=value
