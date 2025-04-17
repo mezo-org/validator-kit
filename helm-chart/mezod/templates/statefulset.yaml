@@ -52,6 +52,49 @@ spec:
           configMap:
             name: "custom-configs-{{ include "this.name" . }}"
         {{- end }}
+      initContainers:
+        - name: init-mezod
+          image: "{{ .Values.image }}:{{ .Values.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          command:
+            - /bin/sh
+            - /entrypoint.sh
+          args:
+            - sh
+            - -c
+            - "echo 'Init container done'"
+          env:
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            - name: KEYRING_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.credentials | quote }}
+                  key: KEYRING_NAME
+            - name: KEYRING_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.credentials | quote }}
+                  key: KEYRING_PASSWORD
+            - name: KEYRING_MNEMONIC
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.credentials | quote }}
+                  key: KEYRING_MNEMONIC
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.env.MEZOD_HOME | quote }}
+            {{- if .Values.customConfigs.enabled }}
+            - name: custom-configs
+              mountPath: /config/
+            {{- end }}
       containers:
         #
         # The main container with the mezod application
@@ -60,12 +103,12 @@ spec:
           image: "{{ .Values.image }}:{{ .Values.tag }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           {{- if .Values.maintenanceMode }}
-          args:
+          command:
             - /bin/sh
             - -c
             - 'trap "exit" TERM; while true; do sleep 1; done'
           {{- else }}
-          args:
+          command:
             - mezod
             - start
             - --home={{ .Values.env.MEZOD_HOME }}
