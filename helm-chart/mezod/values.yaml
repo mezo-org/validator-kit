@@ -92,6 +92,16 @@ service:
 #   appTomlTxt: "pruning=nothing"
 #   clientTomlTxt: ""
 #   configTomlTxt: ""
+### Run a seed node optimized for resource efficiency:
+# customConfigs:
+#   enabled: true
+#   appTomlTxt: |
+#     pruning=everything
+#     state-sync.snapshot-interval=0
+#   clientTomlTxt: ""
+#   configTomlTxt: |
+#     p2p.seed_mode=true
+#     tx_index.indexer=null
 customConfigs:
   # -- Optional: Load custom configuration from the files
   enabled: false
