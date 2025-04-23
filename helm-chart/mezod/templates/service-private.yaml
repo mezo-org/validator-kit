@@ -14,9 +14,17 @@ spec:
   selector:
     {{- include "this.selectorLabels" . | nindent 4 }}
   ports:
-    {{- range $key, $value := .Values.service.private.ports }}
-    - name: {{ $key }}
-      port: {{ int $value }}
-      targetPort: {{ $key }}
-    {{- end }}
+
+  {{- if hasKey .Values.service.public.ports "evm-metrics" }}
+    - name: evm-metrics
+      port: {{ index .Values.service.public.ports "evm-metrics" }}
+      targetPort: evm-metrics
+  {{- end }}
+
+  {{- if hasKey .Values.service.public.ports "comet-metrics" }}
+    - name: comet-metrics
+      port: {{ index .Values.service.public.ports "comet-metrics" }}
+      targetPort: comet-metrics
+  {{- end }}
+
 {{- end }}
