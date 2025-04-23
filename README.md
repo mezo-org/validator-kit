@@ -131,7 +131,7 @@ the aforementioned validator's node address.
 
 Once you submit your application, the Mezo team will verify your node status and approve 
 your application if everything is in order. Please provide your public IP, your node address, 
-and any custom port settings. Moreover please ahere to the [central monitoring](#central-monitoring) 
+and any custom port settings. Moreover please adhere to the [central monitoring](#central-monitoring) 
 requirements so that the Mezo team can monitor your node's health.
 
 ## Non-validator nodes
