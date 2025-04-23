@@ -137,14 +137,7 @@ so that we can verify your status.
 
 ## Non-validator nodes
 
-### Sidecars
-Each type of node has a set of required sidecars to operate in a stable manner (described in the table below).
-
-| Node      | Needs Ethereum Sidecar? (yes/no) | Needs Connect Sidecar? (yes/no) |
-|-----------|----------------------------------|---------------------------------|
-| Validator | yes                              | yes                             |
-| Seed Node | no                               | no                              |
-| RPC Node  | no                               | no                              |
+Non-validator nodes do not require either `ethereum-sidecar` or `connect-sidecar` to be deployed.
 
 ### Network seed nodes
 
@@ -157,13 +150,11 @@ Ensure your CometBFT P2P port is open and accessible from the outside.
 This is `26656` by default, but can be changed using the `p2p.laddr` or 
 `p2p.external_address` parameters in the `config.toml` file.
 
-#### Lightweight seed nodes
-
 To run a Seed Node with minimal resources, you have to additionally:
 - Set `pruning=everything` in `app.toml` to enable storing only current chain state
 - Set `state-sync.snapshot-interval` to `0` to disable snapshots of the state
 
-Setting those parameters can significantly reduce node's storage usage, thus improving the resource efficiency.
+Setting those parameters will significantly reduce node's storage usage, thus improving the resource efficiency.
 
 ### RPC node
 
