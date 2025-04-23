@@ -22,40 +22,9 @@ spec:
   selector:
     {{- include "this.selectorLabels" . | nindent 4 }}
   ports:
-  {{- if hasKey .Values.service.public.ports "p2p" }}
-    - name: p2p
-      port: {{ .Values.service.public.ports.p2p }}
-      targetPort: p2p
-  {{- end }}
-  
-  {{- if hasKey .Values.service.public.ports "rpc" }}
-    - name: rpc
-      port: {{ .Values.service.public.ports.rpc }}
-      targetPort: rpc
-  {{- end }}
-
-  {{- if hasKey .Values.service.public.ports "api" }}
-    - name: api
-      port: {{ .Values.service.public.ports.api }}
-      targetPort: api
-  {{- end }}
-
-  {{- if hasKey .Values.service.public.ports "grpc" }}
-    - name: grpc
-      port: {{ .Values.service.public.ports.grpc }}
-      targetPort: grpc
-  {{- end }}
-
-  {{- if hasKey .Values.service.public.ports "json-rpc" }}
-    - name: json-rpc
-      port: {{ index .Values.service.public.ports "json-rpc" }}
-      targetPort: json-rpc
-  {{- end }}
-
-  {{- if hasKey .Values.service.public.ports "json-rpc-ws" }}
-    - name: json-rpc-ws
-      port: {{ index .Values.service.public.ports "json-rpc-ws" }}
-      targetPort: json-rpc-ws
-  {{- end }}
-
+    {{- range $key, $value := .Values.service.public.ports }}
+    - name: {{ $key }}
+      port: {{ int $value }}
+      targetPort: {{ $key }}
+    {{- end }}
 {{- end }}

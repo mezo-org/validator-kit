@@ -138,16 +138,31 @@ spec:
                   name: {{ .Values.secrets.credentials | quote }}
                   key: KEYRING_MNEMONIC
           ports:
-            {{- range $key, $value := .Values.service.public.ports }}
-            - name: {{ $key }}
-              containerPort: {{ int $value }}
+            - name: p2p
+              containerPort: {{ int (default 26656 .Values.service.public.ports.p2p) }}
               protocol: TCP
-            {{- end }}
-            {{- range $key, $value := .Values.service.private.ports }}
-            - name: {{ $key }}
-              containerPort: {{ int $value }}
+            - name: rpc
+              containerPort: {{ int (default 26657 .Values.service.public.ports.rpc) }}
               protocol: TCP
-            {{- end }}
+            - name: api 
+              containerPort: {{ int (default 1317 .Values.service.public.ports.api) }}
+              protocol: TCP
+            - name: grpc
+              containerPort: {{ int (default 9090 .Values.service.public.ports.grpc) }}
+              protocol: TCP
+            - name: json-rpc 
+              containerPort: {{ int (default 8545 (index (default dict .Values.service.public.ports) "json-rpc")) }}
+              protocol: TCP
+            - name: json-rpc-ws
+              containerPort: {{ int (default 8546 (index (default dict .Values.service.public.ports) "json-rpc-ws")) }}
+              protocol: TCP
+            - name: evm-metrics
+              containerPort: {{ int (default 6065 (index (default dict .Values.service.private.ports) "evm-metrics")) }}
+              protocol: TCP
+            - name: comet-metrics
+              containerPort: {{ int (default 26660 (index (default dict .Values.service.private.ports) "comet-metrics")) }}
+              protocol: TCP
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
