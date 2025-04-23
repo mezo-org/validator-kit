@@ -137,7 +137,7 @@ so that we can verify your status.
 
 ## Non-validator nodes
 
-Non-validator nodes do not require either `ethereum-sidecar` or `connect-sidecar` to be deployed.
+Non-validator nodes require neither the Ethereum sidecar nor Connect sidecar to be deployed.
 
 ### Network seed nodes
 
