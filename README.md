@@ -136,12 +136,19 @@ requirements so that the Mezo team can monitor your node's health.
 
 ## Non-validator nodes
 
+Non-validator nodes require neither the Ethereum sidecar nor Connect sidecar to be deployed.
+
 ### Network seed nodes
 
 If you want to run a seed node to help network peer discovery, follow the configuration
 process as for a validator node but:
 - Do not submit an application to PoA.
 - Set the `p2p.seed_mode` parameter in your node's `config.toml` file to `true`.
+- Set `pruning=everything` in `app.toml` to enable storing only current chain state
+- Set `state-sync.snapshot-interval` in `app.toml` to `0` to disable snapshots of the state
+- Set `tx_index.indexer` in `config.toml` to `null` to disable indexing
+
+Setting those parameters will significantly reduce node's storage usage, thus improving the resource efficiency.
 
 Ensure your CometBFT P2P port is open and accessible from the outside.
 This is `26656` by default, but can be changed using the `p2p.laddr` or 
