@@ -80,19 +80,13 @@ service:
 
 ### IMPORTANT:
 ### To enable Archive/Seed Nodes, you have to tweak customConfigs
-### Seed node configuration:
-# customConfigs:
-#   enabled: true
-#   appTomlTxt: ""
-#   clientTomlTxt: ""
-#   configTomlTxt: "p2p.seed_mode=true"
 ### Archive node configuration:
 # customConfigs:
 #   enabled: true
 #   appTomlTxt: "pruning=nothing"
 #   clientTomlTxt: ""
 #   configTomlTxt: ""
-### Run a seed node optimized for resource efficiency:
+### Seed node configuration:
 # customConfigs:
 #   enabled: true
 #   appTomlTxt: |
