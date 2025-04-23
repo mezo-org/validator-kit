@@ -146,7 +146,8 @@ process as for a validator node but:
 - Do not submit an application to PoA.
 - Set the `p2p.seed_mode` parameter in your node's `config.toml` file to `true`.
 - Set `pruning=everything` in `app.toml` to enable storing only current chain state
-- Set `state-sync.snapshot-interval` to `0` to disable snapshots of the state
+- Set `state-sync.snapshot-interval` in `app.toml` to `0` to disable snapshots of the state
+- Set `tx_index.indexer` in `config.toml` to `null` to disable indexing
 
 Setting those parameters will significantly reduce node's storage usage, thus improving the resource efficiency.
 
