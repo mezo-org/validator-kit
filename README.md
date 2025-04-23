@@ -131,9 +131,8 @@ the aforementioned validator's node address.
 
 Once you submit your application, the Mezo team will verify your node status and approve 
 your application if everything is in order. Please provide your public IP, your node address, 
-and any custom port settings. If you wish to close the CometBFT RPC port (note that the 
-CometBFT P2P port must remain open), please whitelist the following IP address: `34.57.120.151` 
-so that we can verify your status.
+and any custom port settings. Moreover please adhere to the [central monitoring](#central-monitoring) 
+requirements so that the Mezo team can monitor your node's health.
 
 ## Non-validator nodes
 
@@ -174,6 +173,18 @@ types of Mezo chain nodes:
 | Validator | 4    | 16 GB | 256 GB  |
 | RPC       | 8    | 32 GB | 512 GB  |
 | Seed      | 2    | 8 GB  | 128 GB  |
+
+## Central monitoring
+
+The Mezo team runs a central monitoring stack based on Prometheus and Grafana 
+to monitor the health of the Mezo chain and its underlying nodes. The monitoring
+currently relies on the EVM JSON-RPC API (default port `8545`) to fetch some
+information about the node. It is strongly recommended that you allowlist the following
+IP addresses to access your node's EVM JSON-RPC port so the monitoring stack can
+fetch the required information:
+
+- Testnet: `34.8.112.68`
+- Mainnet: `34.8.32.211`
 
 ## Acknowledgements
 
