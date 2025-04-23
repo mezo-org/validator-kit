@@ -145,16 +145,14 @@ If you want to run a seed node to help network peer discovery, follow the config
 process as for a validator node but:
 - Do not submit an application to PoA.
 - Set the `p2p.seed_mode` parameter in your node's `config.toml` file to `true`.
-
-Ensure your CometBFT P2P port is open and accessible from the outside.
-This is `26656` by default, but can be changed using the `p2p.laddr` or 
-`p2p.external_address` parameters in the `config.toml` file.
-
-To run a Seed Node with minimal resources, you have to additionally:
 - Set `pruning=everything` in `app.toml` to enable storing only current chain state
 - Set `state-sync.snapshot-interval` to `0` to disable snapshots of the state
 
 Setting those parameters will significantly reduce node's storage usage, thus improving the resource efficiency.
+
+Ensure your CometBFT P2P port is open and accessible from the outside.
+This is `26656` by default, but can be changed using the `p2p.laddr` or 
+`p2p.external_address` parameters in the `config.toml` file.
 
 ### RPC node
 
