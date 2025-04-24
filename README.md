@@ -190,8 +190,8 @@ information about the node. It is strongly recommended that you allowlist the fo
 IP addresses to access your node's EVM JSON-RPC port so the monitoring stack can
 fetch the required information:
 
-- Testnet: `34.8.112.68`
-- Mainnet: `34.8.32.211`
+- Testnet: `34.28.107.238`
+- Mainnet: `34.72.231.166`
 
 ## Acknowledgements
 
