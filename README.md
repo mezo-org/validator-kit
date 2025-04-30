@@ -66,6 +66,13 @@ desired candidate version, e.g. `v1.0.0-rc0`):
 - Docker image: `us-central1-docker.pkg.dev/mezo-test-420708/mezo-staging-docker-public/mezod:VERSION`
 - Binary (amd64): `https://artifactregistry.googleapis.com/download/v1/projects/mezo-test-420708/locations/us-central1/repositories/mezo-staging-binary-public/files/mezod:VERSION:linux-amd64.tar.gz:download?alt=media`
 
+## Public seed nodes
+
+You can use the following seed nodes to connect your node to the given Mezo chain:
+
+- Testnet: [testnet/mezo_31611-1/seeds.txt](https://github.com/mezo-org/mezod/blob/main/chain/testnet/mezo_31611-1/seeds.txt)
+- Mainnet: [mainnet/mezo_31612-1/seeds.txt](https://github.com/mezo-org/mezod/blob/main/chain/mainnet/mezo_31612-1/seeds.txt)
+
 ## Node synchronization
 
 There are two ways to synchronize your node with the Mezo blockchain.
