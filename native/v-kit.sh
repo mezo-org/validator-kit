@@ -73,7 +73,7 @@ install_mezo() {
     download_binary ${MEZOD_DOWNLOAD_LINK} "verbose"
     unpack_binary ${MEZOD_DESTINATION}
 
-    chown root:root ${MEZO_EXEC}
+    chown "${MEZOD_USER}":"${MEZOD_USER}" ${MEZO_EXEC}
     chmod +x ${MEZO_EXEC}
 
     echo "Mezo binary installed with path: ${MEZO_EXEC}"
@@ -230,7 +230,7 @@ ExecStartPre=/bin/echo "Starting connect-sidecar systemd initialization..."
 ExecStart=${CONNECT_EXEC} --log-disable-file-rotation --port=${CONNECT_SIDECAR_PORT} --market-map-endpoint=\"127.0.0.1:9090\"
 StandardOutput=journal
 StandardError=journal
-User=root
+User=${MEZOD_USER}
 
 [Install]
 WantedBy=multi-user.target" | tee /etc/systemd/system/connect-sidecar.service
@@ -249,7 +249,7 @@ ExecStartPre=/bin/echo "Starting ethereum-sidecar systemd initialization..."
 ExecStart=${MEZO_EXEC} ethereum-sidecar --log_format=${MEZOD_LOG_FORMAT} --ethereum-sidecar.server.network=${MEZOD_ETHEREUM_SIDECAR_SERVER_NETWORK} --ethereum-sidecar.server.ethereum-node-address=${MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS}
 StandardOutput=journal
 StandardError=journal
-User=root
+User=${MEZOD_USER}
 
 [Install]
 WantedBy=multi-user.target" | tee /etc/systemd/system/ethereum-sidecar.service
@@ -268,11 +268,15 @@ ExecStartPre=/bin/echo "Starting mezod systemd initialization..."
 ExecStart=${MEZO_EXEC} start --home=${MEZOD_HOME} --metrics
 StandardOutput=journal
 StandardError=journal
-User=root
+User=${MEZOD_USER}
 
 [Install]
 WantedBy=multi-user.target" | tee /etc/systemd/system/mezo.service
 
+}
+
+set_file_permissions(){
+    chown -R "${MEZOD_USER}":"${MEZOD_USER}" "${MEZOD_HOME}"
 }
 
 systemd_restart() {
@@ -433,6 +437,7 @@ main() {
     setup_systemd_skip
     setup_systemd_sidecar
     setup_systemd_mezo
+    set_file_permissions
     systemd_restart
     show_validator_info
 }
