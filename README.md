@@ -131,10 +131,13 @@ team. Before you proceed, ensure you have sufficient funds on your validator's n
 address. You can submit your application using a CLI command exposed by `mezod`:
 
 ```bash
-mezod --home=<mezod_home_path> poa submit-application <key_name>
+mezod --home=<mezod_home_path> --rpc-url <rpc_url> poa submit-application <key_name>
 ```
-where `key_name` denotes the private key from your node's keyring that corresponds to 
+
+- `key_name` denotes the private key from your node's keyring that corresponds to
 the aforementioned validator's node address.
+- `rpc-url` optional flag that specifies the RPC node you want to use to submit your application.
+It defaults to local RPC node `http://127.0.0.1:8545` if not provided.
 
 Once you submit your application, the Mezo team will verify your node status and approve 
 your application if everything is in order. Please provide your public IP, your node address, 
