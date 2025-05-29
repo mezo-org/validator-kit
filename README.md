@@ -102,7 +102,10 @@ of `mezod` and upgrade along the way to handle on-chain upgrades properly.
 
 #### Version ordering for Mezo Mainnet
 
-- `v1.*.*`: from genesis to the current chain tip (pick the latest minor/patch version)
+Asterisk (*) denotes the latest minor/patch version.
+
+- `v1.*.*`: from genesis to block 706500
+- `v2.*.*`: from block 706500 to the current chain tip
 
 ### State sync from snapshot
 
