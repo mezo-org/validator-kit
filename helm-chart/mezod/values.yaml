@@ -1,5 +1,5 @@
 image: "mezo/mezod"
-tag: "v2.0.0"
+tag: "v2.0.1"
 imagePullPolicy: Always
 
 env:
