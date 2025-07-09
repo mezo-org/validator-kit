@@ -91,6 +91,8 @@ of `mezod` and upgrade along the way to handle on-chain upgrades properly.
 
 #### Version ordering for Mezo Testnet
 
+Asterisk (*) denotes the latest minor/patch version.
+
 - `v0.2.0-rc3`: initial version from genesis to block 1093500
 - `v0.3.0-rc3`: from block 1093500 to block 1745000
 - `v0.4.0-rc1`: from block 1745000 to block 2213000
@@ -99,7 +101,8 @@ of `mezod` and upgrade along the way to handle on-chain upgrades properly.
 - `v0.7.0-rc0`: from block 3078794 to block 3569000
 - `v1.0.0-rc0`: from block 3569000 to block 3712500
 - `v1.0.0-rc1`: from block 3712500 to block 5559500
-- `v2.0.2`: from block 5559500 to the current chain tip
+- `v2.0.2`: from block 5559500 to block 5695000
+- `v3.*.*`: from block 5695000 to the current chain tip
 
 #### Version ordering for Mezo Mainnet
 
