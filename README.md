@@ -109,7 +109,8 @@ Asterisk (*) denotes the latest minor/patch version.
 Asterisk (*) denotes the latest minor/patch version.
 
 - `v1.*.*`: from genesis to block 706500
-- `v2.*.*`: from block 706500 to the current chain tip
+- `v2.*.*`: from block 706500 to block 1735000
+- `v3.*.*`: from block 1735000 to the current chain tip
 
 ### State sync from snapshot
 
