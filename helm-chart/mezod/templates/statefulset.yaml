@@ -184,12 +184,20 @@ spec:
             {{- else if eq .Values.env.NETWORK "testnet" }}
             - --ethereum-sidecar.server.network=sepolia
             {{- end }}
+            - --ethereum-sidecar.server.assets-unlocked-endpoint=localhost:{{ .Values.service.public.ports.grpc }}
+            - --keyring-backend=file
+            - --key-name=$(KEYRING_NAME)
           env:
             - name: ETHEREUM_ENDPOINT
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secrets.credentials | quote }}
                   key: ETHEREUM_ENDPOINT
+            - name: KEYRING_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.credentials | quote }}
+                  key: KEYRING_NAME      
           ports:
             - name: client
               containerPort: 7500

@@ -141,13 +141,17 @@ The following setup assumes a Unix-like environment.
     # Use Ethereum Sepolia for Mezo testnet.
     mezod ethereum-sidecar \
      --ethereum-sidecar.server.network=mainnet \
-     --ethereum-sidecar.server.ethereum-node-address=wss://eth-mainnet.g.alchemy.com/v2/<redacted>
+     --ethereum-sidecar.server.ethereum-node-address=wss://eth-mainnet.g.alchemy.com/v2/<redacted> \
+     --ethereum-sidecar.server.assets-unlocked-endpoint=localhost:9090 \
+     --keyring-backend=file \
+     --key-name=$MEZOD_KEY
     ```
     The above command assumes you are using the Alchemy provider. Only the WebSocket
-    protocol is supported for the Ethereum node address, i.e. the URL must start
-    with `wss://` (recommended) or `ws://`. Adjust the command according to your
-    setup if needed. For further configuration options, see
-    `mezod ethereum-sidecar --help`.
+    protocol is supported for the Ethereum node address (i.e. the URL must start
+    with `wss://` (recommended) or `ws://`). It also assumes your `mezod` node will be 
+    available at `localhost` and its Cosmos GRPC port is exposed under `9090`.
+    Adjust the command according to your setup if needed. For further configuration options, 
+    see `mezod ethereum-sidecar --help`.
     <br/><br/>
     **If you build `mezod` from source, remember about running `make bindings`
     before building the binary to ensure the `ethereum-sidecar` command works correctly.**
