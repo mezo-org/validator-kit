@@ -174,19 +174,22 @@ spec:
           image: "{{ .Values.image }}:{{ .Values.tag }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           command:
-            - mezod
-            - ethereum-sidecar
-            - --home=/tmp/dummy-data
-            - --log_format=json
-            - --ethereum-sidecar.server.ethereum-node-address=$(ETHEREUM_ENDPOINT)
-            {{- if eq .Values.env.NETWORK "mainnet" }}
-            - --ethereum-sidecar.server.network=mainnet
-            {{- else if eq .Values.env.NETWORK "testnet" }}
-            - --ethereum-sidecar.server.network=sepolia
-            {{- end }}
-            - --ethereum-sidecar.server.assets-unlocked-endpoint=localhost:{{ .Values.service.public.ports.grpc }}
-            - --keyring-backend=file
-            - --key-name=$(KEYRING_NAME)
+            - /bin/sh
+            - -c
+          args:
+            - |
+              yes "$(KEYRING_PASSWORD)" | mezod ethereum-sidecar \
+                --home={{ .Values.env.MEZOD_HOME }} \
+                --log_format=json \
+                --ethereum-sidecar.server.ethereum-node-address=$(ETHEREUM_ENDPOINT) \
+                {{- if eq .Values.env.NETWORK "mainnet" }}
+                --ethereum-sidecar.server.network=mainnet \
+                {{- else if eq .Values.env.NETWORK "testnet" }}
+                --ethereum-sidecar.server.network=sepolia \
+                {{- end }}
+                --ethereum-sidecar.server.assets-unlocked-endpoint=localhost:{{ .Values.service.public.ports.grpc }} \
+                --keyring-backend=file \
+                --key-name=$(KEYRING_NAME)
           env:
             - name: ETHEREUM_ENDPOINT
               valueFrom:
@@ -197,7 +200,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secrets.credentials | quote }}
-                  key: KEYRING_NAME      
+                  key: KEYRING_NAME
+            - name: KEYRING_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secrets.credentials | quote }}
+                  key: KEYRING_PASSWORD            
           ports:
             - name: client
               containerPort: 7500
@@ -212,8 +220,8 @@ spec:
                 - ALL
             allowPrivilegeEscalation: false
           volumeMounts:
-            - name: dummy-data
-              mountPath: /tmp/dummy-data
+            - name: data
+              mountPath: {{ .Values.env.MEZOD_HOME | quote }}
         #
         # The sidecar container for Skip connect application
         #
