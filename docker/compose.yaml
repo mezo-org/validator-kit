@@ -43,21 +43,26 @@ services:
     <<: [*platform, *logging, *user,  *networks]
     container_name: ethereum-sidecar
     image: ${DOCKER_IMAGE}
-    entrypoint: [] # Disable the default entrypoint
+    entrypoint: 
+      - /bin/sh
+      - -c
     command:
-      - mezod
-      - ethereum-sidecar
-      - --log_format=json
-      - --ethereum-sidecar.server.ethereum-node-address=${MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS}
-      - --ethereum-sidecar.server.network=${MEZOD_ETHEREUM_SIDECAR_SERVER_NETWORK}
-      - --ethereum-sidecar.server.assets-unlocked-endpoint=mezod:9090
-      - --keyring-backend=file
-      - --key-name=${KEYRING_NAME}
+      - |
+        yes "${KEYRING_PASSWORD}" | mezod ethereum-sidecar \
+          --home=${MEZOD_HOME} \
+          --log_format=json \
+          --ethereum-sidecar.server.ethereum-node-address=${MEZOD_ETHEREUM_SIDECAR_SERVER_ETHEREUM_NODE_ADDRESS} \
+          --ethereum-sidecar.server.network=${MEZOD_ETHEREUM_SIDECAR_SERVER_NETWORK} \
+          --ethereum-sidecar.server.assets-unlocked-endpoint=mezod:9090 \
+          --keyring-backend=file \
+          --key-name=${KEYRING_NAME}
     restart: always
     expose:
       - 7500
     cap_drop:
       - ALL
+    volumes:
+      - ${LOCAL_BIND_PATH}:${MEZOD_HOME}  
 
   connect-sidecar:
     # Dockerfile: https://github.com/skip-mev/connect/blob/main/contrib/images/connect.sidecar.prod.Dockerfile
