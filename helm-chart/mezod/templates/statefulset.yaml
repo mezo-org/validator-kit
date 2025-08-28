@@ -37,8 +37,6 @@ spec:
       priorityClassName: {{ .Values.priorityClassName | quote }}
       {{- end }}
       volumes:
-        - name: dummy-data
-          emptyDir: {}
         {{- if .Values.secrets.nodeKey }}
         - name: node-key
           secret:
