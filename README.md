@@ -102,7 +102,8 @@ Asterisk (*) denotes the latest minor/patch version.
 - `v1.0.0-rc0`: from block 3569000 to block 3712500
 - `v1.0.0-rc1`: from block 3712500 to block 5559500
 - `v2.0.2`: from block 5559500 to block 5695000
-- `v3.*.*`: from block 5695000 to the current chain tip
+- `v3.*.*`: from block 5695000 to block 6853500
+- `v4.*.*`: from block 6853500 to the current chain tip
 
 #### Version ordering for Mezo Mainnet
 
