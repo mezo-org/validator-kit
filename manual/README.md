@@ -139,7 +139,8 @@ The following setup assumes a Unix-like environment.
     ```shell
     # This example shows usage of a Mainnet Ethereum RPC for Mezo mainnet.
     # Use Ethereum Sepolia for Mezo testnet.
-    mezod ethereum-sidecar \
+    yes $KEYRING_PASSWORD | mezod ethereum-sidecar \
+     --home=$MEZOD_HOME \
      --ethereum-sidecar.server.network=mainnet \
      --ethereum-sidecar.server.ethereum-node-address=wss://eth-mainnet.g.alchemy.com/v2/<redacted> \
      --ethereum-sidecar.server.assets-unlocked-endpoint=localhost:9090 \
