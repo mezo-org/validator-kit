@@ -1,4 +1,4 @@
 apiVersion: v2
 name: mezod
-version: 5.0.0-rc0
-appVersion: v3.0.1
+version: 5.0.0
+appVersion: v4.0.0
