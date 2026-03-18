@@ -105,7 +105,7 @@ Asterisk (*) denotes the latest minor/patch version.
 - `v3.*.*`: from block 5695000 to block 6853500
 - `v4.*.*`: from block 6853500 to block 8838000
 - `v5.*.*`: from block 8838000 to block 10325250
-- `v6.*.*`: from block 10325250 to block 11688499
+- `v6.*.*`: from block 10325250 to block 11688500
 - `v7.*.*`: from block 11688500 to the current chain tip
 
 #### Version ordering for Mezo Mainnet
