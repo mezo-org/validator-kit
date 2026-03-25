@@ -36,14 +36,14 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 
 # mezod
 
-![Version: 8.0.0](https://img.shields.io/badge/Version-8.0.0-informational?style=flat-square) ![AppVersion: v7.0.0](https://img.shields.io/badge/AppVersion-v7.0.0-informational?style=flat-square)
+![Version: 9.0.0](https://img.shields.io/badge/Version-9.0.0-informational?style=flat-square) ![AppVersion: v8.0.0](https://img.shields.io/badge/AppVersion-v8.0.0-informational?style=flat-square)
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image | string | `"mezo/mezod"` |  |
-| tag | string | `"v7.0.0"` |  |
+| tag | string | `"v8.0.0"` |  |
 | imagePullPolicy | string | `"Always"` |  |
 | env.NETWORK | string | `"mainnet"` | Select the network to connect to (mainnet or testnet) |
 | env.PUBLIC_IP | string | `"CHANGE_ME"` | Set public IP address of the validator |
