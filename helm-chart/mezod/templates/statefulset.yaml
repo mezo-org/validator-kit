@@ -28,6 +28,7 @@ spec:
     spec:
       serviceAccountName: {{ include "this.name" . | quote }}
       automountServiceAccountToken: false
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       securityContext:
         runAsUser: {{ .Values.securityContext.userId }}
         runAsGroup: {{ .Values.securityContext.groupId }}
