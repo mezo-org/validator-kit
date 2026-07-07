@@ -36,63 +36,64 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 
 # mezod
 
-![Version: 12.0.1](https://img.shields.io/badge/Version-12.0.1-informational?style=flat-square) ![AppVersion: v11.0.1](https://img.shields.io/badge/AppVersion-v11.0.1-informational?style=flat-square)
+![Version: 12.1.0](https://img.shields.io/badge/Version-12.1.0-informational?style=flat-square) ![AppVersion: v11.0.1](https://img.shields.io/badge/AppVersion-v11.0.1-informational?style=flat-square)
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image | string | `"mezo/mezod"` |  |
-| tag | string | `"v11.0.1"` |  |
-| imagePullPolicy | string | `"Always"` |  |
-| env.NETWORK | string | `"mainnet"` | Select the network to connect to (mainnet or testnet) |
-| env.PUBLIC_IP | string | `"CHANGE_ME"` | Set public IP address of the validator |
+| connectSidecar.image | string | `"ghcr.io/skip-mev/connect-sidecar"` |  |
+| connectSidecar.imagePullPolicy | string | `"Always"` |  |
+| connectSidecar.ports.http | int | `8080` |  |
+| connectSidecar.tag | string | `"v2.1.2"` |  |
+| customConfigs.appTomlTxt | string | `""` |  |
+| customConfigs.clientTomlTxt | string | `""` |  |
+| customConfigs.configTomlTxt | string | `""` |  |
+| customConfigs.enabled | bool | `false` | Optional: Load custom configuration from the files |
 | env.MEZOD_CHAIN_ID | string | `"mezo_31612-1"` | Set the chain ID (mezo_31612-1 is mainnet, mezo_31611-1 is testnet) |
-| env.MEZOD_HOME | string | `"/var/mezod"` |  |
-| env.MEZOD_MONIKER | string | `"CHANGE_ME"` | Set the moniker (name of the validator) |
-| env.MEZOD_ETHEREUM_SIDECAR_SERVER | string | `"localhost:7500"` |  |
-| env.MEZOD_ORACLE_ORACLE_ADDRESS | string | `"localhost:8080"` |  |
-| env.MEZOD_LOG_LEVEL | string | `"info"` |  |
-| env.MEZOD_LOG_FORMAT | string | `"json"` |  |
 | env.MEZOD_CUSTOM_CONF_APP_TOML | string | `"/config/app.toml.txt"` |  |
 | env.MEZOD_CUSTOM_CONF_CLIENT_TOML | string | `"/config/client.toml.txt"` |  |
 | env.MEZOD_CUSTOM_CONF_CONFIG_TOML | string | `"/config/config.toml.txt"` |  |
+| env.MEZOD_ETHEREUM_SIDECAR_SERVER | string | `"localhost:7500"` |  |
+| env.MEZOD_HOME | string | `"/var/mezod"` |  |
+| env.MEZOD_LOG_FORMAT | string | `"json"` |  |
+| env.MEZOD_LOG_LEVEL | string | `"info"` |  |
+| env.MEZOD_MONIKER | string | `"CHANGE_ME"` | Set the moniker (name of the validator) |
+| env.MEZOD_ORACLE_ORACLE_ADDRESS | string | `"localhost:8080"` |  |
 | env.MEZOD_PORT_P2P | int | `26656` |  |
-| secrets.credentials | string | `"YOUR_SECRET_NAME"` | Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT |
-| secrets.nodeKey | string | `""` | Set Secret object with node_key.json, default is blank - if not blank, it's used by the template as a secret name |
-| storage.className | string | `"CHANGE_ME"` |  |
-| storage.size | string | `"1Gi"` |  |
-| storage.useDataSource.enabled | bool | `false` | Enable and use to restore data from a snapshot or a PVC |
-| storage.useDataSource.apiGroup | string | `""` |  |
-| storage.useDataSource.kind | string | `"PersistentVolumeClaim"` |  |
-| storage.useDataSource.name | string | `""` |  |
+| env.NETWORK | string | `"mainnet"` | Select the network to connect to (mainnet or testnet) |
+| env.PUBLIC_IP | string | `"CHANGE_ME"` | Set public IP address of the validator |
+| image | string | `"mezo/mezod"` |  |
+| imagePullPolicy | string | `"Always"` |  |
+| labels | object | `{}` |  |
+| maintenanceMode | bool | `false` | Run shell in the container instead of the mezod process |
+| priorityClassName | string | `""` |  |
 | resources.requests.cpu | string | `"500m"` | Set the resource requests for the mezod container |
 | resources.requests.memory | string | `"512Mi"` |  |
-| securityContext.userId | int | `65532` | Set the user and group ID to run the container (don't change) |
+| secrets.credentials | string | `"YOUR_SECRET_NAME"` | Set Secret object containing the keyring information: KEYRING_NAME, KEYRING_PASSWORD, KEYRING_MNEMONIC and ETHEREUM_ENDPOINT |
+| secrets.nodeKey | string | `""` | Set Secret object with node_key.json, default is blank - if not blank, it's used by the template as a secret name |
 | securityContext.groupId | int | `65532` |  |
-| service.public.enabled | bool | `true` | Expose public ports to the Internet using LoadBalancer |
-| service.public.annotations | object | `{}` |  |
-| service.public.type | string | `"LoadBalancer"` |  |
-| service.public.loadBalancerIP | string | `""` |  |
+| securityContext.userId | int | `65532` | Set the user and group ID to run the container (don't change) |
+| service.private.enabled | bool | `true` | Expose private ports internally using ClusterIP |
+| service.private.ports.comet-metrics | int | `26660` | Comet metrics are exposed on "/" |
+| service.private.ports.evm-metrics | int | `6065` | EVM metrics are exposed on "/debug/metrics/prometheus" |
 | service.public.allocateLoadBalancerNodePorts | bool | `false` |  |
-| service.public.ports.p2p | int | `26656` |  |
-| service.public.ports.rpc | int | `26657` |  |
+| service.public.annotations | object | `{}` |  |
+| service.public.enabled | bool | `true` | Expose public ports to the Internet using LoadBalancer |
+| service.public.loadBalancerIP | string | `""` |  |
 | service.public.ports.api | int | `1317` |  |
 | service.public.ports.grpc | int | `9090` |  |
 | service.public.ports.json-rpc | int | `8545` |  |
 | service.public.ports.json-rpc-ws | int | `8546` |  |
-| service.private.enabled | bool | `true` | Expose private ports internally using ClusterIP |
-| service.private.ports.evm-metrics | int | `6065` | EVM metrics are exposed on "/debug/metrics/prometheus" |
-| service.private.ports.comet-metrics | int | `26660` | Comet metrics are exposed on "/" |
-| customConfigs.enabled | bool | `false` | Optional: Load custom configuration from the files |
-| customConfigs.appTomlTxt | string | `""` |  |
-| customConfigs.clientTomlTxt | string | `""` |  |
-| customConfigs.configTomlTxt | string | `""` |  |
-| maintenanceMode | bool | `false` | Run shell in the container instead of the mezod process |
-| priorityClassName | string | `""` |  |
-| labels | object | `{}` |  |
-| connectSidecar.image | string | `"ghcr.io/skip-mev/connect-sidecar"` |  |
-| connectSidecar.tag | string | `"v2.1.2"` |  |
-| connectSidecar.imagePullPolicy | string | `"Always"` |  |
-| connectSidecar.ports.http | int | `8080` |  |
+| service.public.ports.p2p | int | `26656` |  |
+| service.public.ports.rpc | int | `26657` |  |
+| service.public.type | string | `"LoadBalancer"` |  |
+| storage.className | string | `"CHANGE_ME"` |  |
+| storage.size | string | `"1Gi"` |  |
+| storage.useDataSource.apiGroup | string | `""` |  |
+| storage.useDataSource.enabled | bool | `false` | Enable and use to restore data from a snapshot or a PVC |
+| storage.useDataSource.kind | string | `"PersistentVolumeClaim"` |  |
+| storage.useDataSource.name | string | `""` |  |
+| tag | string | `"v11.0.1"` |  |
+| terminationGracePeriodSeconds | int | `120` | Time given to the pod to shut down gracefully. mezod must flush state and close its databases on shutdown; killing it too early risks LevelDB corruption |
 

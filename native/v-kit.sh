@@ -264,6 +264,9 @@ After=network.target
 Restart=no
 ExecStartPre=/bin/echo "Starting mezod systemd initialization..."
 ExecStart=${MEZO_EXEC} start --home=${MEZOD_HOME} --metrics
+# mezod must flush state and close its databases on shutdown; killing it
+# too early risks LevelDB corruption
+TimeoutStopSec=120
 StandardOutput=journal
 StandardError=journal
 User=root

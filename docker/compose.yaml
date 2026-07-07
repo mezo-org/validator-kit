@@ -95,6 +95,9 @@ services:
       - --log_level=${MEZOD_LOG_LEVEL}
       - --log_no_color
     restart: always
+    # mezod must flush state and close its databases on shutdown; killing it
+    # too early risks LevelDB corruption (default grace is only 10 seconds)
+    stop_grace_period: 2m
     # Expose the ports for public access
     ports:
       - 26656:26656  # p2p
