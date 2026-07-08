@@ -225,15 +225,16 @@ Expose ports depending on your node type and keep everything else closed:
 | RPC       | Optional               | Optional               | Public                                             | Public                            | Optional             | Optional                 |
 | Seed      | Public                 | Closed                 | Closed                                             | Closed                            | Closed               | Closed                   |
 
-Do NOT expose any RPC ports of a validator node to the public. A validator
-with publicly exposed RPC ports is vulnerable to denial-of-service attacks
-that can lead to downtime and missed blocks.
+Additional notes:
 
-Opening the P2P port on an RPC node is optional: the node syncs through
-outbound connections on its own, but an open P2P port helps network peer
-discovery. The CometBFT RPC, Cosmos gRPC, and Cosmos REST API ports are
-optional as well: RPC nodes primarily serve EVM JSON-RPC, so open them
-only if you want to serve these APIs to your clients.
+- **Validator node**: do NOT expose any RPC ports to the public. A validator
+  with publicly exposed RPC ports is vulnerable to denial-of-service attacks
+  that can lead to downtime and missed blocks.
+- **RPC node**: opening the P2P port is optional: the node syncs through
+  outbound connections on its own, but an open P2P port helps network peer
+  discovery. The CometBFT RPC, Cosmos gRPC, and Cosmos REST API ports are
+  optional as well: RPC nodes primarily serve EVM JSON-RPC, so open them
+  only if you want to serve these APIs to your clients.
 
 ## Hardware requirements
 
