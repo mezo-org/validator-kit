@@ -109,6 +109,10 @@ customConfigs:
 # -- Run shell in the container instead of the mezod process
 maintenanceMode: false
 
+# -- Time given to the pod to shut down gracefully. mezod must flush state and
+# close its databases on shutdown; killing it too early risks LevelDB corruption
+terminationGracePeriodSeconds: 120
+
 priorityClassName: ""
 
 labels: {}

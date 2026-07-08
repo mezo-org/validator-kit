@@ -36,7 +36,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 
 # mezod
 
-![Version: 12.0.1](https://img.shields.io/badge/Version-12.0.1-informational?style=flat-square) ![AppVersion: v11.0.1](https://img.shields.io/badge/AppVersion-v11.0.1-informational?style=flat-square)
+![Version: 12.1.0](https://img.shields.io/badge/Version-12.1.0-informational?style=flat-square) ![AppVersion: v11.0.1](https://img.shields.io/badge/AppVersion-v11.0.1-informational?style=flat-square)
 
 ## Values
 
@@ -89,6 +89,7 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | customConfigs.clientTomlTxt | string | `""` |  |
 | customConfigs.configTomlTxt | string | `""` |  |
 | maintenanceMode | bool | `false` | Run shell in the container instead of the mezod process |
+| terminationGracePeriodSeconds | int | `120` | Time given to the pod to shut down gracefully. mezod must flush state and close its databases on shutdown; killing it too early risks LevelDB corruption |
 | priorityClassName | string | `""` |  |
 | labels | object | `{}` |  |
 | connectSidecar.image | string | `"ghcr.io/skip-mev/connect-sidecar"` |  |
