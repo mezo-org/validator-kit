@@ -73,35 +73,30 @@ You can use the following seed nodes to connect your node to the given Mezo chai
 - Testnet: [testnet/mezo_31611-1/seeds.txt](https://github.com/mezo-org/mezod/blob/main/chain/testnet/mezo_31611-1/seeds.txt)
 - Mainnet: [mainnet/mezo_31612-1/seeds.txt](https://github.com/mezo-org/mezod/blob/main/chain/mainnet/mezo_31612-1/seeds.txt)
 
-## Network exposure
+## Port and firewall configuration
 
-Different node types must expose different ports. Opening more ports than your
-node type needs is a security risk. Use the table below as the single source of
-truth and verify your firewall rules against it.
+`mezod` uses the following ports:
 
-| Port (default) | Purpose                  | Validator node                                                       | RPC node           | Seed node          |
-|----------------|--------------------------|----------------------------------------------------------------------|--------------------|--------------------|
-| `26656`        | CometBFT P2P             | **Open to the public**                                               | Not required       | Open to the public |
-| `8545`         | EVM JSON-RPC (HTTP)      | **Closed**, except the [central monitoring](#central-monitoring) IPs | Open to the public | Closed             |
-| `8546`         | EVM JSON-RPC (WebSocket) | Closed                                                              | Open to the public | Closed             |
-| `26657`        | CometBFT RPC             | Closed                                                               | Open to the public | Closed             |
-| Any other port | Sidecars, metrics, etc.  | Closed                                                               | Closed             | Closed             |
+| Default port | Purpose                  | Can be changed using                                    |
+|--------------|--------------------------|---------------------------------------------------------|
+| `26656`      | CometBFT P2P             | `p2p.laddr` and `p2p.external_address` in `config.toml` |
+| `26657`      | CometBFT RPC             | `rpc.laddr` in `config.toml`                            |
+| `8545`       | EVM JSON-RPC (HTTP)      | `json-rpc.address` in `app.toml`                        |
+| `8546`       | EVM JSON-RPC (WebSocket) | `json-rpc.ws-address` in `app.toml`                     |
 
->[!IMPORTANT]
-> **Validator nodes must NOT expose any RPC ports to the public.** The only
-> port a validator should open publicly is the CometBFT P2P port (`26656` by
-> default). The EVM JSON-RPC HTTP port (`8545` by default) must be reachable
-> only from the [central monitoring](#central-monitoring) IP addresses. Keep it
-> blocked for everyone else and keep all remaining ports closed. A validator
-> with publicly exposed RPC ports is vulnerable to denial-of-service attacks
-> and other abuse that can lead to downtime and missed blocks.
+Expose ports depending on your node type and keep everything else closed:
 
-The default ports can be changed using the following parameters:
-
-- CometBFT P2P port: `p2p.laddr` and `p2p.external_address` in the `config.toml` file.
-- EVM JSON-RPC HTTP port: `json-rpc.address` in the `app.toml` file.
-- EVM JSON-RPC WebSocket port: `json-rpc.ws-address` in the `app.toml` file.
-- CometBFT RPC port: `rpc.laddr` in the `config.toml` file.
+- **Validator node**: expose only the P2P port (`26656`) to the public.
+  Additionally, allow the [central monitoring](#central-monitoring) IP
+  addresses on the EVM JSON-RPC HTTP port (`8545`). Do NOT expose any RPC
+  ports to the public. A validator with publicly exposed RPC ports is
+  vulnerable to denial-of-service attacks that can lead to downtime and
+  missed blocks.
+- **RPC node**: expose the EVM JSON-RPC ports (`8545`, `8546`) and the
+  CometBFT RPC port (`26657`) to your clients. Exposing the P2P port
+  (`26656`) is optional: the node syncs through outbound connections on
+  its own, but an open P2P port helps network peer discovery.
+- **Seed node**: expose only the P2P port (`26656`) to the public.
 
 ## Node synchronization
 
@@ -199,9 +194,8 @@ and any custom port settings. Moreover please adhere to the [central monitoring]
 requirements so that the Mezo team can monitor your node's health.
 
 Before you submit, double-check that your firewall follows the
-[network exposure](#network-exposure) rules for validator nodes: only the
-CometBFT P2P port is open to the public and the EVM JSON-RPC HTTP port is
-reachable only from the central monitoring IP addresses.
+[port and firewall configuration](#port-and-firewall-configuration) rules
+for validator nodes.
 
 ## Non-validator nodes
 
@@ -219,17 +213,11 @@ process as for a validator node but:
 
 Setting those parameters will significantly reduce node's storage usage, thus improving the resource efficiency.
 
-Ensure your CometBFT P2P port is open and accessible from the outside.
-This is `26656` by default, but can be changed using the `p2p.laddr` or 
-`p2p.external_address` parameters in the `config.toml` file.
+Ensure your firewall follows the
+[port and firewall configuration](#port-and-firewall-configuration) rules
+for seed nodes.
 
 ### RPC node
-
->[!WARNING]
-> This section applies ONLY to dedicated non-validator RPC nodes. **NEVER open
-> the ports listed below on a validator node.** A validator must expose only
-> the CometBFT P2P port to the public. See [Network exposure](#network-exposure)
-> for the full breakdown per node type.
 
 To run an RPC node (serving both EVM JSON-RPC and CometBFT RPC), follow the configuration
 process as for a validator node but:
@@ -237,13 +225,9 @@ process as for a validator node but:
 - If you want to run an archiving node (i.e. with full history of the chain),
   set the `pruning` parameter in your node's `app.toml` file to `nothing`.
 
-Ensure the following ports are open and accessible from the outside:
-- EVM JSON-RPC HTTP port: `8545` by default. Can be changed using the 
-  `json-rpc.address` parameter in the `app.toml` file.
-- EVM JSON-RPC WebSocket port: `8546` by default. Can be changed using the 
-  `json-rpc.ws-address` parameter in the `app.toml` file.
-- CometBFT RPC port: `26657` by default. Can be changed using the `rpc.laddr`
-  parameter in the `config.toml` file.
+Ensure your firewall follows the
+[port and firewall configuration](#port-and-firewall-configuration) rules
+for RPC nodes.
 
 ## Hardware requirements
 
@@ -268,9 +252,9 @@ fetch the required information:
 - Testnet: `34.28.107.238`
 - Mainnet: `34.72.231.166`
 
-Allowlisting means granting access to these specific IP addresses only. Do NOT
-open the EVM JSON-RPC port of a validator node to the public. See
-[Network exposure](#network-exposure) for the full breakdown per node type.
+Allowlisting means granting access to these specific IP addresses only. On a
+validator node, keep the port closed for everyone else, as described in
+[port and firewall configuration](#port-and-firewall-configuration).
 
 ## Acknowledgements
 
