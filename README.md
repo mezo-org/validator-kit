@@ -73,6 +73,36 @@ You can use the following seed nodes to connect your node to the given Mezo chai
 - Testnet: [testnet/mezo_31611-1/seeds.txt](https://github.com/mezo-org/mezod/blob/main/chain/testnet/mezo_31611-1/seeds.txt)
 - Mainnet: [mainnet/mezo_31612-1/seeds.txt](https://github.com/mezo-org/mezod/blob/main/chain/mainnet/mezo_31612-1/seeds.txt)
 
+## Network exposure
+
+Different node types must expose different ports. Opening more ports than your
+node type needs is a security risk. Use the table below as the single source of
+truth and verify your firewall rules against it.
+
+| Port (default) | Purpose                  | Validator node                                                       | RPC node           | Seed node          |
+|----------------|--------------------------|----------------------------------------------------------------------|--------------------|--------------------|
+| `26656`        | CometBFT P2P             | **Open to the public**                                               | Not required       | Open to the public |
+| `8545`         | EVM JSON-RPC (HTTP)      | **Closed**, except the [central monitoring](#central-monitoring) IPs | Open to the public | Closed             |
+| `8546`         | EVM JSON-RPC (WebSocket) | Closed                                                              | Open to the public | Closed             |
+| `26657`        | CometBFT RPC             | Closed                                                               | Open to the public | Closed             |
+| Any other port | Sidecars, metrics, etc.  | Closed                                                               | Closed             | Closed             |
+
+>[!IMPORTANT]
+> **Validator nodes must NOT expose any RPC ports to the public.** The only
+> port a validator should open publicly is the CometBFT P2P port (`26656` by
+> default). The EVM JSON-RPC HTTP port (`8545` by default) must be reachable
+> only from the [central monitoring](#central-monitoring) IP addresses. Keep it
+> blocked for everyone else and keep all remaining ports closed. A validator
+> with publicly exposed RPC ports is vulnerable to denial-of-service attacks
+> and other abuse that can lead to downtime and missed blocks.
+
+The default ports can be changed using the following parameters:
+
+- CometBFT P2P port: `p2p.laddr` and `p2p.external_address` in the `config.toml` file.
+- EVM JSON-RPC HTTP port: `json-rpc.address` in the `app.toml` file.
+- EVM JSON-RPC WebSocket port: `json-rpc.ws-address` in the `app.toml` file.
+- CometBFT RPC port: `rpc.laddr` in the `config.toml` file.
+
 ## Node synchronization
 
 There are two ways to synchronize your node with the Mezo blockchain.
@@ -168,6 +198,11 @@ your application if everything is in order. Please provide your public IP, your 
 and any custom port settings. Moreover please adhere to the [central monitoring](#central-monitoring) 
 requirements so that the Mezo team can monitor your node's health.
 
+Before you submit, double-check that your firewall follows the
+[network exposure](#network-exposure) rules for validator nodes: only the
+CometBFT P2P port is open to the public and the EVM JSON-RPC HTTP port is
+reachable only from the central monitoring IP addresses.
+
 ## Non-validator nodes
 
 Non-validator nodes require neither the Ethereum sidecar nor Connect sidecar to be deployed.
@@ -189,6 +224,12 @@ This is `26656` by default, but can be changed using the `p2p.laddr` or
 `p2p.external_address` parameters in the `config.toml` file.
 
 ### RPC node
+
+>[!WARNING]
+> This section applies ONLY to dedicated non-validator RPC nodes. **NEVER open
+> the ports listed below on a validator node.** A validator must expose only
+> the CometBFT P2P port to the public. See [Network exposure](#network-exposure)
+> for the full breakdown per node type.
 
 To run an RPC node (serving both EVM JSON-RPC and CometBFT RPC), follow the configuration
 process as for a validator node but:
@@ -226,6 +267,10 @@ fetch the required information:
 
 - Testnet: `34.28.107.238`
 - Mainnet: `34.72.231.166`
+
+Allowlisting means granting access to these specific IP addresses only. Do NOT
+open the EVM JSON-RPC port of a validator node to the public. See
+[Network exposure](#network-exposure) for the full breakdown per node type.
 
 ## Acknowledgements
 
