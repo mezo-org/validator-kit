@@ -73,31 +73,6 @@ You can use the following seed nodes to connect your node to the given Mezo chai
 - Testnet: [testnet/mezo_31611-1/seeds.txt](https://github.com/mezo-org/mezod/blob/main/chain/testnet/mezo_31611-1/seeds.txt)
 - Mainnet: [mainnet/mezo_31612-1/seeds.txt](https://github.com/mezo-org/mezod/blob/main/chain/mainnet/mezo_31612-1/seeds.txt)
 
-## Port and firewall configuration
-
-`mezod` uses the following ports:
-
-| Default port | Purpose                  | Can be changed using                                    |
-|--------------|--------------------------|---------------------------------------------------------|
-| `26656`      | CometBFT P2P             | `p2p.laddr` and `p2p.external_address` in `config.toml` |
-| `26657`      | CometBFT RPC             | `rpc.laddr` in `config.toml`                            |
-| `8545`       | EVM JSON-RPC (HTTP)      | `json-rpc.address` in `app.toml`                        |
-| `8546`       | EVM JSON-RPC (WebSocket) | `json-rpc.ws-address` in `app.toml`                     |
-
-Expose ports depending on your node type and keep everything else closed:
-
-- **Validator node**: expose only the P2P port (`26656`) to the public.
-  Additionally, allow the [central monitoring](#central-monitoring) IP
-  addresses on the EVM JSON-RPC HTTP port (`8545`). Do NOT expose any RPC
-  ports to the public. A validator with publicly exposed RPC ports is
-  vulnerable to denial-of-service attacks that can lead to downtime and
-  missed blocks.
-- **RPC node**: expose the EVM JSON-RPC ports (`8545`, `8546`) and the
-  CometBFT RPC port (`26657`) to your clients. Exposing the P2P port
-  (`26656`) is optional: the node syncs through outbound connections on
-  its own, but an open P2P port helps network peer discovery.
-- **Seed node**: expose only the P2P port (`26656`) to the public.
-
 ## Node synchronization
 
 There are two ways to synchronize your node with the Mezo blockchain.
@@ -228,6 +203,39 @@ process as for a validator node but:
 Ensure your firewall follows the
 [port and firewall configuration](#port-and-firewall-configuration) rules
 for RPC nodes.
+
+## Port and firewall configuration
+
+`mezod` uses the following ports:
+
+| Default port | Purpose                  | Can be changed using                                    |
+|--------------|--------------------------|---------------------------------------------------------|
+| `26656`      | CometBFT P2P             | `p2p.laddr` and `p2p.external_address` in `config.toml` |
+| `26657`      | CometBFT RPC             | `rpc.laddr` in `config.toml`                            |
+| `8545`       | EVM JSON-RPC (HTTP)      | `json-rpc.address` in `app.toml`                        |
+| `8546`       | EVM JSON-RPC (WebSocket) | `json-rpc.ws-address` in `app.toml`                     |
+| `9090`       | Cosmos gRPC              | `grpc.address` in `app.toml`                            |
+| `1317`       | Cosmos REST API          | `api.address` in `app.toml` (disabled by default)       |
+
+Expose ports depending on your node type and keep everything else closed:
+
+| Port                            | Validator node                                      | RPC node | Seed node |
+|---------------------------------|-----------------------------------------------------|----------|-----------|
+| CometBFT P2P (`26656`)          | Public                                              | Optional | Public    |
+| CometBFT RPC (`26657`)          | Closed                                              | Public   | Closed    |
+| EVM JSON-RPC HTTP (`8545`)      | [Central monitoring](#central-monitoring) IPs only  | Public   | Closed    |
+| EVM JSON-RPC WebSocket (`8546`) | Closed                                              | Public   | Closed    |
+| Cosmos gRPC (`9090`)            | Closed                                              | Optional | Closed    |
+| Cosmos REST API (`1317`)        | Closed                                              | Optional | Closed    |
+
+Do NOT expose any RPC ports of a validator node to the public. A validator
+with publicly exposed RPC ports is vulnerable to denial-of-service attacks
+that can lead to downtime and missed blocks.
+
+Opening the P2P port on an RPC node is optional: the node syncs through
+outbound connections on its own, but an open P2P port helps network peer
+discovery. The Cosmos gRPC and REST API ports are optional as well: open
+them only if you want to serve these APIs to your clients.
 
 ## Hardware requirements
 
