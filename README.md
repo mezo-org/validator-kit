@@ -219,11 +219,11 @@ for RPC nodes.
 
 Expose ports depending on your node type and keep everything else closed:
 
-| Node type | P2P (`26656`) | CometBFT RPC (`26657`) | EVM JSON-RPC HTTP (`8545`)                         | EVM JSON-RPC WS (`8546`) | gRPC (`9090`) | REST API (`1317`) |
-|-----------|---------------|------------------------|----------------------------------------------------|--------------------------|---------------|-------------------|
-| Validator | Public        | Closed                 | [Central monitoring](#central-monitoring) IPs only | Closed                   | Closed        | Closed            |
-| RPC       | Optional      | Public                 | Public                                             | Public                   | Optional      | Optional          |
-| Seed      | Public        | Closed                 | Closed                                             | Closed                   | Closed        | Closed            |
+| Node type | CometBFT P2P (`26656`) | CometBFT RPC (`26657`) | EVM JSON-RPC (HTTP) (`8545`)                       | EVM JSON-RPC (WebSocket) (`8546`) | Cosmos gRPC (`9090`) | Cosmos REST API (`1317`) |
+|-----------|------------------------|------------------------|----------------------------------------------------|-----------------------------------|----------------------|--------------------------|
+| Validator | Public                 | Closed                 | [Central monitoring](#central-monitoring) IPs only | Closed                            | Closed               | Closed                   |
+| RPC       | Optional               | Public                 | Public                                             | Public                            | Optional             | Optional                 |
+| Seed      | Public                 | Closed                 | Closed                                             | Closed                            | Closed               | Closed                   |
 
 Do NOT expose any RPC ports of a validator node to the public. A validator
 with publicly exposed RPC ports is vulnerable to denial-of-service attacks
