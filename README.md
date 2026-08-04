@@ -110,7 +110,8 @@ Asterisk (*) denotes the latest minor/patch version.
 - `v8.*.*`: from block 11854127 to block 12193600
 - `v9.*.*`: from block 12193600 to block 12872000
 - `v10.*.*`: from block 12872000 to block 13206900
-- `v11.*.*`: from block 13206900 to the current chain tip
+- `v11.*.*`: from block 13206900 to block 14705350
+- `v12.*.*`: from block 14705350 to the current chain tip
 
 #### Version ordering for Mezo Mainnet
 
@@ -126,7 +127,8 @@ Asterisk (*) denotes the latest minor/patch version.
 - `v8.*.*`: from block 7739500 to block 8194500
 - `v9.*.*`: from block 8194500 to block 8773000
 - `v10.*.*`: from block 8773000 to block 9275000
-- `v11.*.*`: from block 9275000 to the current chain tip
+- `v11.*.*`: from block 9275000 to block 10885900
+- `v12.*.*`: from block 10885900 to the current chain tip
 
 ### State sync from snapshot
 
