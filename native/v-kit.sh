@@ -80,26 +80,31 @@ install_mezo() {
 }
 
 install_skip() {
+
+    # Strip the version symbol from 'v'
+    CONNECT_SIDECAR_VERSION=${CONNECT_SIDECAR_VERSION#v}
+    echo "Installing Connect Sidecar version: $CONNECT_SIDECAR_VERSION"
+
     # Empty version defaults to latest
-    if [[ -z "${CONNECT_VERSION}" ]]; then
-      CONNECT_VERSION="2.1.2"
+    if [[ -z "${CONNECT_SIDECAR_VERSION}" ]]; then
+      CONNECT_SIDECAR_VERSION="2.1.2"
     fi
 
-    # Empty download script link defaults to official connect sidecar install script
+    # Empty download script link defaults to forked version of connect sidecar install script
     if [[ -z "${CONNECT_DOWNLOAD_SCRIPT}" ]]; then
       CONNECT_DOWNLOAD_SCRIPT="./install-connect.sh"
     fi
 
     if [[ -f "${CONNECT_DOWNLOAD_SCRIPT}"  ]]; then
-      cat ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
+      cat ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_SIDECAR_VERSION} bash
     else
-      curl -ksSL ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
+      curl -ksSL ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_SIDECAR_VERSION} bash
     fi
 
     CONNECT_TMP=$(which connect)
-    CONNECT_VERSION=$(${CONNECT_TMP} version)
+    CONNECT_SIDECAR_VERSION=$(${CONNECT_TMP} version)
     
-    CONNECT_EXEC_PATH=$MEZOD_HOME/bin/skip-${CONNECT_VERSION}
+    CONNECT_EXEC_PATH=$MEZOD_HOME/bin/skip-${CONNECT_SIDECAR_VERSION}
     CONNECT_EXEC=$CONNECT_EXEC_PATH/connect
 
     mkdir -p $CONNECT_EXEC_PATH
