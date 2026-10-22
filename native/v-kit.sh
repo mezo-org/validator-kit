@@ -38,10 +38,10 @@ download_binary() {
     [[ "$verbose" == "verbose" ]] && echo "Download URL: $url"
 
     if [[ "$verbose" == "verbose" ]]; then
-        curl --verbose --silent --location \
+        curl --verbose --silent --fail --location \
             --output ./tmp/mezod-${MEZOD_ARCH}.tar.gz $url
     else
-        curl --silent --location \
+        curl --silent --fail --location \
             --output ./tmp/mezod-${MEZOD_ARCH}.tar.gz $url
     fi
 
