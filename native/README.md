@@ -51,6 +51,11 @@ For the validator to be successfully deployed, it's necessary to fill the enviro
 - `MEZOD_PORT_P2P` - the port for the P2P connection. Default is `26656`
 - `CONNECT_VERSION` - version of the Mezo-built connect sidecar, e.g. `2.1.2-go1.26.10`. Defaults to the version pinned in `v-kit.sh`
 - `CONNECT_DOWNLOAD_SCRIPT` - link (or path) for the connect download script
+- `MEZOD_SHA256` - optional SHA256 checksum of the mezod package. If set, `v-kit.sh` stops when the downloaded package does not match it
+- `CONNECT_SHA256` - optional SHA256 checksum of the connect package. If set, the default `install-connect.sh` stops when the downloaded package does not match it
+
+> [!IMPORTANT]
+> Get the checksums from a trusted channel: the release announcement, or the release page opened in a browser. Each release also has a `.sha256` file next to the package, but a file downloaded from the same server over the same connection does not protect against a forged server.
 
 > [!NOTE]
 > The default connect installation script, `install-connect.sh`, installs the Mezo-built connect binary from the `connect-sidecar-v<CONNECT_VERSION>` release of validator-kit. It supports only linux-amd64. You can use your custom connect installation script instead.
