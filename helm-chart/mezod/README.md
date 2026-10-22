@@ -92,8 +92,8 @@ kubectl -n <NAMESPACE> create secret generic <SECRET_NAME> \
 | terminationGracePeriodSeconds | int | `120` | Time given to the pod to shut down gracefully. mezod must flush state and close its databases on shutdown; killing it too early risks LevelDB corruption |
 | priorityClassName | string | `""` |  |
 | labels | object | `{}` |  |
-| connectSidecar.image | string | `"ghcr.io/skip-mev/connect-sidecar"` |  |
-| connectSidecar.tag | string | `"v2.1.2"` |  |
+| connectSidecar.image | string | `"mezo/connect-sidecar"` |  |
+| connectSidecar.tag | string | `"v2.1.2-go1.26.10"` |  |
 | connectSidecar.imagePullPolicy | string | `"Always"` |  |
 | connectSidecar.ports.http | int | `8080` |  |
 

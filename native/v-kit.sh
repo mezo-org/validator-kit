@@ -80,12 +80,11 @@ install_mezo() {
 }
 
 install_skip() {
-    # Empty version defaults to latest
     if [[ -z "${CONNECT_VERSION}" ]]; then
-      CONNECT_VERSION="2.1.2"
+      CONNECT_VERSION="2.1.2-go1.26.10"
     fi
 
-    # Empty download script link defaults to official connect sidecar install script
+    # Empty download script link defaults to the bundled install script
     if [[ -z "${CONNECT_DOWNLOAD_SCRIPT}" ]]; then
       CONNECT_DOWNLOAD_SCRIPT="./install-connect.sh"
     fi

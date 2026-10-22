@@ -65,10 +65,10 @@ services:
       - ${LOCAL_BIND_PATH}:${MEZOD_HOME}  
 
   connect-sidecar:
-    # Dockerfile: https://github.com/skip-mev/connect/blob/main/contrib/images/connect.sidecar.prod.Dockerfile
+    # Dockerfile: https://github.com/mezo-org/validator-kit/blob/main/docker/connect-sidecar/Dockerfile
     <<: [*platform, *logging,  *networks]
     container_name: connect-sidecar
-    image: ghcr.io/skip-mev/connect-sidecar:v2.1.2
+    image: mezo/connect-sidecar:v2.1.2-go1.26.10
     entrypoint: []
     command:
       - connect

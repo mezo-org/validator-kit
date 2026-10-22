@@ -118,9 +118,9 @@ priorityClassName: ""
 labels: {}
 
 connectSidecar:
-  # Dockerfile: https://github.com/skip-mev/connect/blob/main/contrib/images/connect.sidecar.prod.Dockerfile
-  image: "ghcr.io/skip-mev/connect-sidecar"
-  tag: "v2.1.2"
+  # Dockerfile: https://github.com/mezo-org/validator-kit/blob/main/docker/connect-sidecar/Dockerfile
+  image: "mezo/connect-sidecar"
+  tag: "v2.1.2-go1.26.10"
   imagePullPolicy: Always
   ports:
     http: 8080
