@@ -49,11 +49,11 @@ For the validator to be successfully deployed, it's necessary to fill the enviro
 - `MEZOD_PUBLIC_IP` - public IP address of the validator
 - `MEZOD_DOWNLOAD_LINK` - link to a public repository hosting a `tar.gz` file with mezo binary
 - `MEZOD_PORT_P2P` - the port for the P2P connection. Default is `26656`
-- `CONNECT_VERSION` - version for the connect sidecar
+- `CONNECT_VERSION` - version of the Mezo-built connect sidecar, e.g. `2.1.2-go1.26.10`. Defaults to the version pinned in `v-kit.sh`
 - `CONNECT_DOWNLOAD_SCRIPT` - link (or path) for the connect download script
 
 > [!NOTE]
-> You can use your custom connect installation script (example for that is `install_skip.sh`). This one is customized to set a connect version to be installed (default installation script always installs binary with `latest` tag on it).
+> The default connect installation script, `install-connect.sh`, installs the Mezo-built connect binary from the `connect-sidecar-v<CONNECT_VERSION>` release of validator-kit. It supports only linux-amd64. You can use your custom connect installation script instead.
 
 ### 2. Prepare installation script to run
 
