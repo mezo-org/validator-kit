@@ -92,7 +92,7 @@ install_skip() {
     if [[ -f "${CONNECT_DOWNLOAD_SCRIPT}"  ]]; then
       cat ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
     else
-      curl -ksSL ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
+      curl -fsSL ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
     fi
 
     CONNECT_TMP=$(which connect)
