@@ -54,7 +54,13 @@ download_binary() {
         echo "Error: Downloaded file does not exist."
         exit 1
     fi
- 
+
+    if [[ -z "${MEZOD_SHA256}" ]]; then
+        echo "Warning: MEZOD_SHA256 is not set. Skipping the checksum verification of the mezod package."
+    elif ! echo "${MEZOD_SHA256}  ./tmp/mezod-${MEZOD_ARCH}.tar.gz" | sha256sum --check --strict -; then
+        rm ./tmp/mezod-${MEZOD_ARCH}.tar.gz
+        exit 1
+    fi
 }
 
 unpack_binary() {
@@ -90,9 +96,9 @@ install_skip() {
     fi
 
     if [[ -f "${CONNECT_DOWNLOAD_SCRIPT}"  ]]; then
-      cat ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
+      cat ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} CONNECT_SIDECAR_SHA256=${CONNECT_SHA256} bash
     else
-      curl -fsSL ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} bash
+      curl -fsSL ${CONNECT_DOWNLOAD_SCRIPT} | CONNECT_SIDECAR_VERSION=${CONNECT_VERSION} CONNECT_SIDECAR_SHA256=${CONNECT_SHA256} bash
     fi
 
     CONNECT_TMP=$(which connect)
@@ -390,6 +396,8 @@ show_variables() {
 
     ### Github ###
     echo "MEZOD_DOWNLOAD_LINK $MEZOD_DOWNLOAD_LINK"
+    echo "MEZOD_SHA256 $MEZOD_SHA256"
+    echo "CONNECT_SHA256 $CONNECT_SHA256"
 
     set -x
 }

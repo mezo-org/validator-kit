@@ -26,6 +26,13 @@ DOWNLOAD_URL="https://github.com/${REPO}/releases/download/connect-sidecar-v${VE
 echo "Downloading ${FILE_NAME} from ${DOWNLOAD_URL}..."
 curl -fLO "${DOWNLOAD_URL}"
 
+if [ -z "${CONNECT_SIDECAR_SHA256}" ]; then
+    echo "Warning: CONNECT_SIDECAR_SHA256 is not set. Skipping the checksum verification of ${FILE_NAME}."
+elif ! echo "${CONNECT_SIDECAR_SHA256}  ${FILE_NAME}" | sha256sum --check --strict -; then
+    rm "${FILE_NAME}"
+    exit 1
+fi
+
 # Create a temporary directory for extraction
 TEMP_DIR=$(mktemp -d)
 echo "Extracting connect binary to ${TEMP_DIR}..."
